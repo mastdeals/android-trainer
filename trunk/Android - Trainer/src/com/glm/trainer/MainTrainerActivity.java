@@ -100,6 +100,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
 	       
+		   //Log.d(this.getClass().getCanonicalName(),"DISTANCE: "+ExerciseUtils.getPartialDistanceUnFormattated(12.44158874,41.87999108,12.44162542,41.88017333));
 	       
 	       //Intent i = new Intent(Intent.ACTION_VIEW);
 	       //i.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("Test Twitter")));
