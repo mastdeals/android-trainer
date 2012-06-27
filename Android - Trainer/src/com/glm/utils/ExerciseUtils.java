@@ -77,10 +77,10 @@ public class ExerciseUtils {
 							COS(RADIANTI(A2-A3))
 							) 
 							*6371)*/
-			dDistance=(Math.acos(Math.cos(Math.toRadians(dLatStart)) *
-				Math.cos(Math.toRadians(dLatEnd)) +
-				Math.sin(Math.toRadians(dLatStart)) *
-				Math.sin(Math.toRadians(dLatEnd)) *
+			dDistance=(Math.acos(Math.cos(Math.toRadians(90-dLatStart)) *
+				Math.cos(Math.toRadians(90-dLatEnd)) +
+				Math.sin(Math.toRadians(90-dLatStart)) *
+				Math.sin(Math.toRadians(90-dLatEnd)) *
 				Math.cos(Math.toRadians(dLongStart-dLongEnd)))*6371)*1000;
 			
 			/*Location.distanceBetween(dLatStart, 
@@ -97,7 +97,7 @@ public class ExerciseUtils {
 				  dDistance=dDistance/1000; 
 			  }
 			 
-		    return Double.parseDouble(String.valueOf(dDistance));
+		    return dDistance;
 		}catch(NumberFormatException e){
 			return 0;
 		}
@@ -299,11 +299,11 @@ public class ExerciseUtils {
 	 * @param String sExerciseID id dell'esercizio da cui prendere la distanza
 	 * @return int distanza in metri
 	 * */	
-	public synchronized static double getPartialDistanceUnFormattated(Context oContext, ConfigTrainer oConfigTrainer, String sExerciseID, String sDefaultUnit){
+	public synchronized static double getPartialDistanceUnFormattated(double dLongStart,double dLatStart,double dLongEnd,double dLatEnd){
 		double dDistance=0;
 		//Salvo sempre la distanza in KM
 		String sUnits="K";
-		Database oDB = new Database(oContext);
+		/*Database oDB = new Database(oContext);
 		double dLongStart=0,dLatStart=0,dLongEnd=0,dLatEnd=0;
 		
 		String sSQL_START_DETT_EXERCISE = "SELECT long, lat, alt, id_watch_point FROM trainer_exercise_dett WHERE id_exercise ='" +sExerciseID+"'" +
@@ -352,7 +352,7 @@ public class ExerciseUtils {
 		
 		oDB.close();
 		oDB=null;
-		
+		*/
 		
 		//iDistance = Integer.parseInt(String.valueOf(Math.round(distance(dLongStart,dLatStart,dLongEnd,dLatEnd,"K")*1000)));
 		if(dLongStart==0 && dLatStart==0){
@@ -362,7 +362,7 @@ public class ExerciseUtils {
 		}
 		//Log.d(ExerciseUtils.class.getCanonicalName(), "Distance UnFormattated: "+ fDistance);
 		
-		
+		//TODO WRITE DATA TI FILE FOR CHECK
 		return dDistance;
 	}
 	

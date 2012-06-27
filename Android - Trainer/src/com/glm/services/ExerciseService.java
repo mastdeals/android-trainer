@@ -342,8 +342,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 						
 					
 					double dPartialDistance=0;
-					dPartialDistance=ExerciseUtils.getPartialDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-							ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null);
+					dPartialDistance=ExerciseUtils.getPartialDistanceUnFormattated(pre_longitude,pre_latitude,longitude,latitude);
 					
 					NewExercise.setfCurrentDistance(dPartialDistance
 							+NewExercise.getdCurrentDistance());
@@ -588,6 +587,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
     	if(InteractiveTimer!=null) InteractiveTimer.cancel(); 
     	
+    	latitude = 0.0;
+        longitude = 0.0;
+    	pre_latitude = 0.0;
+        pre_longitude = 0.0;
+        
         try {
 			this.finalize();
 			this.stopSelf();
@@ -782,6 +786,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	bStopListener	= false;
     	iTypeExercise   = TypeExercise;    	
     	iStep			= 0;
+    	latitude 		= 0.0;
+        longitude 		= 0.0;
+    	pre_latitude 	= 0.0;
+        pre_longitude 	= 0.0;
     	//Imposto 
     	
     	//Carico la configurazione
