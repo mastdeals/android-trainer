@@ -68,6 +68,10 @@ public class ExerciseUtils {
 		double dDistance=0;
 		
 		try{
+			if(dLatStart==0.0 ||
+					dLongStart==0.0){
+				return 0;
+			}
 			/*=(
 					ARCCOS(
 							COS(RADIANTI(90-B2)) *
@@ -96,13 +100,15 @@ public class ExerciseUtils {
 			  }else if(sUnit=="K"){
 				  dDistance=dDistance/1000; 
 			  }
-			 
+			  writeCustomLoForDebug(dLatStart, dLongStart, 
+						 dLatEnd,  dLongEnd, dDistance, sUnit);
 		    return dDistance;
 		}catch(NumberFormatException e){
 			return 0;
 		}
 		
 	}
+
 
 		/**
 		 * Crea nel DB il nuovo Esercizio per poi essere finalizzato dal servizio
@@ -156,7 +162,7 @@ public class ExerciseUtils {
 		 * @see ExerciseService
 		 * TODO Fisso l'utente e il tipo esercizio
 		 * **/
-		public synchronized static void saveCoordinates(Context oContext, ConfigTrainer oConfigTrainer,double latitude, double longitude, double altitude, String name, 
+		public synchronized static void saveCoordinates(Context oContext, ConfigTrainer oConfigTrainer,double pre_latitude, double pre_longitude, double latitude, double longitude, double altitude, String name, 
 				String sSong, float fSpeed, float fAccurancy, long lTime, int iHeartRate){
 			Database oDB = new Database(oContext);
 			if(sSong==null) sSong="";
@@ -170,13 +176,13 @@ public class ExerciseUtils {
 				oDB.getOpenedDatabase().execSQL(sSQL_UPDATE_PREV_WATCH_POINT);
 				oDB.close();*/
 				//Non salvo le coordinate con velocità a 0
-				
-				
+								
 				String sSQL_INSERT_DETT_EXERCISE = "INSERT INTO trainer_exercise_dett ( " +
-					"id_exercise, id_type_exercise, id_users, lat, long, alt, watch_point_name, watch_point_date_prev,watch_point_song,speed,accurancy,gpstime,bpm) VALUES (" +
+					"id_exercise, id_type_exercise, id_users, lat, long, alt, distance, watch_point_name, watch_point_date_prev,watch_point_song,speed,accurancy,gpstime,bpm) VALUES (" +
 					" (SELECT MAX(id_exercise) FROM trainer_exercise) ,"+ 
 					" (SELECT id_type_exercise FROM trainer_exercise WHERE id_exercise IN (SELECT MAX(id_exercise) FROM trainer_exercise)),"+
-				  	" (select max(id_users) from TRAINER_USERS) ,"+latitude+", "+longitude+", "+altitude+", '"+name+"',(select watch_point_date from trainer_exercise_dett where id_watch_point IN (select max(id_watch_point) from TRAINER_EXERCISE_DETT WHERE id_exercise IN (SELECT MAX(id_exercise) FROM trainer_exercise)))," +
+				  	" (select max(id_users) from TRAINER_USERS) ,"+latitude+", "+longitude+", "+altitude+", "+
+				  	distance(pre_latitude, pre_longitude, latitude, longitude, "K")+", '"+name+"',(select watch_point_date from trainer_exercise_dett where id_watch_point IN (select max(id_watch_point) from TRAINER_EXERCISE_DETT WHERE id_exercise IN (SELECT MAX(id_exercise) FROM trainer_exercise)))," +
 				  	"'"+sSong.replaceAll("'", "''")+"',"+fSpeed+","+fAccurancy+","+lTime+","+iHeartRate+")";			 
 				
 				Log.i(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_DETT_EXERCISE);				  	
@@ -2379,7 +2385,33 @@ public class ExerciseUtils {
 
 		return true;
 	}
-	
+
+	/**
+	 * scrive un file GPX a partire da da un ExerciseManipulate impostato
+	 * @param dDistance 
+	 * @param IDExercise 
+	 * 
+	 * 
+	 * */
+	private static void writeCustomLoForDebug(double dLatStart,
+			double dLongStart, double dLatEnd, double dLongEnd, double dDistance, String sUnit) {
+		
+		if(ExerciseUtils.createWorking()){			
+			try {
+				sExportFile=ExerciseUtils.getRootFolder()+"/debug.log";
+				FileWriter outFile = new FileWriter(sExportFile,true);
+				PrintWriter out = new PrintWriter(outFile);
+				out.println("Start Lat, "+dLatStart+", Start Long,"+dLongStart+", End Lat,"+dLatEnd+", End Long,"+dLongEnd+", Distance, "+dDistance+", Unit, "+sUnit);
+						
+				out.close();
+				outFile.close();
+			} catch (IOException e){
+				Log.e(Exercise.class.getCanonicalName(),"Export file "+sExportFile+" fail");
+				return;
+			}
+		}
+		return;
+	}
 	private static boolean createWorking(){	
 		File oRoot = Environment.getExternalStorageDirectory();
 		try{
