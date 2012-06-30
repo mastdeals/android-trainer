@@ -6,8 +6,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.glm.services.IExerciseService;
+import com.glm.trainer.MainTrainerActivity;
 import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
+import com.glm.app.GoalActivity;
 import com.glm.app.OpenStreetMapActivity;
 import com.glm.app.db.Database;
 import com.glm.bean.CardioDevice;
@@ -530,7 +532,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						mSave.what = WorkOutActivity.SAVEEXERCISE;
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
-						ActivityHelper.startOriginalActivityAndFinish(WorkOutActivity.this);
+						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
+						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        				
 		    		});
 		    	
@@ -540,7 +543,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					public void onClick(DialogInterface arg0, int arg1) {					
 						//TODO Delete Watch Point
 						ExerciseUtils.deleteExercise(getApplicationContext(), oConfigTrainer, String.valueOf(iCurrentExercise));
-						ActivityHelper.startOriginalActivityAndFinish(WorkOutActivity.this);
+						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
+						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        		
 					
 		    		});

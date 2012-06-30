@@ -891,6 +891,10 @@ public class Database {
     private void upgradeDB2_4To2_5(){
     	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
     	try{   		
+    		oDB.execSQL("update trainer_exercise_dett set distance=distance*0.86");
+    		
+    		oDB.execSQL("update trainer_exercise set distance=distance*0.86");
+    		
     		
     		oDB.execSQL("UPDATE TRAINER_CONFIG"
                     + " set cfg_value=1 WHERE "

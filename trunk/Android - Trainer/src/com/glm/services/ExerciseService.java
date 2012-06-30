@@ -272,13 +272,14 @@ public class ExerciseService extends Service implements LocationListener, Accele
     
     @Override
     public void onLocationChanged(Location location) {                  
+       
+       String sAlt="";
+       if(bStopListener) return;
        //Non catturo piu' le coordinate quando sono in pausa
        if(location==null) {
     	   startGPSFix();
     	   return;
        }
-       String sAlt="";
-       if(bStopListener) return;
        latitude = location.getLatitude();
        longitude = location.getLongitude();
        altitude = Math.round(location.getAltitude());        
@@ -331,11 +332,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		    		}
 				}											
 					if(oMediaPlayer!=null){
-						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,
+						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,pre_latitude,pre_longitude,
 								latitude, longitude, altitude, 
 								getLocationName(latitude,longitude), oMediaPlayer.getCurrentSong(), location.getSpeed(), location.getAccuracy(), location.getTime(),iHeartRate);
 					}else{
-						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,
+						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,pre_latitude,pre_longitude,
 								latitude, longitude, altitude, 
 								getLocationName(latitude,longitude), null, location.getSpeed(), location.getAccuracy(), location.getTime(),iHeartRate);
 					}
@@ -347,7 +348,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					NewExercise.setfCurrentDistance(dPartialDistance
 							+NewExercise.getdCurrentDistance());
 									
-					ExerciseUtils.saveCurrentDistance(dPartialDistance,getApplicationContext(),oConfigTrainer);
+					//ExerciseUtils.saveCurrentDistance(dPartialDistance,getApplicationContext(),oConfigTrainer);
 
 					pre_latitude=latitude;
 					pre_longitude=longitude;
@@ -594,7 +595,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
         
         try {
 			this.finalize();
-			this.stopSelf();
 		} catch (Throwable e) {
 			Log.e(this.getClass().getCanonicalName(),"OnDestroy: "+e.getMessage());
 		}
