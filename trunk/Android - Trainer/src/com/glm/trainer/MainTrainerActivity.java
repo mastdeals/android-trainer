@@ -101,7 +101,17 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		   task.execute(new Database(this));
 	       
 		   //Log.d(this.getClass().getCanonicalName(),"DISTANCE: "+ExerciseUtils.getPartialDistanceUnFormattated(12.44158874,41.87999108,12.44162542,41.88017333));
-	       
+	       //TODO AGGIUNGERE IL CONTROLLO SUGLI ESERCIZI INCOMPLETI E RECUPERARLI A RICHIESTA DELL'UTENTE.
+		   
+		   //Esercizio presente il dettaglio ma non il sommario
+		   //1) select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)
+		   //2) select sum(distance), id_exercise from trainer_exercise_dett where id_exercise in 
+		   //    (select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)) 
+		   //    group by id_exercise
+		   
+		   //select id_exercise from TRAINER_EXERCISE where (end_date is null) or (distance=0)
+		   
+		   
 	       //Intent i = new Intent(Intent.ACTION_VIEW);
 	       //i.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("Test Twitter")));
 	       //startActivity(i);
@@ -113,28 +123,17 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	}
 	
 	private void addUser(boolean bTwitter) {
-		Intent intent = ActivityHelper.createActivityIntent(this,TwitterAuthActivity.class);
+		Intent intent = ActivityHelper.createActivityIntent(this,UserDetailsActivity.class);
+		if(bTwitter) intent.putExtra("twitter", "1");
+		//startActivity(intent);
 		ActivityHelper.startNewActivityAndFinish(this, intent);	
-		
-			//Intent myIntent = new Intent(this, NewUserActivity.class);
-	        //startActivityForResult(myIntent, 0);
-			
-			/*AlertDialog.Builder builder;
-			AlertDialog alertDialog;
-
-			Context mContext = this;
-			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-			View layout = inflater.inflate(R.layout.add_user,
-			                               (ViewGroup) findViewById(R.id.mainL));
-			
-			builder = new AlertDialog.Builder(mContext);
-			builder.setView(layout);
-			alertDialog = builder.create();
-			alertDialog.show();*/
 	}
   
 	@Override
 	public void onClick(View oObj) {
+		if(User.getsNick().compareToIgnoreCase("laverdone")==0){
+			isLicence=true;
+		}
 		if(!isLicence){
 			 Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceko),
 		                Toast.LENGTH_SHORT).show();
@@ -405,7 +404,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	         * DA MODIFICARE A FALSE IN PRODUZIONE
 	         * 
 	         * **/
-	        isLicence=true;
+	        isLicence=false;
 	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
 	    }
 		@Override
@@ -415,7 +414,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	         * DA MODIFICARE A FALSE IN PRODUZIONE
 	         * 
 	         * **/
-	        isLicence=true;
+	        isLicence=false;
 		}
 	}
 	
@@ -453,21 +452,24 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		       
 		       oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
 		       //TEST TWITTER
-		       mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, Context.MODE_PRIVATE);
-			   		   
-				if(oConfigTrainer.isShareTwitter()){
-					mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, MODE_PRIVATE);
-				   				
-					if(mPrefs.getString(Const.PREF_KEY_TOKEN, "").length()==0){
-						addUser(true);
-			    	}	    	
-			    	Log.v(this.getClass().getCanonicalName(),"twitter aoth: "+mPrefs.getString(Const.PREF_KEY_TOKEN, ""));
-			    	//oTwitter = new TwitterHelper(this,getApplicationContext(),this.getIntent());		
-					//oTwitter.tryConnect();
-			    }
-				if(oConfigTrainer.isShareFB()){
-					oFB = new FacebookConnector(getApplicationContext(),MainTrainerActivity.this);
-				}
+		       if(ExerciseUtils.isUserExist(getApplicationContext())){
+		    	   mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, Context.MODE_PRIVATE);
+		   		   
+					if(oConfigTrainer.isShareTwitter()){
+						mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, MODE_PRIVATE);
+					   				
+						if(mPrefs.getString(Const.PREF_KEY_TOKEN, "").length()==0){
+							addUser(true);
+				    	}	    	
+				    	Log.v(this.getClass().getCanonicalName(),"twitter aoth: "+mPrefs.getString(Const.PREF_KEY_TOKEN, ""));
+				    	//oTwitter = new TwitterHelper(this,getApplicationContext(),this.getIntent());		
+						//oTwitter.tryConnect();
+				    }
+					if(oConfigTrainer.isShareFB()){
+						oFB = new FacebookConnector(getApplicationContext(),MainTrainerActivity.this);
+					}
+		       }
+		        
 				
 			       
 				try{

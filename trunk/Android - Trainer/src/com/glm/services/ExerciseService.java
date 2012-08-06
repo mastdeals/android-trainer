@@ -275,6 +275,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
        
        String sAlt="";
        if(bStopListener) return;
+       if(!isRunning) return;
        //Non catturo piu' le coordinate quando sono in pausa
        if(location==null) {
     	   startGPSFix();
@@ -416,7 +417,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     								////Log.v(this.getClass().getCanonicalName(),"Kalories: "+sKaloriesToSpeech);
     								
     								NewExercise.setiInclication(ExerciseUtils.getInclination(getApplicationContext(), ExerciseUtils.getsIDCurrentExercise(getApplicationContext())));
-    								
+    								NewExercise.setPace(ExerciseUtils.getPace(getApplicationContext(), oConfigTrainer));
         							
         							//TTS Speech
         							Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
