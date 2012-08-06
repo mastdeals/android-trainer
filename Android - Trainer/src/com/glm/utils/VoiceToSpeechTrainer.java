@@ -146,24 +146,24 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 		}
 		if(oConfigTrainer.isSayTime()) {
 			//Step 4: Tempo di percorrenza 
-			sSpeech+=" "+sTimeToSpeech;
+			sSpeech+="  "+sTimeToSpeech;
 		}
 		if(oConfigTrainer.isSayPace()) {
 			//Step 5: Passo di percorrenza 
-			sSpeech+=" "+sPace;
+			sSpeech+="  "+sPace;
 		}
 		if(oConfigTrainer.isSayKalories()) {
 			//Step 6: Calorie Bruciate di percorrenza 
-			sSpeech+=" "+sKalories;
+			sSpeech+="  "+sKalories;
 		}
 		
 		if(oConfigTrainer.isSayInclination()) {
 			//Step 6: Calorie Bruciate di percorrenza 
-			sSpeech+=" "+oContext.getString(R.string.inclination)+sPendenza;
+			sSpeech+="  "+oContext.getString(R.string.inclination)+sPendenza;
 		}
 		if(oConfigTrainer.isbCardioPolarBuyed() && oConfigTrainer.isbUseCardio() && iHeartRate>0) {
 			//Step 6: Calorie Bruciate di percorrenza 
-			sSpeech+=" "+oContext.getString(R.string.heart_rate)+iHeartRate;
+			sSpeech+="  "+oContext.getString(R.string.heart_rate)+iHeartRate;
 		}
 		
 		

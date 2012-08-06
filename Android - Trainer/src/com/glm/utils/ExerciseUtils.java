@@ -34,7 +34,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -47,7 +46,6 @@ public class ExerciseUtils {
 	private static final String FOLDER_PERSONAL_TRAINER="personal_trainer";
 	private static final double GPSFIX=1;//0.88;
 	public static String sExportFile="";
-	private static float[] fResult = new float[2];
 	private static Vector<Music> vListOfMusic = new Vector<Music>();
 	private static int iTypeExercise=0;
 	private final static double MILES_TO_KM=0.621371192;
@@ -100,8 +98,8 @@ public class ExerciseUtils {
 			  }else if(sUnit=="K"){
 				  dDistance=dDistance/1000; 
 			  }
-			  writeCustomLoForDebug(dLatStart, dLongStart, 
-						 dLatEnd,  dLongEnd, dDistance, sUnit);
+			  //writeCustomLoForDebug(dLatStart, dLongStart, 
+			//			 dLatEnd,  dLongEnd, dDistance, sUnit);
 		    return dDistance;
 		}catch(NumberFormatException e){
 			return 0;
@@ -448,11 +446,13 @@ public class ExerciseUtils {
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
+			
 			//Cancello tutti gli esercizi sporchi in DB
-			String sSQL_PURGE_EXERCISE="delete from TRAINER_EXERCISE where (end_date is null) or (distance=0)";
-			oDB.open();
-			oDB.getOpenedDatabase().execSQL(sSQL_PURGE_EXERCISE);
-			oDB.close();
+			//String sSQL_PURGE_EXERCISE="delete from TRAINER_EXERCISE where (end_date is null) or (distance=0)";
+			//oDB.open();
+			//oDB.getOpenedDatabase().execSQL(sSQL_PURGE_EXERCISE);
+			//oDB.close();
+			
 			oDB=null;			
 			//Log.v(ExerciseUtils.class.getCanonicalName(), "Save SQL: "+sSQL_SAVE_EXERCISE);
 		}catch (Exception e) {

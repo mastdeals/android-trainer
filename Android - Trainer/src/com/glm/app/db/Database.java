@@ -1,13 +1,8 @@
 package com.glm.app.db;
 
 import java.io.File;
-
-import com.glm.app.db.Database.MetaData.TrainerExercise;
 import com.glm.app.db.Database.MetaData.TrainerExerciseDett;
 import com.glm.app.db.Database.MetaData.TrainerPref;
-import com.glm.app.db.Database.MetaData.TrainerSocialAccount;
-import com.glm.app.db.Database.MetaData.TrainerTypeEcercise;
-import com.glm.app.db.Database.MetaData.TrainerUsers;
 import com.glm.app.db.Database.MetaData.TrainerVersion;
 import com.glm.trainer.R;
 
