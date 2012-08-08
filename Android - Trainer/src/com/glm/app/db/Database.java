@@ -4,6 +4,7 @@ import java.io.File;
 import com.glm.app.db.Database.MetaData.TrainerExerciseDett;
 import com.glm.app.db.Database.MetaData.TrainerPref;
 import com.glm.app.db.Database.MetaData.TrainerVersion;
+import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 
 import android.content.Context;
@@ -343,7 +344,7 @@ public class Database {
     				" 	version_desc   VARCHAR( 255 )  NOT NULL, " + 
     				" 	licence        VARCHAR( 1 )    NOT NULL DEFAULT 'N')");
 
-    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '2.5', 'Ver. 2.5', 'N')");
+    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '2.6', 'Ver. 2.6', 'N')");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_users (" +
@@ -540,6 +541,10 @@ public class Database {
     			if(sVersionNumber.compareToIgnoreCase("2.4")==0){
 					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 2.5");
 					upgradeDB2_4To2_5();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("2.5")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 2.6");
+					upgradeDB2_5To2_6();
 				}
     			
     			//manualDB();
@@ -896,6 +901,24 @@ public class Database {
                     + " cfg_desc='first_boot'");
         	
         	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.5',version_desc='Ver. 2.5'");
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.4");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
+    /**
+     * Aggiorna la strittura del DB alla release 2.0 con in app store e tabella allenamenti programmati.
+     * 
+     * 
+     * */
+    private void upgradeDB2_5To2_6(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.6',version_desc='Ver. 2.6'");
     	}catch (SQLException e) {
     		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.4");
     		oDB.close();   

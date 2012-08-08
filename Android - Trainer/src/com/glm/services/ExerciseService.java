@@ -382,63 +382,66 @@ public class ExerciseService extends Service implements LocationListener, Accele
         
     private void startMotivatorTimer(){   	
     	try{
-    		/**Avvio Scrittura dati nel DB*/
-        	MotivatorTimer = new Timer();
-        	MotivatorTimer.scheduleAtFixedRate(
-        			new TimerTask()
-        			{
-        				@Override
-        				public void run()
-        				{
-        					
-        					
-        					if(!isRunning) return;
-        					/**imposto la distanza corrente*/
-        					NewExercise.setfCurrentDistance(
-        							ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-        									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null));
-        					
-        					final String sDistanceToSpeech=String.valueOf(
-        							ExerciseUtils.getTotalDistanceFormattated(NewExercise.getdCurrentDistance(),oConfigTrainer,false));
-        					if(!isInCalling){
-        						if(oConfigTrainer.isbPlayMusic()){
-            						//Abbasso il volume della musica 
-            						if(oMediaPlayer!=null) oMediaPlayer.pause();
-            						
-            					}  
-        						
-    								String sTimeToSpeech=getApplicationContext().getString(R.string.time)+ExerciseUtils.getTimeHHMMForSpeech(NewExercise.getlCurrentTime(),getApplicationContext());	
-    								String sKaloriesToSpeech=String.valueOf(NewExercise.getsCurrentCalories())+getApplicationContext().getString(R.string.kaloriesspeech);
-    								String sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_km);
-    								
-    								if(oConfigTrainer.getiUnits()==1){			
-    									sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_miles);
-    								}
-    								////Log.v(this.getClass().getCanonicalName(),"Kalories: "+sKaloriesToSpeech);
-    								
-    								NewExercise.setiInclication(ExerciseUtils.getInclination(getApplicationContext(), ExerciseUtils.getsIDCurrentExercise(getApplicationContext())));
-    								NewExercise.setPace(ExerciseUtils.getPace(getApplicationContext(), oConfigTrainer));
-        							
-        							//TTS Speech
-        							Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
-        							oVoiceSpeechTrainer.sayDistanza(getApplicationContext(), oConfigTrainer, 
-        									sDistanceToSpeech, oMediaPlayer, sTimeToSpeech,sKaloriesToSpeech,
-        									NewExercise.getPace()+sMinutePerUnit, NewExercise.getiInclication()+"%", iHeartRate); 
-        							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);
-        							
-        							//Avvio il timer del goal solo in certe condizioni
-        							
-        							if(iGoalDistance!=0 ||
-        									dGoalHH!=0 ||
-        									dGoalMM!=0){
-        								goalTimerStart();
-        							}
-        							
-        					}    							
-        				}
-        			}, 
-        			iDelayMotivator,
-    		   	    iRepeatMotivator);	
+    		if(MotivatorTimer==null){
+    		
+	    		/**Avvio Scrittura dati nel DB*/
+	        	MotivatorTimer = new Timer();
+	        	MotivatorTimer.scheduleAtFixedRate(
+	        			new TimerTask()
+	        			{
+	        				@Override
+	        				public void run()
+	        				{
+	        					
+	        					
+	        					if(!isRunning) return;
+	        					/**imposto la distanza corrente*/
+	        					NewExercise.setfCurrentDistance(
+	        							ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
+	        									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null));
+	        					
+	        					final String sDistanceToSpeech=String.valueOf(
+	        							ExerciseUtils.getTotalDistanceFormattated(NewExercise.getdCurrentDistance(),oConfigTrainer,false));
+	        					if(!isInCalling){
+	        						if(oConfigTrainer.isbPlayMusic()){
+	            						//Abbasso il volume della musica 
+	            						if(oMediaPlayer!=null) oMediaPlayer.pause();
+	            						
+	            					}  
+	        						
+	    								String sTimeToSpeech=getApplicationContext().getString(R.string.time)+ExerciseUtils.getTimeHHMMForSpeech(NewExercise.getlCurrentTime(),getApplicationContext());	
+	    								String sKaloriesToSpeech=String.valueOf(NewExercise.getsCurrentCalories())+getApplicationContext().getString(R.string.kaloriesspeech);
+	    								String sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_km);
+	    								
+	    								if(oConfigTrainer.getiUnits()==1){			
+	    									sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_miles);
+	    								}
+	    								////Log.v(this.getClass().getCanonicalName(),"Kalories: "+sKaloriesToSpeech);
+	    								
+	    								NewExercise.setiInclication(ExerciseUtils.getInclination(getApplicationContext(), ExerciseUtils.getsIDCurrentExercise(getApplicationContext())));
+	    								NewExercise.setPace(ExerciseUtils.getPace(getApplicationContext(), oConfigTrainer));
+	        							
+	        							//TTS Speech
+	        							Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
+	        							oVoiceSpeechTrainer.sayDistanza(getApplicationContext(), oConfigTrainer, 
+	        									sDistanceToSpeech, oMediaPlayer, sTimeToSpeech,sKaloriesToSpeech,
+	        									NewExercise.getPace()+sMinutePerUnit, NewExercise.getiInclication()+"%", iHeartRate); 
+	        							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);
+	        							
+	        							//Avvio il timer del goal solo in certe condizioni
+	        							
+	        							if(iGoalDistance!=0 ||
+	        									dGoalHH!=0 ||
+	        									dGoalMM!=0){
+	        								goalTimerStart();
+	        							}
+	        							
+	        					}    							
+	        				}
+	        			}, 
+	        			iDelayMotivator,
+	    		   	    iRepeatMotivator);	
+    		}
     	}catch (IllegalArgumentException e) {
 			Log.e(this.getClass().getCanonicalName(),"Error start Time");
 			stopSelf();
@@ -1008,9 +1011,15 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	return mBinder;
         //return mMessenger.getBinder();
     }
+    @Override
+    public void onLowMemory() {
+    	Log.w(this.getClass().getCanonicalName(), "Running on Low Memory");  
+    	super.onLowMemory();
+    }
     
     private final IExerciseService.Stub mBinder = new IExerciseService.Stub() {
     	public String getPid(){
+    		
             return sPid;
         }       
 		@Override
@@ -1310,24 +1319,27 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * */
 	private void removeAutoPauseTimer(){
 		if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
+		AutoPauseTimer=null;
 	}
 	/**
 	 * Imposta il timer per l'auto pausa
 	 * */
 	private void addAutoPauseTimer(){
-		AutoPauseTimer = new Timer();		
-		AutoPauseTimer.schedule(
-    			new TimerTask()
-    			{
-    				@Override
-    				public void run()
-    				{    					
-    					isAutoPause=true;
-    					//Log.v(this.getClass().getCanonicalName(), "RUN AUTOPAUSE!!!"); 
-    					autopauseExercise();
-    				}					
-    			}, 
-    			iAutoPauseDelay);
+		if(AutoPauseTimer==null){
+			AutoPauseTimer = new Timer();		
+			AutoPauseTimer.schedule(
+	    			new TimerTask()
+	    			{
+	    				@Override
+	    				public void run()
+	    				{    					
+	    					isAutoPause=true;
+	    					//Log.v(this.getClass().getCanonicalName(), "RUN AUTOPAUSE!!!"); 
+	    					autopauseExercise();
+	    				}					
+	    			}, 
+	    			iAutoPauseDelay);
+		}
 	}
 
 	/**

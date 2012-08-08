@@ -8,7 +8,6 @@ import com.glm.app.ManualWorkout;
 import com.glm.app.PrefActivity;
 import com.glm.app.StoreActivity;
 import com.glm.app.SummaryActivity;
-import com.glm.app.TwitterAuthActivity;
 import com.glm.app.UserDetailsActivity;
 import com.glm.app.db.Database;
 import com.glm.app.graph.WebGraphWeightActivity;
@@ -520,7 +519,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				    }
 				    
 			    	doBindService();
-			    	
+			    	/**controllo e salvo esercizi non salvati*/
+			    	ExerciseUtils.checkIncompleteWorkout(getApplicationContext(), oConfigTrainer);
 			    	
 				}catch (Exception e) {
 					Log.e(this.getClass().getCanonicalName(), "check user: "+e.getMessage());			
@@ -533,7 +533,10 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			for (Database DB : mDB) {
 				oDB= DB;
 			}   
-			if(oDB!=null)  oDB.init();
+			if(oDB!=null)  {
+				oDB.init();
+				
+			}
 			return true;
 		}
 	}
