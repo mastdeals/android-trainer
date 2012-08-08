@@ -939,7 +939,7 @@ public class ExerciseUtils {
 	   			int iTotSecond 		= oCursor.getColumnIndex("totSec");
 	   			int iSteps_Count 	= oCursor.getColumnIndex("steps_count");
 	   			int iNote 			= oCursor.getColumnIndex("note");
-	   			int iTypeTrainer 			= oCursor.getColumnIndex("id_type_exercise");
+	   			int iTypeTrainer 	= oCursor.getColumnIndex("id_type_exercise");
 	   			
 	   			//DATA Avvio Esercizio
 	   			int iEDay 		= oCursor.getColumnIndex("EDAY");
@@ -2623,7 +2623,7 @@ public class ExerciseUtils {
 		int iDistanceMT=0;
 		int iPreAlt=0;
 		int iAlt=0;
-		String sSQL_Distance ="select (case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+" else sum(distance) end as meter from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point >  "+ 
+		String sSQL_Distance ="select (case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+" else sum(distance) end) as meter from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point >  "+ 
 								" (select max(id_watch_point)-4 from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"')";
 	
 		String sSQL_Distance_Pre_Alt ="select alt from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point =  "+ 
@@ -2943,5 +2943,73 @@ public class ExerciseUtils {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * //Esercizio presente il dettaglio ma non il sommario
+		   //1) select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)
+		   //2) select sum(distance), id_exercise from trainer_exercise_dett where id_exercise in 
+		   //    (select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)) 
+		   //    group by id_exercise
+		   
+		   //select id_exercise from TRAINER_EXERCISE where (end_date is null) or (distance=0)
+	 * @param oConfigTrainer    
+	 * */
+	public synchronized static void checkIncompleteWorkout(Context oContext, ConfigTrainer oConfigTrainer) {
+		Database oDB = new Database(oContext);
+		boolean bRestoreWorkout=false;
+    	try{  
+    		oDB.open();
+    		Cursor oCursor = oDB.rawQuery("select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)",null);
+			if(oCursor!=null){      			   			
+			   		while(oCursor.moveToNext()){ 
+			   			bRestoreWorkout=true;
+			   		}
+			   		oCursor.close();		
+			}		
+			if(bRestoreWorkout){
+				oDB.getOpenedDatabase().execSQL("insert into trainer_exercise (id_exercise, id_users,id_type_exercise, creation_date,start_date,end_date,note,calorie_burn,distance,avg_speed,total_time,weight,kalories) " + 
+
+		    			" select id_exercise, id_users,id_type_exercise, min(watch_point_date) as creation_date, min(watch_point_date) as start_date,max(watch_point_date) as end_date, 'restore workout' as note, (case when id_type_exercise=0 then (0.9*sum(distance)*"+oConfigTrainer.getiWeight()+") when id_type_exercise=1 then (0.105*sum(distance)*"+oConfigTrainer.getiWeight()+") else (0.45*sum(distance)*"+oConfigTrainer.getiWeight()+") end ) as calorie_burn, sum(distance) as distance,avg(speed)*3.6 as avg_speed, " +  
+		    		
+				    	" case when length(abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600))) = 1 then " + 
+					    "     '0' || abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600)) else " + 
+					    "     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600)) end " + 
+					    " || ':' || " + 
+				        
+		    			" case when length(CASE WHEN abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60))>=60 then " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/(60*(abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600))))))-60 else " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60)) end) = 1 then " + 
+						"     '0' || CASE WHEN abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60))>=60 then " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/(60*(abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600))))))-60 else " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60)) end else " + 
+						"     CASE WHEN abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60))>=60 then " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/(60*(abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600))))))-60 else " + 
+						"     abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/60)) end end " + 
+						" || ':' || " + 
+					     
+		    			" case when length(CASE WHEN abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))>=60 then " + 
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))/60 else " + 
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date))))) end) = 1 then " + 
+						"     '0' ||CASE WHEN abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))>=60 then " +  
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))/60 else " +  
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date))))) end else " + 
+						"     CASE WHEN abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))>=60 then " +  
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date)))))/60 else " +  
+						"     abs(((strftime('%S',max(watch_point_date))-strftime('%S',min(watch_point_date))))) end end as total_time, "+oConfigTrainer.getiWeight()+",(case when id_type_exercise=0 then (0.9*sum(distance)*"+oConfigTrainer.getiWeight()+") when id_type_exercise=1 then (0.105*sum(distance)*"+oConfigTrainer.getiWeight()+") else (0.45*sum(distance)*"+oConfigTrainer.getiWeight()+") end ) kalories from trainer_exercise_dett where id_exercise in " +  
+		    			" 	      (select distinct id_exercise from trainer_exercise_dett where id_exercise not in " +  
+		    			" 	      (select id_exercise from trainer_exercise)) " +  
+		    			" 	       group by id_exercise, id_users,id_type_exercise");    
+			}
+			oDB.close();			
+			oDB=null;
+			
+    						          		
+    	}catch (SQLException e) {
+    		Log.e(ExerciseUtils.class.getCanonicalName(),"Error restore workout");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
 	}
 }
