@@ -1,18 +1,12 @@
 package com.glm.app.stopwatch;
 
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.glm.services.IExerciseService;
 import com.glm.trainer.MainTrainerActivity;
 import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
-import com.glm.app.GoalActivity;
 import com.glm.app.OpenStreetMapActivity;
-import com.glm.app.db.Database;
-import com.glm.bean.CardioDevice;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.NewExercise;
 import com.glm.bean.User;
