@@ -918,6 +918,10 @@ public class Database {
     private void upgradeDB2_5To2_6(){
     	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
     	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
         	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.6',version_desc='Ver. 2.6'");
     	}catch (SQLException e) {
     		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.4");

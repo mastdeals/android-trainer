@@ -154,11 +154,11 @@ public class StopwatchView extends View {
 		if(this.getHeight()>600){
 			this.TextPaintHHMM.setTextSize(110);
 			this.TextPaintSSdd.setTextSize(100);
-			this.TextPaintCalories.setTextSize(30);
-			this.TextPaintDistance.setTextSize(30);
-			this.TextPaintDistanceTime.setTextSize(30);
-			this.TextPaintALT.setTextSize(50);
-			this.TextPaintInclination.setTextSize(30);
+			this.TextPaintCalories.setTextSize(100);
+			this.TextPaintDistance.setTextSize(100);
+			this.TextPaintDistanceTime.setTextSize(100);
+			this.TextPaintALT.setTextSize(100);
+			this.TextPaintInclination.setTextSize(100);
 			/**Tempo**/
 			canvas.drawText(TrainerTimeHHMM, 
 					(this.getWidth()/2)-110, (this.getHeight() / 2) + 50, 
@@ -203,11 +203,11 @@ public class StopwatchView extends View {
 		}else{
 			this.TextPaintHHMM.setTextSize(60);
 			this.TextPaintSSdd.setTextSize(40);
-			this.TextPaintCalories.setTextSize(20);
-			this.TextPaintDistance.setTextSize(20);
-			this.TextPaintDistanceTime.setTextSize(20);
-			this.TextPaintALT.setTextSize(10);
-			this.TextPaintInclination.setTextSize(10);
+			this.TextPaintCalories.setTextSize(50);
+			this.TextPaintDistance.setTextSize(50);
+			this.TextPaintDistanceTime.setTextSize(50);
+			this.TextPaintALT.setTextSize(50);
+			this.TextPaintInclination.setTextSize(50);
 			/**Tempo**/
 			canvas.drawText(TrainerTimeHHMM, 
 					(this.getWidth()/2)-50, (this.getHeight() / 2) + 40, 
