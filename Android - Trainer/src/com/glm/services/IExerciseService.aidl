@@ -33,6 +33,8 @@ interface IExerciseService {
     /**inserire tutti i metodi per prendere i dettagli dell'esercizio*/
     long getExerciseTime();
     
+    long getCurrentTime();
+    
     String getsCurrentDistance();
     
     String getsPace();
@@ -62,4 +64,6 @@ interface IExerciseService {
     void shutDown();
     
     void skipTrack();
+    
+    boolean isGPSFixPosition();
 }

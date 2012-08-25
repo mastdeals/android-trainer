@@ -8,7 +8,6 @@ import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
 import com.glm.app.OpenStreetMapActivity;
 import com.glm.bean.ConfigTrainer;
-import com.glm.bean.NewExercise;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.utils.ExerciseUtils;
@@ -41,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
@@ -65,7 +65,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	protected static final int GUIUPDATECARDIO = 0x2000;
 	
 	protected static final int GPSNOTENABLED  = 0x1999;
-    
+	/**Wait for GPS Fix*/
+    private ProgressDialog oWaitForGPSFix;
 	private Button btnStart;
 	private Button btnPause;
 	private Button btnMaps;
@@ -178,7 +179,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					//getBaseContext().stopService(new Intent(getApplication(),ExerciseService.class));					                   
                     try {
                     	if(mIService!=null) mIService.pauseExercise(); 
-                    	NewExercise.setlPauseTime(NewExercise.getlCurrentWatchPoint());
+                    	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException PAUSEEXERCISE");
                     } catch (NullPointerException e) {
@@ -190,7 +191,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					if(!bAutoPause){
 						Toast.makeText(getBaseContext(), "AUTOPAUSE", Toast.LENGTH_SHORT)
 						.show();
-						NewExercise.setlPauseTime(NewExercise.getlCurrentWatchPoint());           
+						
 						bAutoPause=true;
 						btnStart.setEnabled(false);
 						btnPause.setEnabled(true);
@@ -200,14 +201,14 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					break;
 				case WorkOutActivity.RESUMEAUTOPAUSEEXERCISE:						
 					bAutoPause=false;
-					NewExercise.setlStartTime(System.currentTimeMillis());
+					
 				    iStartTrainer=1;
 				    break;
 				case WorkOutActivity.RESUMEEXERCISE:
 					//TODO Tempo effettivo di Corsa						                   
                     try {
                     	if(mIService!=null) mIService.resumeExercise(); 
-                    	NewExercise.setlStartTime(System.currentTimeMillis());
+                    	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException RESUMEEXERCISE");
                     } catch (IllegalArgumentException e) {
@@ -238,13 +239,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 								mIService.setRefumeFromAutoPause(false);
 							}
 							if(mIService.isRunning()){								
-								// Redraw
-								//Log.i(this.getClass().getCanonicalName(), "Redraw");
-								diffTime = (System.currentTimeMillis () - NewExercise.getlStartTime()+NewExercise.getlPauseTime());
-								//Log.i("difftime: ",String.valueOf(NewExercise.getlCurrentTime()));
-								//Log.i("NewExercise.getlStartTime(): ",String.valueOf(NewExercise.getlStartTime()));
-								NewExercise.setlCurrentTime(diffTime);
-								NewExercise.setlCurrentWatchPoint(diffTime);									
+															
 								if(mIService.isCardioConnected()){
 									if (bShowAlert) {
 										Toast.makeText(getBaseContext(), "Connected to Cardio", Toast.LENGTH_SHORT).show();
@@ -259,8 +254,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 									}
 								}
 								
-								StopwatchUtils.updateTimeHHMM(txtTimeHHMM, NewExercise.getlCurrentTime());
-								StopwatchUtils.updateTimeSSdd(txtTimeSSdd, NewExercise.getlCurrentTime());
+								StopwatchUtils.updateTimeHHMM(txtTimeHHMM, mIService.getCurrentTime());
+								StopwatchUtils.updateTimeSSdd(txtTimeSSdd, mIService.getCurrentTime());
 								StopwatchUtils.updateCurrentDistance(txtDistance, mIService.getsCurrentDistance());
 								StopwatchUtils.updateCurrentPaceVm(txtPace, mIService.getsPace());
 								StopwatchUtils.updateCurrentKalories(txtKalories, mIService.getsKaloriesBurn());
@@ -287,7 +282,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				case WorkOutActivity.STOPEXERCISE:	
 					try {
 	                	if(mIService!=null) mIService.stopExercise();             	
-	                	NewExercise.reset();
+	                	
 	                	StopwatchUtils.updateTimeHHMM(txtTimeHHMM,0);
 						StopwatchUtils.updateTimeSSdd(txtTimeSSdd,0);
 						StopwatchUtils.updateCurrentDistance(txtDistance,"0");
@@ -503,9 +498,15 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	public void onClick(View oObj) {
 		oConfigTrainer=ExerciseUtils.loadConfiguration(this);
 		if(oObj.getId()==R.id.btnStart){
-			 
+			LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+	    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
+		       ShowAlertNoGPS();
+		       return;
+		    } 
 			if(iStartTrainer==0){
-				//TODO ADD ASYNCTASK
+				
+				oWaitForGPSFix = ProgressDialog.show(WorkOutActivity.this,this.getString(R.string.app_name_buy),this.getString(R.string.gpsfix),true,false,null);
+				
 				NewExerciseTask task = new NewExerciseTask();
 				task.execute(null);
 				
@@ -622,7 +623,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	    	iCurrentExercise=oExerciseUtil.createNewExercise(getApplicationContext(), oConfigTrainer, I_TYPE_OF_TRAINER, User.getiWeight());
 			//AVVIO IL SERVIZIO E IL NUOVO TRAINER start in autimatico
 			doBindService();
-			NewExercise.setlStartTime(System.currentTimeMillis());
+			
 	        WorkOutActivity.this.ThreadTrainer = new Thread(new TrainerRunner());
 	        WorkOutActivity.this.ThreadTrainer.start();
 	        Message mToStart = new Message();
@@ -727,7 +728,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					iCurrentExercise=oExerciseUtil.createNewExercise(getApplicationContext(), oConfigTrainer, I_TYPE_OF_TRAINER, fWeight);
 					//AVVIO IL SERVIZIO E IL NUOVO TRAINER start in autimatico
 					doBindService();
-					NewExercise.setlStartTime(System.currentTimeMillis());
+					
 			        ThreadTrainer = new Thread(new TrainerRunner());
 			        ThreadTrainer.start();
 			        Message mToStart = new Message();
@@ -816,11 +817,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			while(!Thread.currentThread().isInterrupted()){
 				Message m = new Message();
 				
-				if(!NewExercise.isGPSEnabled()){					
-					m.what = WorkOutActivity.GPSNOTENABLED;					
-				}else{
-					m.what = WorkOutActivity.GUIUPDATEIDENTIFIER;
-				}
+				m.what = WorkOutActivity.GUIUPDATEIDENTIFIER;
 				
 				WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(m);
 				
@@ -916,7 +913,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	            			if(mIService.isRunning()){
 	            				//Esercizio in running prelevo il tempo e faccio partire il timer
 	            				
-	            				NewExercise.setlStartTime(mIService.getExerciseTime());
+	            				
 	            				//Log.v(this.getClass().getCanonicalName(),"start time restored: "+NewExercise.getlStartTime());
 	            				ThreadTrainer = new Thread(new TrainerRunner());
 	            			    ThreadTrainer.start();
@@ -993,6 +990,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	private class NewExerciseTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
+			oWaitForGPSFix.dismiss();
 			if(result){
 				if(!bInStarting){
 					btnStart.setText(getApplicationContext().getString(R.string.btnstop));
@@ -1019,6 +1017,17 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			//TODO Check User if(!bCheckUser()) return;
 			final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
+			if(mIService!=null){
+				try {
+					while(!mIService.isGPSFixPosition()){
+						Thread.sleep(1000);
+					}
+				} catch (RemoteException e) {
+					 Log.i("RemoteException from service: " , e.getMessage());
+				} catch (InterruptedException e) {
+					 Log.i("InterruptedException from service: " , e.getMessage());			
+				}
+			}
 		    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
 		        return false;
 		    }
