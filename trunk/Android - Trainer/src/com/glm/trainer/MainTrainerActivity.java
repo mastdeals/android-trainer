@@ -36,10 +36,12 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.provider.Settings;
 //import android.telephony.TelephonyManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -521,7 +523,10 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			    	doBindService();
 			    	/**controllo e salvo esercizi non salvati*/
 			    	ExerciseUtils.checkIncompleteWorkout(getApplicationContext(), oConfigTrainer);
-			    	
+			    	LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+			    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
+				       ShowAlertNoGPS();
+				    }
 				}catch (Exception e) {
 					Log.e(this.getClass().getCanonicalName(), "check user: "+e.getMessage());			
 				}		
@@ -538,6 +543,40 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				
 			}
 			return true;
+		}
+	}
+	/**
+	 * Visualizza una alert per il GPS non abilitato
+	 *
+	 * @author Gianluca Masci aka (GLM)
+	 * */
+	public void ShowAlertNoGPS() {
+		try{
+			AlertDialog alertDialog;
+	    	alertDialog = new AlertDialog.Builder(this).create();
+	    	alertDialog.setTitle(this.getString(R.string.titlegps));
+	    	alertDialog.setMessage(this.getString(R.string.messagegpsnoenabled));
+	    	alertDialog.setButton(this.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
+				    startActivity(myIntent);
+				}        				
+	    		});
+	    	
+	    	alertDialog.setButton2(this.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {					
+					
+				}        		
+				
+	    		});
+	    	alertDialog.show();
+		}catch (Exception e) {
+			Toast.makeText(this, "ERROR DIALOG:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+			Log.e("MEEERR: ",e.getMessage());
 		}
 	}
 }

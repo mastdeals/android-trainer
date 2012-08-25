@@ -35,6 +35,7 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
@@ -53,7 +54,7 @@ import android.telephony.TelephonyManager;
 public class ExerciseService extends Service implements LocationListener, AccelerometerListener {
     private static int iHeartRate=0;
     
-	private MediaTrainer oMediaPlayer;
+	private static MediaTrainer oMediaPlayer;
 	private VoiceToSpeechTrainer oVoiceSpeechTrainer ;
 	/**stringe del motivatore*/
 	private String sDistance;
@@ -124,7 +125,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     private static final int MEDIUM_PERIOD_AUTOPAUSE_TIMER_DELAY=180000;
     private static final int LONG_PERIOD_AUTOPAUSE_TIMER_DELAY=300000;
     
-    private int iAutoPauseDelay=SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY;
+    private static int iAutoPauseDelay=SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY;
     
     /**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
     private static final int SHORT_START_MOTIVATOR_TIMER_DELAY = 60000;
@@ -139,7 +140,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     /**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
     private static final int LONG_PERIOD_MOTIVATOR_TIMER_DELAY = 300000;
     
-    private int iDelayMotivator=0;
+    private static int iDelayMotivator=0;
     private int iRepeatMotivator=0;
     
     
@@ -161,6 +162,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
     private static boolean isResumeAutoPause = false;
     /**indica se il servizio e' in pausa*/
     private static boolean isPause=false;
+    /**indica se è stata fixata la posizione*/
+    private static boolean isFixPosition=false;
     ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
     /**messaggi supportati*/
     public static final int PAUSEEXERCISE=1;
@@ -271,8 +274,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
     }
     
     @Override
-    public void onLocationChanged(Location location) {                  
-       
+    public void onLocationChanged(Location location) {                  	  
+       isFixPosition=true;
        String sAlt="";
        if(bStopListener) return;
        if(!isRunning) return;
@@ -359,6 +362,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		if(isAutoPause && oMediaPlayer!=null) oMediaPlayer.pause();	
 		//Log.i(this.getClass().getCanonicalName(),"run TimeTask");
 		//sendMessageToUI(1229);
+		 if(oRunningThread!=null){
+		     if(!oRunningThread.isAlive()){
+		   	   oRunningThread.run();
+		     }
+		   }
     }
 
     @Override
@@ -377,7 +385,17 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-    	//Log.i("GPSLoggerService.onStatusChanged().","onStatusChanged");
+    	switch (status) {
+	        case LocationProvider.OUT_OF_SERVICE:
+	        	isFixPosition=false;
+	            break;
+	        case LocationProvider.TEMPORARILY_UNAVAILABLE:
+	        	isFixPosition=false;
+	            break;
+	        case LocationProvider.AVAILABLE:
+	        	isFixPosition=true;
+	            break;
+        }
     }    
         
     private void startMotivatorTimer(){   	
@@ -658,8 +676,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				}
 			}   	   
     	}
-    }
-    
+    } 
     /**
      * AUTOPAusa l'esercizio disattivando tutti servizi che usano GPS/Accelerometro e salvataggi al DB
      * per un nuovo esercizio
@@ -782,7 +799,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * 
      * @see IExerciseService.Stub
      * **/
-    private void startExerciseAsService(int TypeExercise, int goalDistance, double goalHH, double goalMM){    	 	
+    private void startExerciseAsService(int TypeExercise, int goalDistance, double goalHH, double goalMM){ 
     	isResumeAutoPause = false;
     	isAutoPause		= false;
     	isRunning 		= true;   
@@ -794,9 +811,27 @@ public class ExerciseService extends Service implements LocationListener, Accele
         longitude 		= 0.0;
     	pre_latitude 	= 0.0;
         pre_longitude 	= 0.0;
-    	//Imposto 
-    	
-    	//Carico la configurazione
+        dGoalHH=goalHH;
+	   	dGoalMM=goalMM;
+	   	if(goalDistance==0){
+	   		
+	   	}else if(goalDistance==0){
+	   		iGoalDistance=0;
+	   	}else if(goalDistance==1){
+	   		iGoalDistance=5000;
+	   	}else if(goalDistance==2){
+	   		iGoalDistance=10000;
+	   	}else if(goalDistance==3){
+	   		iGoalDistance=15000;
+	   	}else if(goalDistance==4){
+	   		iGoalDistance=21097;
+	   	}else if(goalDistance==5){
+	   		iGoalDistance=31000;
+	   	}else if(goalDistance==6){
+	   		iGoalDistance=42195;
+	   	}
+	    //Imposto 
+	  //Carico la configurazione
         oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
     	//Forzo il reset dell'esercizio
         NewExercise.reset();
@@ -842,13 +877,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   		
 	   		
 	   		//Log.v(this.getClass().getCanonicalName(), "Motivator On");
-	   		sDistance=this.getString(R.string.currentdistance);
+	   		sDistance=getApplicationContext().getString(R.string.currentdistance);
 	        if(oConfigTrainer.getiUnits()==1){
-	        	sUnit=this.getString(R.string.miles);
+	        	sUnit=getApplicationContext().getString(R.string.miles);
 	        }else{
-	        	sUnit=this.getString(R.string.kilometer);
+	        	sUnit=getApplicationContext().getString(R.string.kilometer);
 	        }
-	   		oVoiceSpeechTrainer.say(this.getString(R.string.startexercise));
+	   		oVoiceSpeechTrainer.say(getApplicationContext().getString(R.string.startexercise));
 	        //oVoicePlayerTrainer.sayStart(oConfigTrainer);
 	   		startMotivatorTimer();	   		  			   		
 	   	}
@@ -866,30 +901,12 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		//Abilito l'incoming call listener
    		if (AccelerometerUtils.isSupported() 
    				&& iTypeExercise!=1) {
-   			AccelerometerUtils.startListening(this);
+   			AccelerometerUtils.startListening(ExerciseService.this);
         }	 
    		startGPSFix();
 	   	//Log.v(this.getClass().getCanonicalName(), "Start New Exercise");
 	   	
-	   	dGoalHH=goalHH;
-	   	dGoalMM=goalMM;
-	   	if(goalDistance==0){
-	   		
-	   	}else if(goalDistance==0){
-	   		iGoalDistance=0;
-	   	}else if(goalDistance==1){
-	   		iGoalDistance=5000;
-	   	}else if(goalDistance==2){
-	   		iGoalDistance=10000;
-	   	}else if(goalDistance==3){
-	   		iGoalDistance=15000;
-	   	}else if(goalDistance==4){
-	   		iGoalDistance=21097;
-	   	}else if(goalDistance==5){
-	   		iGoalDistance=31000;
-	   	}else if(goalDistance==6){
-	   		iGoalDistance=42195;
-	   	}
+	   	
 	      
 	   	//Cardio
 	   	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
@@ -898,8 +915,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	
 	   	NewExercise.setlStartTime(System.currentTimeMillis());
 		oRunningThread = new Thread(new ThRunningTime());
-		oRunningThread.start();         				
+		oRunningThread.start(); 
+		
 		//startMonitoringTimer(); 
+    	
     }
     /**
      * Fermo tutti i servizi che usano GPS/Accelerometro e salvataggi al DB
@@ -908,6 +927,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * **/
     private void stopExerciseAsService(){
     	if(isRunning){
+    		isFixPosition=false;
     		//saveExerciseAsService();
     		if(oConfigTrainer.isShareFB()){
 				//Log.v(this.getClass().getCanonicalName(), "Condivido su FB");
@@ -1165,6 +1185,15 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				return false;
 			}
 			
+		}
+		@Override
+		public boolean isGPSFixPosition() throws RemoteException {
+			
+			return isFixPosition;
+		}
+		@Override
+		public long getCurrentTime() throws RemoteException {			
+			return diffTime;
 		}
     };        
 
