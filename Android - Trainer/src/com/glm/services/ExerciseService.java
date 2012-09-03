@@ -13,7 +13,6 @@ import com.glm.trainer.R;
 import com.glm.app.ShareFromService;
 import com.glm.bean.CardioDevice;
 import com.glm.bean.ConfigTrainer;
-import com.glm.bean.NewExercise;
 import com.glm.utils.AccelerometerListener;
 import com.glm.utils.AccelerometerUtils;
 import com.glm.utils.ExerciseUtils;
@@ -52,8 +51,58 @@ import android.telephony.TelephonyManager;
  * TODO
  * **/
 public class ExerciseService extends Service implements LocationListener, AccelerometerListener {
-    private static int iHeartRate=0;
-    
+   
+	
+	/**Proprietà che sostituiranno il NewExecise*/
+	
+	/**Tempo di inizio esercizio*/
+	private static long lStartTime=0;
+	/**Tempo Corrente di esercizio*/
+	private static long lCurrentTime=0;
+	/**Current WatchPoint*/
+	private static long lCurrentWatchPoint=0;
+	/**Current WatchPoint*/
+	private static long lPauseTime=0;
+	
+	/**Latidine di esercizio*/
+	private static double dStartLatitude=0;
+	/**Longitudine di esercizio*/
+	private static double dStartLongitude=0;
+	/**Latidine di double*/
+	private static double dCurrentLatitude=0;
+	/**Longitudine di esercizio*/	
+	private static double dCurrentLongitude=0;
+	
+	/**Latidine di esercizio*/
+	private static long lCurrentAltidute=0;
+	
+	/**Pendenza*/
+	private static int iInclication=0;
+	
+	/**Latidine di esercizio*/
+	private static String sCurrentAltidute="";
+	
+	/**Calorie correnti di esercizio*/
+	private static String sCurrentCalories="";
+		
+	/**Distanza Corrente di esercizio*/
+	private static double dCurrentDistance=0;
+	/**Velocit� Corrente di esercizio*/
+	private static float fCurrentSpeed=0;
+	/**Velocit� Totale di esercizio*/
+	private static float fTotalSpeed=0;
+	/**Stato del GPS*/
+	private static boolean bStatusGPS=true;
+	
+	private static float dPace=0;
+	private static String sPace="";
+	
+	private static String sVm="";
+	/**Proprietà che sostituiranno il NewExecise*/
+	
+	
+	private static int iHeartRate=0;
+    private static Context mContext;
 	private static MediaTrainer oMediaPlayer;
 	private VoiceToSpeechTrainer oVoiceSpeechTrainer ;
 	/**stringe del motivatore*/
@@ -206,14 +255,14 @@ public class ExerciseService extends Service implements LocationListener, Accele
     @Override
     public void onCreate() {    	
         super.onCreate();
-       
+        mContext=getApplicationContext();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         sPid=sdf.format(new Date());
         
         Log.i("Start Service ExerciseSevice", "OK");
         //Carico la configurazione
         try{
-        	oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+        	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
         }catch (NullPointerException e) {
 			Log.e(this.getClass().getCanonicalName(),"Error load Config");
 			return;
@@ -221,10 +270,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
         
         isServiceAlive=true;
                 
-        oVoiceSpeechTrainer = new VoiceToSpeechTrainer(getApplicationContext());
+        oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
                 
-		oAudioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);          
-		AccelerometerUtils.setContext(getApplicationContext());	
+		oAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);          
+		AccelerometerUtils.setContext(mContext);	
 	
 		//Cardio
 		if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
@@ -253,7 +302,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * **/
     public int onStartCommand(Intent intent, int flags, int startId) {
     	 //Carico la configurazione
-         oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+         oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
          //Oggetto per la gestione delle notifiche
          mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
          //Creazione di un Thread separato che ogni secondo incrementa il tempo di corsa
@@ -291,19 +340,19 @@ public class ExerciseService extends Service implements LocationListener, Accele
        NumberFormat oNFormat = NumberFormat.getNumberInstance();
 	   oNFormat.setMaximumFractionDigits(2);
 	   sAlt=oNFormat.format(altitude);
-       if(NewExercise.getdStartLatitude()==0){
+       if(ExerciseService.dStartLatitude==0){
     	   //Catturo le coordinate di avvio
-    	   NewExercise.setdStartLatitude(latitude);
-           NewExercise.setdStartLongitude(longitude);
+    	   ExerciseService.dStartLatitude=latitude;
+    	   ExerciseService.dStartLongitude=longitude;
           
-           NewExercise.setCurrentAltidute(sAlt);
+    	   ExerciseService.sCurrentAltidute=sAlt;
        }
-       NewExercise.setdCurrentLatitude(latitude);
-       NewExercise.setdCurrentLongitude(longitude);
+       ExerciseService.dCurrentLatitude=latitude;
+       ExerciseService.dCurrentLongitude=longitude;
        // imposto l'altitudine
-       NewExercise.setlCurrentAltidute(altitude);      
+       ExerciseService.lCurrentAltidute=altitude;      
        
-       NewExercise.setCurrentAltidute(sAlt);      		
+       ExerciseService.sCurrentAltidute=sAlt;      		
 
        if(telephonyManager!=null){
 			if(telephonyManager.getCallState()==TelephonyManager.CALL_STATE_RINGING){
@@ -336,11 +385,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		    		}
 				}											
 					if(oMediaPlayer!=null){
-						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,pre_latitude,pre_longitude,
+						ExerciseUtils.saveCoordinates(mContext, oConfigTrainer,pre_latitude,pre_longitude,
 								latitude, longitude, altitude, 
 								getLocationName(latitude,longitude), oMediaPlayer.getCurrentSong(), location.getSpeed(), location.getAccuracy(), location.getTime(),iHeartRate);
 					}else{
-						ExerciseUtils.saveCoordinates(getApplicationContext(), oConfigTrainer,pre_latitude,pre_longitude,
+						ExerciseUtils.saveCoordinates(mContext, oConfigTrainer,pre_latitude,pre_longitude,
 								latitude, longitude, altitude, 
 								getLocationName(latitude,longitude), null, location.getSpeed(), location.getAccuracy(), location.getTime(),iHeartRate);
 					}
@@ -349,10 +398,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					double dPartialDistance=0;
 					dPartialDistance=ExerciseUtils.getPartialDistanceUnFormattated(pre_longitude,pre_latitude,longitude,latitude);
 					
-					NewExercise.setfCurrentDistance(dPartialDistance
-							+NewExercise.getdCurrentDistance());
+					ExerciseService.dCurrentDistance = dPartialDistance
+							+ExerciseService.dCurrentDistance;
 									
-					//ExerciseUtils.saveCurrentDistance(dPartialDistance,getApplicationContext(),oConfigTrainer);
+					//ExerciseUtils.saveCurrentDistance(dPartialDistance,mContext,oConfigTrainer);
 
 					pre_latitude=latitude;
 					pre_longitude=longitude;
@@ -372,7 +421,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     @Override
     public void onProviderDisabled(String provider) {
     	//Log.i("GPSLoggerService.onProviderDisabled().","onProviderDisabled");
-    	NewExercise.setGPSStatus(false);
+    	ExerciseService.bStatusGPS = false;
     	//Se disabilitano il GPS fermo il trainer
     	stopExerciseAsService();
     }
@@ -380,7 +429,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     @Override
     public void onProviderEnabled(String provider) {
     	//Log.i("GPSLoggerService.onProviderEnabled().","onProviderEnabled");
-    	NewExercise.setGPSStatus(true);
+    	ExerciseService.bStatusGPS = true;
     }
 
     @Override
@@ -398,7 +447,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
         }
     }    
         
-    private void startMotivatorTimer(){   	
+    private void startMotivatorTimer(final boolean bSpeech){   	
     	try{
     		if(MotivatorTimer==null){
     		
@@ -414,12 +463,12 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	        					
 	        					if(!isRunning) return;
 	        					/**imposto la distanza corrente*/
-	        					NewExercise.setfCurrentDistance(
-	        							ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-	        									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null));
+	        					ExerciseService.dCurrentDistance = 
+	        							ExerciseUtils.getTotalDistanceUnFormattated(mContext, oConfigTrainer, 
+	        									ExerciseUtils.getsIDCurrentExercise(mContext), null);
 	        					
 	        					final String sDistanceToSpeech=String.valueOf(
-	        							ExerciseUtils.getTotalDistanceFormattated(NewExercise.getdCurrentDistance(),oConfigTrainer,false));
+	        							ExerciseUtils.getTotalDistanceFormattated(ExerciseService.dCurrentDistance,oConfigTrainer,false));
 	        					if(!isInCalling){
 	        						if(oConfigTrainer.isbPlayMusic()){
 	            						//Abbasso il volume della musica 
@@ -427,23 +476,24 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	            						
 	            					}  
 	        						
-	    								String sTimeToSpeech=getApplicationContext().getString(R.string.time)+ExerciseUtils.getTimeHHMMForSpeech(NewExercise.getlCurrentTime(),getApplicationContext());	
-	    								String sKaloriesToSpeech=String.valueOf(NewExercise.getsCurrentCalories())+getApplicationContext().getString(R.string.kaloriesspeech);
-	    								String sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_km);
+	    								String sTimeToSpeech=mContext.getString(R.string.time)+ExerciseUtils.getTimeHHMMForSpeech(ExerciseService.lCurrentTime,mContext);	
+	    								String sKaloriesToSpeech=String.valueOf(ExerciseService.sCurrentCalories)+mContext.getString(R.string.kaloriesspeech);
+	    								String sMinutePerUnit=mContext.getString(R.string.speach_measure_min_km);
 	    								
 	    								if(oConfigTrainer.getiUnits()==1){			
-	    									sMinutePerUnit=getApplicationContext().getString(R.string.speach_measure_min_miles);
+	    									sMinutePerUnit=mContext.getString(R.string.speach_measure_min_miles);
 	    								}
 	    								////Log.v(this.getClass().getCanonicalName(),"Kalories: "+sKaloriesToSpeech);
 	    								
-	    								NewExercise.setiInclication(ExerciseUtils.getInclination(getApplicationContext(), ExerciseUtils.getsIDCurrentExercise(getApplicationContext())));
-	    								NewExercise.setPace(ExerciseUtils.getPace(getApplicationContext(), oConfigTrainer));
+	    								ExerciseService.iInclication=ExerciseUtils.getInclination(mContext, ExerciseUtils.getsIDCurrentExercise(mContext));
+	    								ExerciseService.sPace =ExerciseUtils.getPace(mContext, oConfigTrainer);
 	        							
 	        							//TTS Speech
 	        							Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
-	        							oVoiceSpeechTrainer.sayDistanza(getApplicationContext(), oConfigTrainer, 
+	        							
+	        							if(bSpeech) oVoiceSpeechTrainer.sayDistanza(mContext, oConfigTrainer, 
 	        									sDistanceToSpeech, oMediaPlayer, sTimeToSpeech,sKaloriesToSpeech,
-	        									NewExercise.getPace()+sMinutePerUnit, NewExercise.getiInclication()+"%", iHeartRate); 
+	        									ExerciseService.sPace+sMinutePerUnit, ExerciseService.iInclication+"%", iHeartRate); 
 	        							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);
 	        							
 	        							//Avvio il timer del goal solo in certe condizioni
@@ -484,16 +534,16 @@ public class ExerciseService extends Service implements LocationListener, Accele
     					//Goal solo distanza
     					if((dGoalHH==0 && dGoalMM==0) && iGoalDistance!=0){
     						//Esco se ho superato l'obiettivo
-							if(iGoalDistance<ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null))
+							if(iGoalDistance<ExerciseUtils.getTotalDistanceUnFormattated(mContext, oConfigTrainer, 
+									ExerciseUtils.getsIDCurrentExercise(mContext), null))
 								return;
 							
 							double iDistanceToGoal;
     						/**imposto la distanza corrente*/
-        					NewExercise.setfCurrentDistance(
-        							ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-        									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null));
-        					iDistanceToGoal=(iGoalDistance/1000)-NewExercise.getdCurrentDistance();
+							ExerciseService.dCurrentDistance = 
+        							ExerciseUtils.getTotalDistanceUnFormattated(mContext, oConfigTrainer, 
+        									ExerciseUtils.getsIDCurrentExercise(mContext), null);
+        					iDistanceToGoal=(iGoalDistance/1000)-ExerciseService.dCurrentDistance;
         					//TODO OBIETTIVO RAGGIUNTO
         					if(iDistanceToGoal<0) iDistanceToGoal=0;
         					final String sDistanceToSpeech=String.valueOf(
@@ -507,7 +557,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
             					}  
         						
     								Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
-        							oVoiceSpeechTrainer.sayDistanzaToGoal(getApplicationContext(), oConfigTrainer, 
+        							oVoiceSpeechTrainer.sayDistanzaToGoal(mContext, oConfigTrainer, 
         									sDistanceToSpeech, oMediaPlayer); 
         							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);   							  							
         					} 
@@ -515,9 +565,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
     						//Goal solo Tempo
     						
     						//Esco se ho superato l'obiettivo
-							if(dGoalHH<ExerciseUtils.getTimeHH(NewExercise.getlCurrentTime(),getApplicationContext())
+							if(dGoalHH<ExerciseUtils.getTimeHH(ExerciseService.lCurrentTime,mContext)
 									&&
-							   dGoalMM<ExerciseUtils.getTimeMM(NewExercise.getlCurrentTime(),getApplicationContext()))
+							   dGoalMM<ExerciseUtils.getTimeMM(ExerciseService.lCurrentTime,mContext))
 								return;
 							
     						if(!isInCalling){
@@ -528,17 +578,17 @@ public class ExerciseService extends Service implements LocationListener, Accele
             					}  
         						
     								Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");
-        							oVoiceSpeechTrainer.sayTimeToGoal(getApplicationContext(), oConfigTrainer, 
+        							oVoiceSpeechTrainer.sayTimeToGoal(mContext, oConfigTrainer, 
         									dGoalHH,dGoalMM,
-        									ExerciseUtils.getTimeHH(NewExercise.getlCurrentTime(),getApplicationContext()),
-        									ExerciseUtils.getTimeMM(NewExercise.getlCurrentTime(),getApplicationContext()), oMediaPlayer); 
+        									ExerciseUtils.getTimeHH(ExerciseService.lCurrentTime,mContext),
+        									ExerciseUtils.getTimeMM(ExerciseService.lCurrentTime,mContext), oMediaPlayer); 
         							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);   							  							
         					}
     					}else{
     						if(!isInCalling){
     							//Esco se ho superato l'obiettivo
-    							if(iGoalDistance<ExerciseUtils.getTotalDistanceUnFormattated(getApplicationContext(), oConfigTrainer, 
-    									ExerciseUtils.getsIDCurrentExercise(getApplicationContext()), null))
+    							if(iGoalDistance<ExerciseUtils.getTotalDistanceUnFormattated(mContext, oConfigTrainer, 
+    									ExerciseUtils.getsIDCurrentExercise(mContext), null))
     								return;
     							
     							if(oConfigTrainer.isbPlayMusic()){
@@ -556,11 +606,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 									Log.e(this.getClass().getCanonicalName(),"Errore calcolo velocità media!");
 									dVelocitaMediaGoal=0;
 								}
-	    						//oVoiceSpeechTrainer.say("Media Goal è "+dVelocitaMediaGoal+", Media corrente è "+ExerciseUtils.getVelocitaMedia(getApplicationContext()));
+	    						//oVoiceSpeechTrainer.say("Media Goal è "+dVelocitaMediaGoal+", Media corrente è "+ExerciseUtils.getVelocitaMedia(mContext));
 	    						
-	    						oVoiceSpeechTrainer.sayDistanceAndTimeToGoal(getApplicationContext(), oConfigTrainer, 
+	    						oVoiceSpeechTrainer.sayDistanceAndTimeToGoal(mContext, oConfigTrainer, 
     								dVelocitaMediaGoal,
-    								ExerciseUtils.getVelocitaMedia(getApplicationContext()), oMediaPlayer);
+    								ExerciseUtils.getVelocitaMedia(mContext), oMediaPlayer);
     						}
     					}   					   							
     				}
@@ -602,7 +652,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
         bStopListener=true;
     	isRunning = false;
     	isServiceAlive=false;
-    	NewExercise.reset();
+    	//NewExercise.reset();
     	if(oMediaPlayer!=null && oMediaPlayer.isPlaying()) oMediaPlayer.stop();
     	if(LocationManager!=null) LocationManager.removeUpdates(this);
     	if(monitoringTimer!=null) monitoringTimer.cancel();
@@ -658,11 +708,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
     		while(!Thread.currentThread().isInterrupted()){
     			
 				try {
-					diffTime = (System.currentTimeMillis () - NewExercise.getlStartTime()+NewExercise.getlPauseTime());
+					diffTime = (System.currentTimeMillis () - ExerciseService.lStartTime+ExerciseService.lPauseTime);
 					//Log.i("difftime: ",String.valueOf(NewExercise.getlCurrentTime()));
 					//Log.i("NewExercise.getlStartTime(): ",String.valueOf(NewExercise.getlStartTime()));
-					NewExercise.setlCurrentTime(diffTime);
-					NewExercise.setlCurrentWatchPoint(diffTime);	
+					ExerciseService.lCurrentTime=diffTime;
+					ExerciseService.lCurrentWatchPoint=diffTime;	
+				
+					
 					if(oConfigTrainer.isbUseCardio() 
 							&& 
 							oConfigTrainer.isbCardioPolarBuyed() 
@@ -702,7 +754,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	//Log.v(this.getClass().getCanonicalName(), "AUTO-Pause Exercise");
         //mClients.add(msg.replyTo);
         showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
-    	NewExercise.setlPauseTime(NewExercise.getlCurrentWatchPoint());
+        ExerciseService.lPauseTime=ExerciseService.lCurrentWatchPoint;
     }
     /**
      * RiAvvia l'esercizio messo in autopausa riattivando tutti servizi che usano GPS/Accelerometro e salvataggi al DB
@@ -725,11 +777,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	if(oConfigTrainer.isbMotivator()){	   		
 	   		//Log.v(this.getClass().getCanonicalName(), "Motivator AUTOPAUSE Resume");
 	   		//oVoiceSpeechTrainer.say(this.getString(R.string.resumexercise));
-	   		startMotivatorTimer();
+	   		startMotivatorTimer(oConfigTrainer.isbMotivator());
 	   	}
         //mClients.remove(msg.replyTo);
     	showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
-    	NewExercise.setlStartTime(System.currentTimeMillis());
+    	ExerciseService.lStartTime=System.currentTimeMillis();
     }
     
     /**
@@ -757,7 +809,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	//Log.v(this.getClass().getCanonicalName(), "Pause Exercise");
         //mClients.add(msg.replyTo);
         showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
-    	NewExercise.setlPauseTime(NewExercise.getlCurrentWatchPoint());
+        ExerciseService.lPauseTime=ExerciseService.lCurrentWatchPoint;
     	oRunningThread.interrupt();
     	/**Arresto il listener del Conta Passi*/
     	if (AccelerometerUtils.isListening()) {
@@ -785,11 +837,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	if(oConfigTrainer.isbMotivator()){
 	   		//Log.v(this.getClass().getCanonicalName(), "Motivator Resume");
 	   		//oVoiceSpeechTrainer.say(this.getString(R.string.resumexercise));
-	   		startMotivatorTimer();
+	   		startMotivatorTimer(oConfigTrainer.isbMotivator());
 	   	}
         //mClients.remove(msg.replyTo);
     	showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
-    	NewExercise.setlStartTime(System.currentTimeMillis());
+    	ExerciseService.lStartTime=System.currentTimeMillis();
  		oRunningThread = new Thread(new ThRunningTime());
  		oRunningThread.start();
     }
@@ -832,12 +884,12 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	}
 	    //Imposto 
 	  //Carico la configurazione
-        oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+        oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
     	//Forzo il reset dell'esercizio
-        NewExercise.reset();
+        //NewExercise.reset();
 	   	if(oConfigTrainer.isbPlayMusic()){
 	   		//AVVIO DEL PLAYER ESTERNO	
-	   		oMediaPlayer = new MediaTrainer(getApplicationContext());
+	   		oMediaPlayer = new MediaTrainer(mContext);
 	   		oMediaPlayer.play(false);
 	   		listenForIncomingCall();
 	   	}
@@ -877,16 +929,18 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   		
 	   		
 	   		//Log.v(this.getClass().getCanonicalName(), "Motivator On");
-	   		sDistance=getApplicationContext().getString(R.string.currentdistance);
+	   		sDistance=mContext.getString(R.string.currentdistance);
 	        if(oConfigTrainer.getiUnits()==1){
-	        	sUnit=getApplicationContext().getString(R.string.miles);
+	        	sUnit=mContext.getString(R.string.miles);
 	        }else{
-	        	sUnit=getApplicationContext().getString(R.string.kilometer);
+	        	sUnit=mContext.getString(R.string.kilometer);
 	        }
-	   		oVoiceSpeechTrainer.say(getApplicationContext().getString(R.string.startexercise));
+	   		oVoiceSpeechTrainer.say(mContext.getString(R.string.startexercise));
 	        //oVoicePlayerTrainer.sayStart(oConfigTrainer);
-	   		startMotivatorTimer();	   		  			   		
+	   		   		  			   		
 	   	}
+	   	//Avvio sempre il motivatore ma non esegua la say se disabilitato
+	   	startMotivatorTimer(oConfigTrainer.isbMotivator());	
 	   	/**Aggiungo il timer per l'interactive sharing*/
 	    if(oConfigTrainer.isbInteractiveExercise()){
 	      	/**Aggiungo il timer per l'interactive sharing*/
@@ -913,7 +967,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 			startCardio();
 		}
 	   	
-	   	NewExercise.setlStartTime(System.currentTimeMillis());
+	   	ExerciseService.lStartTime=System.currentTimeMillis();
 		oRunningThread = new Thread(new ThRunningTime());
 		oRunningThread.start(); 
 		
@@ -994,9 +1048,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    bStopListener=true;
 	    isRunning = false;	    
 	    isAutoPause=false;
-	    ExerciseUtils.saveExercise(getApplicationContext(),oConfigTrainer,iStep);
-	    NewExercise.reset();
-	    //ExerciseUtils.addStep(getApplicationContext(), iStep);
+	    ExerciseUtils.saveExercise(mContext,oConfigTrainer,iStep);
+	    //NewExercise.reset();
+	    //ExerciseUtils.addStep(mContext, iStep);
 	    if(LocationManager!=null) LocationManager.removeUpdates(this);
 	    if(monitoringTimer!=null) monitoringTimer.cancel();
 	    if(InteractiveTimer!=null) InteractiveTimer.cancel(); 
@@ -1079,7 +1133,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		@Override
 		public long getExerciseTime() throws RemoteException {
 			
-			return NewExercise.getlStartTime()+NewExercise.getlPauseTime();
+			return ExerciseService.lStartTime+ExerciseService.lPauseTime;
 		}
 		@Override
 		public boolean isServiceAlive() throws RemoteException {
@@ -1089,22 +1143,22 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		@Override
 		public String getsCurrentDistance() throws RemoteException {
 			
-			return ExerciseUtils.getTotalDistanceFormattated(NewExercise.getdCurrentDistance(),oConfigTrainer,true);
+			return ExerciseUtils.getTotalDistanceFormattated(ExerciseService.dCurrentDistance,oConfigTrainer,true);
 		}
 		@Override
 		public String getsPace() throws RemoteException {
-			String sMinutePerUnit=getApplicationContext().getString(R.string.min_km);
+			String sMinutePerUnit=mContext.getString(R.string.min_km);
 			
 			if(oConfigTrainer.getiUnits()==1){			
-				sMinutePerUnit=getApplicationContext().getString(R.string.min_miles);
+				sMinutePerUnit=mContext.getString(R.string.min_miles);
 			}
-			return NewExercise.getPace()+" "+sMinutePerUnit;
+			return ExerciseService.sPace+" "+sMinutePerUnit;
 		}
 		@Override
 		public String getsKaloriesBurn() throws RemoteException {
 			
-			NewExercise.setsCurrentCalories(ExerciseUtils.getKaloriesBurn(oConfigTrainer, NewExercise.getdCurrentDistance()));
-			return String.valueOf(NewExercise.getsCurrentCalories());
+			ExerciseService.sCurrentCalories=ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseService.dCurrentDistance);
+			return String.valueOf(ExerciseService.sCurrentCalories);
 		}
 		@Override
 		public boolean isRefumeFromAutoPause() throws RemoteException {
@@ -1121,8 +1175,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		@Override
 		public String getsAltitude() throws RemoteException {
-			// TODO Auto-generated method stub
-			return NewExercise.getCurrentAltidute();
+			return ExerciseService.sCurrentAltidute;
 		}
 		
 		@Override
@@ -1131,12 +1184,12 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		@Override
 		public String getsVm() throws RemoteException {
-			String sMinutePerUnit=getApplicationContext().getString(R.string.km_hours);
+			String sMinutePerUnit=mContext.getString(R.string.km_hours);
 			
 			if(oConfigTrainer.getiUnits()==1){			
-				sMinutePerUnit=getApplicationContext().getString(R.string.miles_hours);
+				sMinutePerUnit=mContext.getString(R.string.miles_hours);
 			}
-			return NewExercise.getsVm()+" "+sMinutePerUnit;
+			return ExerciseService.sVm+" "+sMinutePerUnit;
 		}
 		@Override
 		public double getLatidute() throws RemoteException {
@@ -1155,7 +1208,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		@Override
 		public String getsInclination() throws RemoteException {			
-			return NewExercise.getiInclication()+"%";
+			return ExerciseService.iInclication+"%";
 		}
 		@Override
 		public void stopGPSFix() throws RemoteException {
@@ -1224,7 +1277,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		
 		
-		//ExerciseUtils.addStep(getApplicationContext(), x);
+		//ExerciseUtils.addStep(mContext, x);
 	}
 
 	/**
@@ -1305,14 +1358,14 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	private void facebookShareInteractive(boolean isFaceBookShareActive, boolean isTwitterShareActive) {
 		try{
 			Intent dialogIntent = new Intent(getBaseContext(), ShareFromService.class);
-			dialogIntent.putExtra("distance", ExerciseUtils.getTotalDistanceFormattated(NewExercise.getdCurrentDistance(),oConfigTrainer,true));
+			dialogIntent.putExtra("distance", ExerciseUtils.getTotalDistanceFormattated(ExerciseService.dCurrentDistance,oConfigTrainer,true));
 			String sMinutePerUnit="";
 			if(oConfigTrainer.getiUnits()==1){			
-				sMinutePerUnit=getApplicationContext().getString(R.string.miles_hours);
+				sMinutePerUnit=mContext.getString(R.string.miles_hours);
 			}
-			dialogIntent.putExtra("pace", NewExercise.getPace()+" "+sMinutePerUnit);
-			dialogIntent.putExtra("time", ExerciseUtils.getTimeHHMM(NewExercise.getlStartTime()+NewExercise.getlPauseTime())+
-					ExerciseUtils.getTimeSSdd(NewExercise.getlStartTime()+NewExercise.getlPauseTime())
+			dialogIntent.putExtra("pace", ExerciseService.sPace+" "+sMinutePerUnit);
+			dialogIntent.putExtra("time", ExerciseUtils.getTimeHHMM(ExerciseService.lStartTime+ExerciseService.lPauseTime)+
+					ExerciseUtils.getTimeSSdd(ExerciseService.lStartTime+ExerciseService.lPauseTime)
 					);
 			dialogIntent.putExtra("isFaceBookShareActive", isFaceBookShareActive);
 			dialogIntent.putExtra("isTwitterShareActive", isTwitterShareActive);
@@ -1413,8 +1466,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		        };
 		        
 		        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-		        getApplicationContext().registerReceiver( mReceiver, filter);
-				//Toast.makeText(this.getApplicationContext(), aCardio.get(i).getsDeviceName(), Toast.LENGTH_SHORT).show();	
+		        mContext.registerReceiver( mReceiver, filter);
+				//Toast.makeText(this.mContext, aCardio.get(i).getsDeviceName(), Toast.LENGTH_SHORT).show();	
 				Log.i(this.getClass().getCanonicalName(),"Connect To "+aCardio.get(i).getsDeviceName()+" Success!");
 			}
 		}
