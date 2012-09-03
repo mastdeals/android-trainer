@@ -45,6 +45,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
@@ -505,8 +506,24 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		    } 
 			if(iStartTrainer==0){
 				
-				oWaitForGPSFix = ProgressDialog.show(WorkOutActivity.this,this.getString(R.string.app_name_buy),this.getString(R.string.gpsfix),true,false,null);
-				
+				oWaitForGPSFix = ProgressDialog.show(WorkOutActivity.this,this.getString(R.string.app_name_buy),this.getString(R.string.gpsfix),true,true,null);
+				oWaitForGPSFix.setOnCancelListener(new OnCancelListener() {
+					
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						try {
+							if(!mIService.isGPSFixPosition()){
+								oWaitForGPSFix.dismiss();
+								mIService.stopGPSFix();
+								mIService.stopExercise();
+								iStartTrainer=0;
+								Log.v(this.getClass().getCanonicalName(),"Cancel Workout");
+							}
+						} catch (RemoteException e) {
+							Log.v(this.getClass().getCanonicalName(),"Error Cancel Workout");
+						}
+					}
+				});
 				NewExerciseTask task = new NewExerciseTask();
 				task.execute(null);
 				
@@ -784,6 +801,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		if(mIService!=null) {
 			try {
 				if(mIService.isRunning()){
+					if(!mIService.isGPSFixPosition()){
+						oWaitForGPSFix.dismiss();
+						mIService.stopGPSFix();
+						mIService.stopExercise();
+					}
 					return;
 				}else{
 					ActivityHelper.startOriginalActivityAndFinish(this);
