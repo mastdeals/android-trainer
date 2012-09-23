@@ -273,6 +273,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					} catch (RemoteException e1) {
 						
 						Log.e(this.getClass().getCanonicalName(), "RemoteException GUIUPDATEIDENTIFIER");
+						WorkOutActivity.this.ThreadTrainer.interrupt();
 					} catch (NullPointerException e) {
                     	Log.e(this.getClass().getCanonicalName(), "NullPointerException GUIUPDATEIDENTIFIER");
                     	e.printStackTrace();
@@ -289,6 +290,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						StopwatchUtils.updateCurrentDistance(txtDistance,"0");
 						StopwatchUtils.updateCurrentPaceVm(txtPace,"0");
 						StopwatchUtils.updateCurrentKalories(txtKalories,"0");
+						StopwatchUtils.updateCurrentALT(txtALT, "0");
 						
 	                } catch (RemoteException e) {
 	                	Log.e(this.getClass().getCanonicalName(), "RemoteException STOPEXERCISE");
@@ -544,6 +546,13 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						mSave.what = WorkOutActivity.SAVEEXERCISE;
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
+						iStartTrainer=0;
+						Log.i(this.getClass().getCanonicalName()," esercizio stop");
+						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
+						WorkOutActivity.this.ThreadTrainer.interrupt();	
+						
+						iStartTrainer=0;
+						doUnbindService();
 						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        				
@@ -553,17 +562,24 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {					
-						//TODO Delete Watch Point
+						
 						ExerciseUtils.deleteExercise(getApplicationContext(), oConfigTrainer, String.valueOf(iCurrentExercise));
+						Log.i(this.getClass().getCanonicalName()," esercizio stop");
+						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
+						WorkOutActivity.this.ThreadTrainer.interrupt();	
+						Message mSave = new Message();
+						mSave.what = WorkOutActivity.STOPEXERCISE;
+						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
+						mSave=null;
+						iStartTrainer=0;
+						doUnbindService();
 						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        		
 					
 		    		});
-		    	alertDialog.show();
-		    	
-				Log.i(this.getClass().getCanonicalName()," esercizio stop");
-				btnStart.setText(this.getString(R.string.btnstart));
+		    	//Log.i(this.getClass().getCanonicalName()," esercizio stop");
+				//btnStart.setText(this.getString(R.string.btnstart));
 				this.ThreadTrainer.interrupt();	
 				
 				Message mSave = new Message();
@@ -571,6 +587,10 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 				mSave=null;
 				iStartTrainer=0;
+				alertDialog.setCancelable(false);
+		    	alertDialog.show();
+		    	
+				
 				
 			}
 		}if(oObj.getId()==R.id.btnPause){
@@ -805,9 +825,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						oWaitForGPSFix.dismiss();
 						mIService.stopGPSFix();
 						mIService.stopExercise();
+						doUnbindService();
 					}
 					return;
 				}else{
+					doUnbindService();
 					ActivityHelper.startOriginalActivityAndFinish(this);
 				}
 			} catch (RemoteException e) {
@@ -1040,14 +1062,14 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
 			if(mIService!=null){
-				try {
+				try {					
 					while(!mIService.isGPSFixPosition()){
 						Thread.sleep(1000);
 					}
 				} catch (RemoteException e) {
-					 Log.i("RemoteException from service: " , e.getMessage());
+					 Log.e("RemoteException from service: " , e.getMessage());
 				} catch (InterruptedException e) {
-					 Log.i("InterruptedException from service: " , e.getMessage());			
+					 Log.e("InterruptedException from service: " , e.getMessage());			
 				}
 			}
 		    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        

@@ -4,7 +4,6 @@ import java.io.File;
 import com.glm.app.db.Database.MetaData.TrainerExerciseDett;
 import com.glm.app.db.Database.MetaData.TrainerPref;
 import com.glm.app.db.Database.MetaData.TrainerVersion;
-import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 
 import android.content.Context;
@@ -344,7 +343,7 @@ public class Database {
     				" 	version_desc   VARCHAR( 255 )  NOT NULL, " + 
     				" 	licence        VARCHAR( 1 )    NOT NULL DEFAULT 'N')");
 
-    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '2.7', 'Ver. 2.7', 'N')");
+    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '2.9', 'Ver. 2.9', 'N')");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_users (" +
@@ -549,6 +548,14 @@ public class Database {
     			if(sVersionNumber.compareToIgnoreCase("2.6")==0){
 					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 2.7");
 					upgradeDB2_6To2_7();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("2.7")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 2.8");
+					upgradeDB2_7To2_8();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("2.8")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 2.9");
+					upgradeDB2_8To2_9();
 				}
     			//manualDB();
     		}
@@ -950,6 +957,50 @@ public class Database {
         	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.7',version_desc='Ver. 2.7'");
     	}catch (SQLException e) {
     		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.7");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
+    /**
+     * Aggiorna la strittura del DB alla release 2.0 con in app store e tabella allenamenti programmati.
+     * 
+     * 
+     * */
+    private void upgradeDB2_7To2_8(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.8',version_desc='Ver. 2.8'");
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.8");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
+    /**
+     * Aggiorna la strittura del DB alla release 2.0 con in app store e tabella allenamenti programmati.
+     * 
+     * 
+     * */
+    private void upgradeDB2_8To2_9(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='2.9',version_desc='Ver. 2.9'");
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 2.9");
     		oDB.close();   
         	oDB=null;
         	return;

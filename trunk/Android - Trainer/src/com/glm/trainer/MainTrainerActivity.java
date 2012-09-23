@@ -122,7 +122,11 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		setContentView(R.layout.new_main_page);
 		
 	}
-	
+	@Override
+	protected void onPause() {
+		doUnbindService();
+		super.onPause();
+	}
 	private void addUser(boolean bTwitter) {
 		Intent intent = ActivityHelper.createActivityIntent(this,UserDetailsActivity.class);
 		if(bTwitter) intent.putExtra("twitter", "1");
@@ -240,9 +244,10 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 					try {
 						mIService.stopGPSFix();
 						mIService.shutDown();
+						doUnbindService();
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
-						Log.e(this.getClass().getCanonicalName(),e.getMessage());
+						//Log.e(this.getClass().getCanonicalName(),e.getMessage());
 					}
 				}
 				finish();
@@ -272,7 +277,17 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		
 		Log.i(this.getClass().getCanonicalName(), "Binding from Services");
 	}
-	
+	void doUnbindService() {
+	    if (mIsBound) {
+	        // If we have received the service, and hence registered with
+	       
+	        Log.i(this.getClass().getCanonicalName(), "UnBinding from Services");
+
+	        // Detach our existing connection.
+	        getApplicationContext().unbindService(mConnection);
+	        mIsBound = false;	       
+	    }
+	}
 	/**
 	 * Classe Connection che stabilisce il bind col servizio
 	 * 
@@ -388,6 +403,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	    public void dontAllow(int reason) {
 	        if (isFinishing()) {
 	            // Don't update UI if Activity is finishing.
+	        	doUnbindService();
 	            return;
 	        }
 	        //Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceko),
