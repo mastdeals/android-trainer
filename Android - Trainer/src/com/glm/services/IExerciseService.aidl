@@ -66,4 +66,5 @@ interface IExerciseService {
     void skipTrack();
     
     boolean isGPSFixPosition();
+    
 }

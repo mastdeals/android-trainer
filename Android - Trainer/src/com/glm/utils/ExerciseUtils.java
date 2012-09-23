@@ -2960,6 +2960,8 @@ public class ExerciseUtils {
 		boolean bRestoreWorkout=false;
     	try{  
     		oDB.open();
+    		oDB.getOpenedDatabase().execSQL("delete from trainer_exercise_dett where distance=0");
+    		oDB.getOpenedDatabase().execSQL("delete from trainer_exercise where end_date is null");
     		Cursor oCursor = oDB.rawQuery("select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)",null);
 			if(oCursor!=null){      			   			
 			   		while(oCursor.moveToNext()){ 
