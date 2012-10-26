@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="match_parent" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="0dip"
+	android:id="@+id/objMainLayout" 	
+	android:background="@drawable/main_gradient" android:gravity="right"
+	android:keepScreenOn="true">	
+	<RelativeLayout android:padding="6dip" android:background="@drawable/lista_title" android:layout_width="fill_parent" android:id="@+id/relativeLayout1" android:layout_height="wrap_content">
+                <TextView android:layout_centerHorizontal="true" android:textStyle="bold" android:layout_height="wrap_content" android:id="@+id/textHistory" android:text="@string/maps" android:textColor="#FFFFFFFF" android:layout_width="wrap_content" android:textSize="14sp" android:layout_marginLeft="10dip"></TextView>
+				  <Button android:id="@+id/btn_back" 
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textStyle="bold"
+							android:textSize="10dip"
+							android:tint="#FFFFFF"
+							android:textColor="#EEFFFFFF"
+							android:singleLine="true"			
+							android:background="@drawable/left" 
+							android:layout_gravity="center_vertical"/>   </RelativeLayout>
+			<LinearLayout 
+				android:id="@+id/internal" 
+				android:orientation="vertical" 
+				android:layout_height="wrap_content" 
+				android:layout_width="match_parent" 
+				android:layout_weight="1">
+				
+				
+				<!-- Dettaglio Graph Inizio -->
+				<LinearLayout android:id="@+id/linearLayout2" 
+							android:layout_marginTop="10dip"
+							android:orientation="vertical" 
+							android:layout_height="match_parent" 
+							android:background="@drawable/lista_gradient" 
+							android:layout_width="match_parent">					
+							
+													
+							<com.google.android.maps.MapView
+				                 android:layout_width="match_parent"
+				                 android:layout_height="match_parent"
+				                 android:apiKey="0UBi7KMm1jzJnpyMmIW79S1sUtmH3W-3DYzhxYg"
+				                 android:id="@+id/gmap"
+				                 android:enabled="true"
+    							 android:clickable="true"
+				                 />
+							<!-- Android Trainer LITE 0UBi7KMm1jzKhmG3jHc-BvhLJQpeJ1VRgOf0Dew -->
+				           	<!-- Key Android Trainer 0UBi7KMm1jzIpyMkZw9AJz3ydnAujLC8XPw2ahA -->
+				           	<!-- DEBUG 0UBi7KMm1jzJnpyMmIW79S1sUtmH3W-3DYzhxYg -->
+				</LinearLayout>	
+				<!-- Dettaglio Graph Inizio -->	    								
+	        </LinearLayout>
+</LinearLayout> 

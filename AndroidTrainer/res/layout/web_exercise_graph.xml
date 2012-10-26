@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="match_parent" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="0dip"
+	android:id="@+id/objMainLayout" 	
+	android:background="@drawable/main_gradient" android:gravity="right"
+	android:keepScreenOn="true">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/lista_gradient"
+        android:padding="6dip" >
+
+        <Button
+            android:id="@+id/btnBPM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/lista_gradient"
+            android:clickable="true"
+            android:text="@string/heart_rate"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnALT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/lista_gradient"
+            android:clickable="true"
+            android:text="@string/alt"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnPace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btnALT"
+            android:layout_alignBottom="@+id/btnALT"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/lista_gradient"
+            android:clickable="true"
+            android:text="@string/pace"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+			<LinearLayout 
+				android:id="@+id/internal" 
+				android:orientation="vertical" 
+				android:layout_height="wrap_content" 
+				android:layout_width="match_parent" 
+				android:layout_weight="1">
+				
+				
+				<!-- Dettaglio Graph Inizio -->
+				<LinearLayout android:id="@+id/linearLayout2" 
+							android:layout_marginTop="10dip"
+							android:orientation="vertical" 
+							android:layout_height="match_parent" 
+							android:background="@drawable/lista_gradient" 
+							android:layout_width="match_parent">					
+							
+							<LinearLayout android:id="@+id/linearLayout2" 
+								android:orientation="vertical" 
+								android:layout_height="match_parent"
+								android:background="@drawable/web_container"
+								android:layout_width="match_parent" >						
+							<WebView android:id="@+id/wv1"
+						           android:layout_width="fill_parent"						           
+				            	   android:layout_height="match_parent"/>
+				           	</LinearLayout>
+				</LinearLayout>	
+				<!-- Dettaglio Graph Inizio -->	    									            			  	
+	        </LinearLayout>
+</LinearLayout> 

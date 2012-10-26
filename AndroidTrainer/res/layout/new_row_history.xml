@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="0dip"	
+	android:id="@+id/objMainLayout" 	
+	android:gravity="right">	
+			<LinearLayout 
+				android:id="@+id/internal" 
+				android:orientation="vertical" 
+				android:layout_height="wrap_content" 
+				android:layout_width="match_parent" 
+				android:background="@drawable/lista_gradient"
+				android:padding="10dip">
+				<RelativeLayout 
+				android:layout_height="wrap_content" 
+				android:layout_width="match_parent" 
+				android:gravity="top" android:id="@+id/InternalRelative">
+
+					<LinearLayout
+					    android:id="@+id/TopBar"
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content" 
+					    android:background="@drawable/lista_gradient">
+
+					    <Button
+					        android:id="@+id/btnExportKML"
+					        android:layout_width="wrap_content"
+					        android:layout_height="40dp"
+					        android:background="@drawable/lista_gradient"
+					        android:clickable="true"
+					        android:text="kml"
+					        android:textColor="#FFFFFF"
+					        android:textSize="16sp" />
+
+					    <Button
+					        android:id="@+id/btnExportGPX"
+					        android:layout_width="wrap_content"
+					        android:layout_height="40dp"
+					        android:layout_marginLeft="5dip"
+					        android:background="@drawable/lista_gradient"
+					        android:clickable="true"
+					        android:text="gpx"
+					        android:textColor="#FFFFFF"
+					        android:textSize="16sp" />
+						<Button
+					        android:id="@+id/btnExportTCX"
+					        android:layout_width="wrap_content"
+					        android:layout_height="40dp"
+					        android:layout_marginLeft="5dip"
+					        android:background="@drawable/lista_gradient"
+					        android:clickable="true"
+					        android:text="tcx"
+					        android:textColor="#FFFFFF"
+					        android:textSize="16sp" />
+						
+					    <ImageButton 
+				                    android:src="@drawable/share"
+				                	android:clickable="true" 
+				                	android:layout_width="wrap_content" 
+				                	android:textSize="16sp" 
+				                	android:layout_marginLeft="5dip"
+				                	android:layout_height="wrap_content" 
+				                	android:background="@drawable/lista_gradient" 
+				                	android:id="@+id/btnShareFB"                	
+				                	android:text="@string/share"
+				                	android:textColor="#FFFFFF" />
+					</LinearLayout>
+																								
+					<LinearLayout 
+						android:orientation="horizontal" 
+						android:layout_marginTop="60dip" 
+						android:layout_width="match_parent" 
+						android:id="@+id/TopLinear" 
+						android:layout_height="wrap_content"					
+						android:background="@drawable/lista_gradient">						
+						<TextView 
+							android:editable="false" 
+							android:background="@drawable/gradient_history_dett" 
+							android:layout_marginTop="0dip" 
+							android:gravity="center_vertical|center_horizontal" 
+							android:layout_width="wrap_content" 
+							android:id="@+id/TextView03" 
+							android:layout_height="30dip" 
+							android:layout_marginLeft="1dip" 
+							android:layout_marginRight="0dip" 
+							android:padding="4dip"
+							android:text="10,5 Km/h" 
+							android:textSize="16dip"						
+							android:textColor="#FFFFFF"
+							></TextView>
+						<TextView 
+							android:editable="false" 
+							android:background="@drawable/gradient_history_dett" 
+							android:layout_marginTop="0dip" 
+							android:gravity="center_vertical|center_horizontal" 
+							android:layout_width="wrap_content" 
+							android:id="@+id/TextView02" 
+							android:layout_height="30dip" 
+							android:layout_marginLeft="5dip" 
+							android:layout_marginRight="0dip" 
+							android:text="75 Min" 
+							android:padding="4dip"
+							android:textSize="16dip"
+							android:textColor="#FFFFFF"></TextView>
+						<TextView 
+							android:editable="false" 
+							android:background="@drawable/gradient_history_dett" 
+							android:layout_marginTop="0dip" 
+							android:gravity="center_vertical|center_horizontal" 
+							android:layout_width="wrap_content" 
+							android:id="@+id/TextView01" 
+							android:layout_height="30dip" 
+							android:layout_marginLeft="5dip" 
+							android:layout_marginRight="0dip" 
+							android:padding="4dip"
+							android:text="368 Kal" 
+							android:textSize="16dip"
+							android:textColor="#FFFFFF"></TextView>																									
+					</LinearLayout>
+					<LinearLayout 
+						android:layout_height="wrap_content" 
+						android:orientation="vertical" 
+						android:layout_width="match_parent" 
+						android:background="@drawable/lista_gradient"
+						android:padding="10dip"
+						android:layout_marginTop="110dip"
+						android:id="@+id/MiddleLinear">
+					<LinearLayout 
+						android:layout_height="wrap_content" 
+						android:orientation="horizontal" 
+						android:id="@+id/MiddleTopLinear" 
+						android:layout_width="fill_parent" 
+						android:layout_marginTop="0dip"						
+						android:padding="0dip">
+						<LinearLayout 
+							android:layout_height="wrap_content" 
+							android:orientation="vertical" 
+							android:id="@+id/BarFrameBG" 
+							android:layout_width="match_parent" 
+							android:layout_marginTop="0dip"
+							android:background="@drawable/gradient_history_pbar" 	
+							android:padding="0dip">						
+								<TextView 
+									android:background="@drawable/gradient_history_pbar_bg"						
+									android:textColor="#FFFFFF" 						
+									android:id="@+id/textDistance" 
+									android:text="30Km"
+									android:editable="false"
+									android:gravity="center_vertical|center_horizontal"
+									android:layout_marginTop="0dip" 
+									android:layout_width="200dip" 
+									android:layout_marginLeft="0dip" 
+									android:layout_marginRight="0dip"
+									android:layout_height="40dip" ></TextView>	
+							</LinearLayout>						
+					</LinearLayout>
+				</LinearLayout>
+				<LinearLayout 
+						android:layout_height="wrap_content" 
+						android:layout_width="match_parent" 
+						android:background="@drawable/lista_gradient"
+						android:padding="10dip"
+						android:layout_marginTop="180dip" 
+						android:orientation="vertical"
+						android:id="@+id/BottomLinear"
+						android:clickable="true">
+					<ImageView 
+					android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="0dip" 
+					android:id="@+id/imgTypeExercise" 
+					
+					android:layout_marginTop="0dip"></ImageView>
+							
+							<TextView 
+							android:layout_width="match_parent" 
+							android:textColor="#FFFFFF" 
+							android:layout_height="wrap_content" 
+							android:id="@+id/textNote" 
+							android:text="Running and good job"
+							android:layout_marginTop="20dip"
+							></TextView>
+
+				</LinearLayout>
+
+				</RelativeLayout>					
+			</LinearLayout>
+			<View 
+					android:layout_weight="1" 
+					android:layout_marginRight="0dip" 
+					android:layout_width="fill_parent" 
+					android:background="@drawable/main_gradient_no_corners"
+					android:id="@+id/view3" 
+					android:layout_marginBottom="0dip" 
+					android:layout_height="10dip" 
+					android:layout_marginTop="2dip" 
+					android:layout_marginLeft="0dip">
+				</View>		
+</LinearLayout>
