@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_gradient">
+	<LinearLayout
+	        xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:orientation="vertical"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"	             
+        	android:animation="@animator/fadein"
+	        android:id="@+id/LayoutPref">
+	
+		<RelativeLayout
+	        android:orientation="horizontal"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/lista_title"
+	        android:padding="6dip"
+	        >
+				
+			<TextView android:id="@+id/text_title" android:textSize="14sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textStyle="bold" 
+				android:textColor="#FFFFFFFF"
+				android:layout_centerVertical="true"
+				android:layout_centerHorizontal="true" android:text="@string/pref_title"/>
+		</RelativeLayout>
+	    <TextView
+	    		android:id="@+id/text_searchresult"
+	    		android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				android:text="Risultati Ricerca .."
+				android:textSize="13dip"
+				android:textColor="#FFFFFFFF"
+				android:textStyle="bold"
+				android:singleLine="true"
+				android:paddingTop="2dip"
+				android:paddingBottom="2dip"
+				android:paddingLeft="8dip"
+				android:paddingRight="4dip"
+		/>
+	    <TextView
+	    		android:id="@+id/text_alternative"
+	    		android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				android:text="Nessun Risultato."
+				android:textSize="16dip"
+				android:layout_gravity="center"
+				android:textColor="#AA000000"
+				android:layout_marginTop="30dip"
+		/>
+	    
+		
+		
+		<ScrollView android:layout_marginTop="10dip"
+			android:id="@+id/scrollView1" 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:layout_weight="1">
+			<LinearLayout 
+				android:id="@+id/objMainLayout" 
+				android:layout_height="match_parent" 
+				android:orientation="vertical" 
+				android:layout_width="match_parent">																	 											
+			</LinearLayout>
+		</ScrollView>      
+		
+		
+	
+	</LinearLayout>
+</FrameLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/rowList" 
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="0dip"
+	android:background="@drawable/gradient_trainer_row">
+	<TableLayout android:id="@+id/tableLayout1" 
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+		<TableRow android:baselineAligned="false" android:layout_width="wrap_content" android:layout_margin="0dip" android:layout_height="wrap_content" android:id="@+id/tableRow1">
+			<LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+				<TextView android:layout_marginLeft="2dip" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/indiceNumero" android:layout_width="match_parent" android:layout_marginTop="0dip" android:text="Nome Pref."></TextView>
+				<TextView android:layout_marginLeft="5dip" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="#fefefe" android:id="@+id/indiceTitolo" android:layout_width="match_parent" android:layout_marginTop="0dip" android:text="Descrizione Pref." android:layout_weight="2" android:singleLine="false"></TextView>
+			</LinearLayout>
+			<Spinner 
+				android:layout_width="match_parent" 
+				android:layout_height="wrap_content" 
+				
+				android:id="@+id/spinner1"></Spinner>
+		</TableRow>						
+	</TableLayout>
+	<View 
+			android:layout_width="fill_parent" 
+			android:id="@+id/view2" 
+			android:layout_height="1dip" 
+			android:layout_marginLeft="0dip" 
+			android:background="#9FA856" 
+			android:layout_marginRight="0dip" 
+			android:layout_marginBottom="0dip" 
+			android:layout_marginTop="2dip"></View>
+</LinearLayout>
