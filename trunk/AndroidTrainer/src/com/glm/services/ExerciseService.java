@@ -519,7 +519,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    								String sSec = oNFormat.format(Math.round((Math.round(60/(((ExerciseService.dCurrentDistance*1000)/(((diffTime*0.001)/60)*60))*3.6)) - 60/(((ExerciseService.dCurrentDistance*1000)/(((diffTime*0.001)/60)*60))*3.6))*60));
 	    								    								
 	    								//ExerciseService.sPace=oNFormat.format(60/(((ExerciseService.dCurrent(Distance*1000)/(((diffTime*0.001)/60)*60))*3.6));
-	    								ExerciseService.sPace=String.valueOf(Math.round(60/(((ExerciseService.dCurrentDistance*1000)/(((diffTime*0.001)/60)*60))*3.6)))+","+sSec;
+	    								ExerciseService.sPace=String.valueOf(Math.round(60/(((ExerciseService.dCurrentDistance*1000)/(((diffTime*0.001)/60)*60))*3.6)))+","+sSec.replace("-", "");
 	        							
 	    								//TTS Speech
 	        							Log.i(this.getClass().getCanonicalName(),"Trainer Type: TTS");

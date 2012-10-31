@@ -43,6 +43,8 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	private String sUnit="Km";
 	public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
+	        
+	    	
 	        setContentView(R.layout.summary_history);        
 	        oBtnRun 	= (Button) findViewById(R.id.btn_history_run); 
 	    	oBtnWalk 	= (Button) findViewById(R.id.btn_history_walk); 
@@ -56,6 +58,8 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        wv = (WebView) findViewById(R.id.wv1); 
 	        
 	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+	        /**controllo e salvo esercizi non salvati*/
+	    	ExerciseUtils.checkIncompleteWorkout(getApplicationContext(), oConfigTrainer);
 	        if(oConfigTrainer.getiUnits()!=0){	        	
 	        	//Mi
 	        	sUnit="Mi";
