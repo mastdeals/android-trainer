@@ -14,7 +14,7 @@ import com.glm.chart.LineChart;
 
 public class WebGraphWeightActivity extends Activity {
 	 public void onCreate(Bundle savedInstanceState) {
-		 	LineChart oChart = new LineChart(getApplicationContext(),0);
+		 	LineChart oChart = new LineChart(getApplicationContext(),-1);
 	        super.onCreate(savedInstanceState);
 	        setContentView(oChart);        
 	        /*WebView wv = (WebView) findViewById(R.id.wv1); 

@@ -8,10 +8,12 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.glm.app.ActivityHelper;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
+import com.glm.chart.LineChart;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.JsHandler;
@@ -26,6 +28,9 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	private Button oBtnBpm;
 	
 	private String sType="0";
+	
+	private LinearLayout oGraphLayout;
+	
 	public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.web_exercise_graph);        
@@ -34,11 +39,12 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	        oBtnALT		  = (Button) findViewById(R.id.btnALT);
 	        oBtnPace	  = (Button) findViewById(R.id.btnPace);
 	        oBtnBpm 	  = (Button) findViewById(R.id.btnBPM);
+	        oGraphLayout  = (LinearLayout) findViewById(R.id.graphLayout);
 	        
 	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);				
 		    ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());
 		 
-	        JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
+	        /*JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 	        try {	           
 	            // Load the local file into the webview\
 	        	wv.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
@@ -52,20 +58,24 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	        } catch (Exception e) {
 	            // Should never happen!
 	            throw new RuntimeException(e);
-	        }
+	        }*/
 	        Bundle extras = getIntent().getExtras();
 	        if(extras !=null)
 	        {
 	     	   sType = extras.getString("graph");
 	     	   if(sType.compareToIgnoreCase("0")==0){
-					wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisealt.html");
-				   	
+					//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisealt.html");
+					LineChart oChart = new LineChart(getApplicationContext(),0);
+					oGraphLayout.addView(oChart);
+					
 		        }else if (sType.compareToIgnoreCase("1")==0){
-		            wv.loadUrl("file:///android_asset/jflot/graphtrainerexercise.html");
-		     	   
+		            //wv.loadUrl("file:///android_asset/jflot/graphtrainerexercise.html");
+		            LineChart oChart = new LineChart(getApplicationContext(),1);
+					oGraphLayout.addView(oChart);
 		        }else if (sType.compareToIgnoreCase("2")==0){
-		        	wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisebpm.html");
-		        	
+		        	//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisebpm.html");
+		        	LineChart oChart = new LineChart(getApplicationContext(),2);
+					oGraphLayout.addView(oChart);
 		        }
 	        }
 	        if(oConfigTrainer.isbCardioPolarBuyed()){	    		  
@@ -85,11 +95,20 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	@Override
 	public void onClick(View oObj) {
 		if(oObj.getId()==R.id.btnALT){
-			wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisealt.html");
+			//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisealt.html");
+			LineChart oChart = new LineChart(getApplicationContext(),0);			
+			oGraphLayout.removeAllViews();
+			oGraphLayout.addView(oChart);
 		}else if (oObj.getId()==R.id.btnPace){
-			wv.loadUrl("file:///android_asset/jflot/graphtrainerexercise.html");
+			//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercise.html");			
+        	LineChart oChart = new LineChart(getApplicationContext(),1);
+        	oGraphLayout.removeAllViews();
+			oGraphLayout.addView(oChart);
 		}else if(oObj.getId()==R.id.btnBPM){
-			wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisebpm.html");
+			//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisebpm.html");			
+        	LineChart oChart = new LineChart(getApplicationContext(),2);
+        	oGraphLayout.removeAllViews();
+			oGraphLayout.addView(oChart);
 		}
 	}
 }

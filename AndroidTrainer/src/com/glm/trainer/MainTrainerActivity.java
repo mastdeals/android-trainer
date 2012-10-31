@@ -537,8 +537,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				    }
 				    
 			    	doBindService();
-			    	/**controllo e salvo esercizi non salvati*/
-			    	ExerciseUtils.checkIncompleteWorkout(getApplicationContext(), oConfigTrainer);
+			    	
 			    	LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 			    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
 				       ShowAlertNoGPS();
