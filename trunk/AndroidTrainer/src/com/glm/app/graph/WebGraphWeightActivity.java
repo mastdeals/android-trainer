@@ -2,20 +2,22 @@ package com.glm.app.graph;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.webkit.WebView;
-import android.webkit.WebSettings.ZoomDensity;
+//import android.util.Log;
+//import android.webkit.WebView;
+//import android.webkit.WebSettings.ZoomDensity;
 
 import com.glm.app.ActivityHelper;
-import com.glm.trainer.R;
-import com.glm.utils.ExerciseUtils;
-import com.glm.utils.JsHandler;
+import com.glm.chart.LineChart;
+//import com.glm.trainer.R;
+//import com.glm.utils.ExerciseUtils;
+//import com.glm.utils.JsHandler;
 
 public class WebGraphWeightActivity extends Activity {
 	 public void onCreate(Bundle savedInstanceState) {
+		 	LineChart oChart = new LineChart(getApplicationContext(),0);
 	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.web_weight_graph);        
-	        WebView wv = (WebView) findViewById(R.id.wv1); 
+	        setContentView(oChart);        
+	        /*WebView wv = (WebView) findViewById(R.id.wv1); 
 	        JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 	        try {	           
 	            // Load the local file into the webview\
@@ -30,7 +32,7 @@ public class WebGraphWeightActivity extends Activity {
 	        } catch (Exception e) {
 	            // Should never happen!
 	            throw new RuntimeException(e);
-	        }
+	        }*/
 	 }
 	 @Override
 	 public void onBackPressed() {
