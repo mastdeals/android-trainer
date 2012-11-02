@@ -6,6 +6,7 @@ import com.glm.trainer.R;
 import com.glm.app.graph.WebGraphExerciseActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
+import com.glm.chart.LineChart;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.JsHandler;
 import com.glm.utils.fb.FacebookConnector;
@@ -82,9 +83,9 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		
 	private LinearLayout oLLDectails;
 	
-	private ConfigTrainer oConfigTrainer;
+	private LinearLayout oGraph;
 	
-	private WebView wv;
+	private ConfigTrainer oConfigTrainer;
 	
 	private Animation a;
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         a = AnimationUtils.loadAnimation(this, R.animator.fadein);
         a.reset();
         
-        wv = (WebView) findViewById(R.id.wv1); 
+       
         
         oBtn_SaveShare = (Button) findViewById(R.id.btnSaveShareNote);
        
@@ -112,7 +113,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oTxt_AvgBpm	  = (TextView) findViewById(R.id.textAvgBpm);
         
         oMaxBpm	  		= (RelativeLayout) findViewById(R.id.RLMaxBpm);
-        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);
+        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);     	
+        oGraph			= (LinearLayout) findViewById(R.id.llGraph);
         
         oNote		  = (EditText) findViewById(R.id.txtNote);
         oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
@@ -124,7 +126,11 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         
         oNote.setEnabled(false);
         
-        JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
+        LineChart oChart = new LineChart(getApplicationContext(),0);			
+        oGraph.removeAllViews();
+        oGraph.addView(oChart);
+		
+       /* JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
         try {	           
             // Load the local file into the webview\
         	wv.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
@@ -138,7 +144,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         } catch (Exception e) {
             // Should never happen!
             throw new RuntimeException(e);
-        }
+        }*/
         
         
         oMainLinearLayout = (LinearLayout) findViewById(R.id.mainlinearLayout);   
@@ -164,7 +170,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		super.onResume();
 		oMainLinearLayout.clearAnimation();
 		oMainLinearLayout.setAnimation(a);
-		
+		       
 		ExeriseTask task = new ExeriseTask();
 		task.execute(null);
 		
@@ -264,7 +270,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 			sharingIntent.setType("text/plain");
 		
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://market.android.com/details?id=com.glm.trainerlite \n\n"+getString(R.string.time)+": "+ExerciseManipulate.getsTotalTime()+
+			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainer \n\n"+getString(R.string.time)+": "+ExerciseManipulate.getsTotalTime()+
 					" " + 
 					getString(R.string.distance)+": "+ExerciseManipulate.getsTotalDistance() +" "+
 					getString(R.string.pace)+": "+ExerciseManipulate.getsMinutePerDistance()+" "+getString(R.string.kalories)+": "+
@@ -323,8 +329,12 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		    oNote.setText(ExerciseManipulate.getsNote());
 		    oBtn_SaveShare.requestFocus();
 		    
+		    LineChart oChart = new LineChart(getApplicationContext(),0);			
+	        oGraph.removeAllViews();
+	        oGraph.addView(oChart);
+	        
 	        //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/graphtrainerexercisealt.html");
-	        wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");
+	        //wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");
 		}
 	}
 }

@@ -10,7 +10,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import com.glm.app.HistoryActivity;
@@ -1984,10 +1986,7 @@ public class ExerciseUtils {
 			
 			oDB.open();
 			Cursor oCursor = oDB.rawQuery(s_SQL_WEIGHT,null);
-			if(oCursor!=null){      		
-				String pattern = "dd/MM/yyyy";
-			    SimpleDateFormat format = new SimpleDateFormat(pattern);
-			    
+			if(oCursor!=null){      		   
 		   		int iData = oCursor.getColumnIndex("data");
 		   		int iDay = oCursor.getColumnIndex("giorno");
 		   		int iMonth = oCursor.getColumnIndex("mese");
@@ -1995,7 +1994,17 @@ public class ExerciseUtils {
 		   		int iWeight = oCursor.getColumnIndex("weight");
 		   		
 		   		while(oCursor.moveToNext()){ 
-		   			Date date = format.parse(oCursor.getInt(iDay)+"/"+oCursor.getInt(iMonth)+"/"+oCursor.getInt(iYear));
+		   			//Date date = format.parse(oCursor.getString(iData));
+		   			Calendar date = new GregorianCalendar(
+		   					Integer.parseInt(oCursor.getString(iYear)), 
+		   					Integer.parseInt(oCursor.getString(iMonth)), 
+		   					Integer.parseInt(oCursor.getString(iDay)));
+		   			//Log.v(ExerciseUtils.class.getCanonicalName(),"Date Utils Pre: "+
+		   			//		Integer.parseInt(oCursor.getString(iDay))+"/"+
+		   			//		Integer.parseInt(oCursor.getString(iMonth))+"/"+
+		   			//		Integer.parseInt(oCursor.getString(iYear)));
+		   			
+		   			//Log.v(ExerciseUtils.class.getCanonicalName(),"Date Utils: "+date.get(Calendar.DAY_OF_MONTH)+"/"+date.get(Calendar.MONTH)+"/"+date.get(Calendar.YEAR));
 		   			Exercise oExercise = new Exercise();
 		   			oExercise.setsDateExercise(oCursor.getString(iData));
 		   			

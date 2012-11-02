@@ -1,24 +1,31 @@
 package com.glm.chart;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.Vector;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.DateAxis;
+import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
 import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.afree.data.category.DefaultCategoryDataset;
+import org.afree.data.general.SeriesException;
+import org.afree.data.time.Day;
+import org.afree.data.time.Month;
 import org.afree.data.time.RegularTimePeriod;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
-import org.afree.data.xy.DefaultXYDataset;
 import org.afree.data.xy.XYDataset;
 import org.afree.data.xy.XYSeries;
+import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.ui.RectangleInsets;
 
@@ -51,27 +58,26 @@ public class LineChart extends Chart{
 		switch (Type) {
 		//Grafico Weight
 		case -1:
-			Log.i(this.getClass().getCanonicalName(), "Crete Graph Weight");
-			TimeSeriesCollection oDataSetWeight = new TimeSeriesCollection();		
-			final AFreeChart chartWeight = createWeightChart(setWeightCategory(oDataSetWeight));
+			Log.i(this.getClass().getCanonicalName(), "Crete Graph Weight");		
+			final AFreeChart chartWeight = createWeightChart(setWeightCategory());
 			setChart(chartWeight);
 			break;
 		case 0:
 			Log.i(this.getClass().getCanonicalName(), "Crete Graph ALT");
-			XYDataset oDataSetALT = new DefaultXYDataset();	
-			final AFreeChart chartALT = createALTChart(setALTCategory(oDataSetALT));
+			
+			final AFreeChart chartALT = createALTChart(setALTCategory());
 			setChart(chartALT);
 			break;
 		case 1:
 			Log.i(this.getClass().getCanonicalName(), "Crete Graph Pace");
-			TimeSeriesCollection oDataSetPace = new TimeSeriesCollection();
-			final AFreeChart chartPace = createPaceChart(setPaceCategory(oDataSetPace));
+			
+			final AFreeChart chartPace = createPaceChart(setPaceCategory());
 			setChart(chartPace);
 			break;	
 		case 2:
 			Log.i(this.getClass().getCanonicalName(), "Crete Graph BPM");
-			TimeSeriesCollection oDataSetBPM = new TimeSeriesCollection();
-			final AFreeChart chartBPM = createBPMChart(setBPMCategory(oDataSetBPM));
+			
+			final AFreeChart chartBPM = createBPMChart(setBPMCategory());
 			setChart(chartBPM);
 			break;	
 		default:
@@ -83,24 +89,53 @@ public class LineChart extends Chart{
 	}
 	
 	/**Creo il dataset per il grafico*/
-	private XYDataset setWeightCategory(TimeSeriesCollection oDataSet){	
+	private XYDataset setWeightCategory(){	
+		TimeSeriesCollection oDataSet = new TimeSeriesCollection();
 		Vector<Exercise> oExercise=ExerciseUtils.getWeightData(oContext);
-		if(oExercise.size()==0) return null;
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		
+		if(oExercise.size()==0) {
+			TimeSeries oSerie = new TimeSeries(oContext.getString(R.string.weight));
+			oSerie.add(RegularTimePeriod.createInstance(getClass(), new Date(0), TimeZone.getDefault()), 0);			
+			oDataSet.addSeries(oSerie);
+			return oDataSet;
+		}
 		int iExSize=oExercise.size()-2;		
 		TimeSeries oSerie = new TimeSeries(oContext.getString(R.string.weight));
-		
-		for(int i=0;i<iExSize;i++){
-			oSerie.add(RegularTimePeriod.createInstance(getClass(), new Date(oExercise.get(i).getdDateExercise().getTime()), TimeZone.getDefault()), oExercise.get(i).getdWeight());			
+		 
+		for(int i=0;i<iExSize;i++){							
+			Log.v(this.getClass().getCanonicalName(),"Date: "+oExercise.get(i).getsDateExercise()+" - "+oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH)+"/"+
+					oExercise.get(i).getdDateExercise().get(Calendar.MONTH)+"/"+
+					(oExercise.get(i).getdDateExercise().get(Calendar.YEAR))+" - Weight: "+oExercise.get(i).getdWeight());
+			try{
+				oSerie.add(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
+						oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));	
+			}catch (SeriesException e) {
+				oSerie.addOrUpdate(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
+						oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));
+			}
+													
 		}
-		oSerie.add(RegularTimePeriod.createInstance(getClass(), new Date(oExercise.get(oExercise.size()-1).getdDateExercise().getTime()), TimeZone.getDefault()), oExercise.get(oExercise.size()-1).getdWeight());
+		try{
+			oSerie.add(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
+					oExercise.get(iExSize-1).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(iExSize-1).getdWeight())));
+		}catch (SeriesException e) {
+			oSerie.addOrUpdate(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
+					oExercise.get(iExSize-1).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(iExSize-1).getdWeight())));
+		}	
+		
+		
+		
 		oDataSet.addSeries(oSerie);
 		//Log.v(this.getClass().getCanonicalName(), "Data for Jflot: "+sData);
 		return  oDataSet;
 	}
 	
 	/**Creo il dataset per il grafico*/
-	private XYDataset setBPMCategory(XYDataset oDataSet) {
-		XYSeries oSerie = new XYSeries(oContext.getString(R.string.alt));		
+	private XYDataset setBPMCategory() {
+		XYSeries oSerie = new XYSeries(oContext.getString(R.string.alt));	
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
 		double dMin=0.0;
 		if(aWatchPoint.size()==0) return null;
@@ -111,31 +146,36 @@ public class LineChart extends Chart{
 			}else if (dMin>aWatchPoint.get(i).getBpm()){
 				dMin=aWatchPoint.get(i).getBpm();
 			}				
+			//Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" BPM:"+aWatchPoint.get(i).getBpm());
 			oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getBpm());
 		}
 		oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
 				aWatchPoint.get(aWatchPoint.size()-1).getBpm());
+		dataset.addSeries(oSerie);
 		
-		return oDataSet;
+		return dataset;
 	}
 
 	/**Creo il dataset per il grafico*/
-	private XYDataset setPaceCategory(XYDataset oDataSet) {
-		XYSeries oSerie = new XYSeries(oContext.getString(R.string.alt));	
+	private XYDataset setPaceCategory() {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries oSerie = new XYSeries(oContext.getString(R.string.pace));		
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
-
+		
 		if(aWatchPoint.size()==0) return null;
 		int iWPSize=aWatchPoint.size()-2;
 		for(int i=0;i<iWPSize;i++){
-			
+			//Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" Pace:"+aWatchPoint.get(i).getdPace());
 			oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdPace());
 		}
 		oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
 				aWatchPoint.get(aWatchPoint.size()-1).getdPace());
-		return oDataSet;
+		dataset.addSeries(oSerie);
+		return dataset;
 	}
 
-	private XYDataset setALTCategory(XYDataset oDataSet) {
+	private XYDataset setALTCategory() {
+		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries oSerie = new XYSeries(oContext.getString(R.string.alt));		
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
 		double dMin=0.0;
@@ -147,12 +187,13 @@ public class LineChart extends Chart{
 			}else if (dMin>aWatchPoint.get(i).getdAlt()){
 				dMin=aWatchPoint.get(i).getdAlt();
 			}				
+			//Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" Alt:"+aWatchPoint.get(i).getdAlt());
 			oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdAlt());
 		}
 		oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
 				aWatchPoint.get(aWatchPoint.size()-1).getdAlt());
-		
-		return oDataSet;
+		dataset.addSeries(oSerie);
+		return dataset;
 	}
 
 	/**
@@ -164,13 +205,14 @@ public class LineChart extends Chart{
      */
     private static AFreeChart createWeightChart(XYDataset dataset) {
 
+    	
         AFreeChart chart = ChartFactory.createTimeSeriesChart(
-        		oContext.getString(R.string.weight),  // title
+        		null,  // title
         		oContext.getString(R.string.time),    // x-axis label
         		oContext.getString(R.string.weight),   // y-axis label
             dataset,            // data
-            true,               // create legend?
-            true,               // generate tooltips?
+            false,               // create legend?
+            false,               // generate tooltips?
             false               // generate URLs?
         );
 
@@ -183,7 +225,7 @@ public class LineChart extends Chart{
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
+        
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
@@ -193,7 +235,7 @@ public class LineChart extends Chart{
         }
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("dd-MMM-yyyy"));
+        axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-yyyy"));
 
         return chart;
 
@@ -208,13 +250,14 @@ public class LineChart extends Chart{
      */
     private static AFreeChart createALTChart(XYDataset dataset) {
 
-        AFreeChart chart = ChartFactory.createTimeSeriesChart(
-        		oContext.getString(R.string.alt),  // title
-        		oContext.getString(R.string.time),    // x-axis label
+        AFreeChart chart = ChartFactory.createXYLineChart(
+        		null,  // title
+        		oContext.getString(R.string.distance),    // x-axis label
         		oContext.getString(R.string.alt),   // y-axis label
             dataset,            // data
-            true,               // create legend?
-            true,               // generate tooltips?
+            PlotOrientation.VERTICAL,
+            false,               // create legend?
+            false,               // generate tooltips?
             false               // generate URLs?
         );
 
@@ -236,8 +279,6 @@ public class LineChart extends Chart{
             renderer.setDrawSeriesLineAsPath(true);
         }
 
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-       
         return chart;
 
     }
@@ -250,14 +291,16 @@ public class LineChart extends Chart{
      * @return A chart.
      */
     private static AFreeChart createPaceChart(XYDataset dataset) {
-
-        AFreeChart chart = ChartFactory.createTimeSeriesChart(
-        		oContext.getString(R.string.pace),  // title
-        		oContext.getString(R.string.time),    // x-axis label
+    	//ChartFactory.createAreaChart(title, categoryAxisLabel, valueAxisLabel, dataset, orientation, legend, tooltips, urls);
+    	//ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, dataset, orientation, legend, tooltips, urls)
+        AFreeChart chart = ChartFactory.createXYLineChart(
+        		null,  // title
+        		oContext.getString(R.string.distance),    // x-axis label
         		oContext.getString(R.string.pace),   // y-axis label
             dataset,            // data
-            true,               // create legend?
-            true,               // generate tooltips?
+            PlotOrientation.VERTICAL,
+            false,               // create legend?
+            false,               // generate tooltips?
             false               // generate URLs?
         );
 
@@ -277,10 +320,7 @@ public class LineChart extends Chart{
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
-        }
-
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-        
+        }     
         return chart;
 
     }
@@ -294,13 +334,14 @@ public class LineChart extends Chart{
      */
     private static AFreeChart createBPMChart(XYDataset dataset) {
 
-        AFreeChart chart = ChartFactory.createTimeSeriesChart(
-        		oContext.getString(R.string.heart_rate),  // title
-        		oContext.getString(R.string.time),    // x-axis label
+        AFreeChart chart = ChartFactory.createXYLineChart(
+        		null,  // title
+        		oContext.getString(R.string.distance),    // x-axis label
         		oContext.getString(R.string.heart_rate),   // y-axis label
             dataset,            // data
-            true,               // create legend?
-            true,               // generate tooltips?
+            PlotOrientation.VERTICAL,
+            false,               // create legend?
+            false,               // generate tooltips?
             false               // generate URLs?
         );
 
@@ -320,10 +361,7 @@ public class LineChart extends Chart{
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
-        }
-
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-      
+        }     
         return chart;
 
     }	
