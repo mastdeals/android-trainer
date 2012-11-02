@@ -677,7 +677,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 		try{				
 				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://market.android.com/details?id=com.glm.trainerlite \n\n"+getString(R.string.time)+": "+sTotalTime+
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainer \n\n"+getString(R.string.time)+": "+sTotalTime+
 						" " + 
 						getString(R.string.distance)+": "+sDistanceFormatted +" "+
 						getString(R.string.pace)+": "+sAVGSpeed+" "+getString(R.string.kalories)+": "+

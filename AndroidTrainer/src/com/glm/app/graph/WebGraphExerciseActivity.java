@@ -2,11 +2,9 @@ package com.glm.app.graph;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -16,11 +14,9 @@ import com.glm.bean.ExerciseManipulate;
 import com.glm.chart.LineChart;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.JsHandler;
 
 public class WebGraphExerciseActivity extends Activity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
-	private WebView wv;
 	private Button oBtnALT;
 	
 	private Button oBtnPace;
@@ -34,7 +30,6 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.web_exercise_graph);        
-	        wv = (WebView) findViewById(R.id.wv1); 
 	        
 	        oBtnALT		  = (Button) findViewById(R.id.btnALT);
 	        oBtnPace	  = (Button) findViewById(R.id.btnPace);

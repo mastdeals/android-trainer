@@ -1,5 +1,6 @@
 package com.glm.bean;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -32,7 +33,7 @@ public class Exercise {
 	private String sTotalKalories="";
 	private String sAVGSpeed="";
 	private String sDateExercise="";
-	private Date dDateExercise;
+	private Calendar dDateExercise;
 	private double dWeight=0.0;
 	
 	
@@ -108,10 +109,10 @@ public class Exercise {
 	public synchronized void setsAVGSpeed(String sAVGSpeed) {
 		this.sAVGSpeed = sAVGSpeed;
 	}
-	public synchronized Date getdDateExercise() {
+	public synchronized Calendar getdDateExercise() {
 		return dDateExercise;
 	}
-	public synchronized void setdDateExercise(Date dDateExercise) {
+	public synchronized void setdDateExercise(Calendar dDateExercise) {
 		this.dDateExercise = dDateExercise;
 	}
 	public synchronized double getdWeight() {

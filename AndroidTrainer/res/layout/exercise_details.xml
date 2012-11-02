@@ -560,15 +560,14 @@
 				                	android:textColor="#FFFFFF" ></Button>				                				                
 							</LinearLayout>			 	 
 						</RelativeLayout>					
-						<LinearLayout android:layout_marginTop="10dip"
-						android:id="@+id/linearLayout2" 
-								android:orientation="vertical" 
-								android:layout_height="wrap_content" 
-								android:background="@drawable/web_container"
-								android:layout_width="match_parent" >	
-								<WebView android:id="@+id/wv1"
-					           android:layout_width="fill_parent"
-			            	   android:layout_height="120dip"/>
+
+						<LinearLayout
+						    android:id="@+id/llGraph"
+						    android:layout_width="match_parent"
+						    android:layout_height="170dip"
+						    android:layout_marginTop="10dip"
+						    android:background="@drawable/web_container"
+						    android:orientation="vertical" >
 			            </LinearLayout>
 			</LinearLayout>	
 			<!-- Dettaglio Graph Inizio -->	    
