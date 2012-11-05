@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="app_name_pro">"Android - Trainer PRO"</string>
     <string name="app_name_buy">"アンドロイド - トレーナー"</string>
@@ -145,18 +146,6 @@
 	<string name="licenceok">"ライセンスの[OK]をCheking"</string>
 	<string name="licenceko">"Chekingライセンス失敗する"</string>
 	<string name="messagesaveworkout">"ワークアウトを保存しますか？"</string>
-	<string name="jan">"1月"</string>
-	<string name="feb">"2月"</string>
-	<string name="mar">"マー"</string>
-	<string name="apr">"4月"</string>
-	<string name="may">"５月"</string>
-	<string name="jun">"6月"</string>
-	<string name="jul">"7月"</string>
-	<string name="aug">"8月"</string>
-	<string name="sep">"9月"</string>
-	<string name="oct">"10月"</string>
-	<string name="nov">"11月"</string>
-	<string name="dec">"12月"</string>
 	<string name="autopause_time">"Autopause時間"</string>
 	<string name="manual">"手動ワークアウト"</string>
 	<string name="note">"注釈"</string>

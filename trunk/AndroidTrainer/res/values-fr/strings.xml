@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="app_name_pro">"Android - Trainer PRO"</string>
     <string name="app_name_buy">"Android - Trainer"</string>
@@ -78,7 +79,7 @@
     <string name="new_user">"Nouvel Utilisateur"</string>
     <string name="titledeleteexercise">"Supprimer l'exercice"</string>
     <string name="messagedeleteexercise">"Etes-vous sûr que vous voulez supprimer cet exercice?"</string>
-	<string name="back">"&lt;&lt; Préc."</string>
+	<string name="back">"&amp;lt;&amp;lt; Préc."</string>
 	<string name="forward">"next"</string>
 	<string name="exercise_dett">"Exercices"</string>
 	<string name="exercise_graph">"Graphique"</string>
@@ -145,18 +146,18 @@
 	<string name="licenceok">"Cheking ok de licence"</string>
 	<string name="licenceko">"Cheking échec de licence"</string>
 	<string name="messagesaveworkout">"Enregistrer séance d'entraînement?"</string>
-	<string name="jan">"Jan."</string>
-	<string name="feb">"Fev"</string>
-	<string name="mar">"Mar."</string>
-	<string name="apr">"Avr."</string>
-	<string name="may">"MAI"</string>
-	<string name="jun">"Jui"</string>
-	<string name="jul">"Jui"</string>
-	<string name="aug">"Aou"</string>
-	<string name="sep">"Sep"</string>
-	<string name="oct">"OCT"</string>
-	<string name="nov">"Nov."</string>
-	<string name="dec">"DEC"</string>
+	<string name="month1">Jan</string>
+	<string name="month2">Fev</string>
+	<string name="month3">Mar</string>
+	<string name="month4">Avr</string>
+	<string name="month5">Mai</string>
+	<string name="month6">Jui</string>
+	<string name="month7">Jui</string>
+	<string name="month8">Aou</string>
+	<string name="month9">Sep</string>
+	<string name="month10">Oct</string>
+	<string name="month11">Nov</string>
+	<string name="month12">Dec</string>
 	<string name="autopause_time">"Temps AutoPause"</string>
 	<string name="manual">"Manuel Workout"</string>
 	<string name="note">"Notes"</string>
