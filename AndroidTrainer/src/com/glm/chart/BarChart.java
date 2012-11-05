@@ -13,6 +13,8 @@ import java.util.Vector;
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.DateAxis;
+import org.afree.chart.axis.NumberAxis;
+import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
@@ -79,12 +81,19 @@ public class BarChart extends Chart{
 				oContext);
 			
 		for(int i=0;i<11;i++){
-			DistancePerMonth oDistance = (DistancePerMonth) table.get(i);						
-			oSerie.add(new Month(oDistance.getiMonth(), 2012),Integer.parseInt(oDistance.getsDistance()));
+			DistancePerMonth oDistance = (DistancePerMonth) table.get(i);	
+			Number nDistance = Integer.parseInt(oDistance.getsDistance());
+			Log.v(this.getClass().getCanonicalName(),"Month: "+oDistance.getiMonth()+" - Distance: "+nDistance);
+			oSerie.add(new Month(oDistance.getiMonth(), 2012),nDistance);
 			oDistance=null;
+			nDistance=null;
 		}
+		
+		Number nDistance = Integer.parseInt(((DistancePerMonth) table.get(table.size()-1)).getsDistance());
 		oSerie.add(new Month(((DistancePerMonth) table.get(table.size()-1)).getiMonth(), 2012),
-					Integer.parseInt(((DistancePerMonth) table.get(table.size()-1)).getsDistance()));
+				nDistance);
+		
+		nDistance=null;
 		oDataSet.addSeries(oSerie);
 		return oDataSet;
 	}
@@ -104,7 +113,7 @@ public class BarChart extends Chart{
         		null,  // title
         		null,    // x-axis label
         		true,
-        		oContext.getString(R.string.distance),   // y-axis label
+        		null,   // y-axis label
             dataset,            // data
             PlotOrientation.VERTICAL,
             false,               // create legend?
@@ -121,7 +130,7 @@ public class BarChart extends Chart{
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
+        
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
@@ -130,7 +139,9 @@ public class BarChart extends Chart{
             renderer.setDrawSeriesLineAsPath(true);
         }
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("MMM"));
+        axis.setDateFormatOverride(new SimpleDateFormat("MMM"));       
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         
         return chart;
 
