@@ -8,7 +8,10 @@ import com.glm.utils.sensor.BlueToothHelper;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -51,14 +54,20 @@ public class AboutActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
 		if (v.getId() == R.id.btn_mail_segnalazione) {		
-			//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.giano-solutions.com")));
-		    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-		    emailIntent .setType("message/rfc822") ;
-		    emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
-		    emailIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, "Issue Android - Trainer for Android");
-		    emailIntent .putExtra(android.content.Intent.EXTRA_TEXT, "");
-		    //startActivityForResult(emailIntent,1);
-		    startActivity(Intent.createChooser(emailIntent, "Seleziona l'applicazione email."));
+			PackageInfo manager;
+			try {
+				manager = getPackageManager().getPackageInfo(getPackageName(), 0);
+				//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.giano-solutions.com")));
+			    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+			    emailIntent .setType("message/rfc822") ;
+			    emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
+			    emailIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, "Issue Android - Trainer for Android Version "+manager.versionName);
+			    emailIntent .putExtra(android.content.Intent.EXTRA_TEXT, "");
+			    //startActivityForResult(emailIntent,1);
+			    startActivity(Intent.createChooser(emailIntent, "Seleziona l'applicazione email."));
+			} catch (NameNotFoundException e) {
+				Log.e(this.getClass().getCanonicalName(),"Error getting version");
+			}
 		}
     }
     @Override
