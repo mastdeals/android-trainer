@@ -421,7 +421,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	         * DA MODIFICARE A FALSE IN PRODUZIONE
 	         * 
 	         * **/
-	        isLicence=true;
+	        isLicence=false;
 	        //Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
 	    }
 		@Override
