@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +86,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	
 	private LinearLayout oGraph;
 	
+	private ProgressBar oBarWaiting;
+	
 	private ConfigTrainer oConfigTrainer;
 	
 	private Animation a;
@@ -115,6 +118,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oMaxBpm	  		= (RelativeLayout) findViewById(R.id.RLMaxBpm);
         oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);     	
         oGraph			= (LinearLayout) findViewById(R.id.llGraph);
+        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
         
         oNote		  = (EditText) findViewById(R.id.txtNote);
         oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
@@ -125,11 +129,9 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oBtnGMap	  = (Button) findViewById(R.id.btnGmap);
         
         oNote.setEnabled(false);
+        oBarWaiting.setVisibility(View.VISIBLE);
         
-        LineChart oChart = new LineChart(getApplicationContext(),0);			
-        oGraph.removeAllViews();
-        oGraph.addView(oChart);
-		
+        
        /* JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
         try {	           
             // Load the local file into the webview\
@@ -292,7 +294,9 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			//Chiamo il tackAsink
 			ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, ExerciseManipulate.getiIDExercise());
 		    //Log.v(this.getClass().getCanonicalName(),"IDExercide: " +ExerciseManipulate.getiIDExercise()+" - "+ExerciseManipulate.getsTotalDistance());
-		        
+			LineChart oChart = new LineChart(getApplicationContext(),0);			
+	        oGraph.removeAllViews();
+	        oGraph.addView(oChart);    
 		    
 	        
 	        return null;
@@ -327,11 +331,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		    	}
 		    }    
 		    oNote.setText(ExerciseManipulate.getsNote());
-		    oBtn_SaveShare.requestFocus();
-		    
-		    LineChart oChart = new LineChart(getApplicationContext(),0);			
-	        oGraph.removeAllViews();
-	        oGraph.addView(oChart);
+		    oBtn_SaveShare.requestFocus();		    
+		    if(oBarWaiting!=null) oBarWaiting.setVisibility(View.INVISIBLE);
 	        
 	        //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/graphtrainerexercisealt.html");
 	        //wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");

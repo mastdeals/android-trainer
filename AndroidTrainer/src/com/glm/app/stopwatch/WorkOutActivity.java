@@ -1067,9 +1067,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						Thread.sleep(1000);
 					}
 				} catch (RemoteException e) {
-					 Log.e("RemoteException from service: " , e.getMessage());
+					 Log.e(this.getClass().getCanonicalName(), "RemoteException from service");
 				} catch (InterruptedException e) {
-					 Log.e("InterruptedException from service: " , e.getMessage());			
+					 Log.e(this.getClass().getCanonicalName(), "InterruptedException from service");			
 				}
 			}
 		    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        

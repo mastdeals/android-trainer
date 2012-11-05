@@ -4,9 +4,7 @@
 	android:id="@+id/bg_about"
 	android:background="@drawable/main_gradient"
 	android:gravity="top" android:layout_height="match_parent">
-    <LinearLayout android:layout_width="fill_parent" android:id="@+id/mainlinearLayout" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
-	android:gravity="top" android:layout_height="wrap_content">
-    <LinearLayout android:layout_width="fill_parent" android:id="@+id/mainlinearLayout" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/mainlinearLayout1" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
         <RelativeLayout android:padding="6dip" android:background="@drawable/lista_title" android:layout_width="fill_parent" android:layout_height="match_parent" android:id="@+id/relativeLayout1">
             <LinearLayout 
             android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:gravity="center_horizontal">               	
@@ -38,57 +36,64 @@
 					android:layout_height="wrap_content" 
 					android:background="@drawable/lista_gradient" 
 					android:layout_width="match_parent" >
+
 						<RelativeLayout
-					        android:orientation="horizontal"
-					        android:layout_width="fill_parent"
-					        android:layout_height="wrap_content"
-					        android:background="@drawable/lista_gradient"
-					        android:padding="10dip"					        
-					        android:id="@+id/btn_expand">
-							<LinearLayout 
-            					android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content">
-           	
-								<Button 
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_height="40dp" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnExportKML"                	
-				                	android:text="kml"
-				                	android:textColor="#FFFFFF" ></Button>
-				                <Button 
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_marginLeft="5dip"
-				                	android:layout_height="40dp" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnExportGPX"                	
-				                	android:text="gpx"
-				                	android:textColor="#FFFFFF" ></Button>
-				                <Button 
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_marginLeft="5dip"
-				                	android:layout_height="40dp" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnExportTCX"                	
-				                	android:text="tcx"
-				                	android:textColor="#FFFFFF" ></Button>
-				                <ImageButton 
-				                    android:src="@drawable/share"
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_marginLeft="5dip"
-				                	android:layout_height="wrap_content" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnShareFB"                	
-				                	android:text="@string/share"
-				                	android:textColor="#FFFFFF" />
-							</LinearLayout>			 	 
+						    android:id="@+id/btn_expand"
+						    android:layout_width="fill_parent"
+						    android:layout_height="wrap_content"
+						    android:background="@drawable/lista_gradient"
+						    android:orientation="horizontal"
+						    android:padding="10dip" >
+
+						    <Button
+						        android:id="@+id/btnExportKML"
+						        android:layout_width="wrap_content"
+						        android:layout_height="40dp"
+						        android:background="@drawable/lista_gradient"
+						        android:clickable="true"
+						        android:text="kml"
+						        android:textColor="#FFFFFF"
+						        android:textSize="16sp" >
+						    </Button>
+
+						    <ImageButton
+						        android:id="@+id/btnShareFB"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_alignParentRight="true"
+						        android:background="@drawable/lista_gradient"
+						        android:clickable="true"
+						        android:src="@drawable/share"
+						        android:text="@string/share"
+						        android:textColor="#FFFFFF"
+						        android:textSize="16sp" />
+
+						    <Button
+						        android:id="@+id/btnExportGPX"
+						        android:layout_width="wrap_content"
+						        android:layout_height="40dp"
+						        android:layout_alignBaseline="@+id/btnExportKML"
+						        android:layout_alignBottom="@+id/btnExportKML"
+						        android:layout_toRightOf="@+id/btnExportKML"
+						        android:background="@drawable/lista_gradient"
+						        android:clickable="true"
+						        android:text="gpx"
+						        android:textColor="#FFFFFF"
+						        android:textSize="16sp" />
+
+						    <Button
+						        android:id="@+id/btnExportTCX"
+						        android:layout_width="wrap_content"
+						        android:layout_height="40dp"
+						        android:layout_alignBaseline="@+id/btnExportGPX"
+						        android:layout_alignBottom="@+id/btnExportGPX"
+						        android:layout_toRightOf="@+id/btnExportGPX"
+						        android:background="@drawable/lista_gradient"
+						        android:clickable="true"
+						        android:text="tcx"
+						        android:textColor="#FFFFFF"
+						        android:textSize="16sp" />
+
 						</RelativeLayout>
 
 		            <LinearLayout
@@ -568,7 +573,15 @@
 						    android:layout_marginTop="10dip"
 						    android:background="@drawable/web_container"
 						    android:orientation="vertical" >
-			            </LinearLayout>
+
+						    <ProgressBar
+						        android:id="@+id/pBarWaiting"
+						        android:layout_width="match_parent"
+						        android:layout_height="0dip"
+						        android:indeterminate="true"
+						        android:layout_weight="0.88" />
+						</LinearLayout>
+
 			</LinearLayout>	
 			<!-- Dettaglio Graph Inizio -->	    
 	            
@@ -630,5 +643,4 @@
 	        </LinearLayout>
 	  </ScrollView>
     </LinearLayout> 
-	</LinearLayout>
 </RelativeLayout>

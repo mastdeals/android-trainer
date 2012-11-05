@@ -131,15 +131,23 @@
 								</View>				
 							</LinearLayout>
 							<!-- 2 Row -->
-							<LinearLayout android:id="@+id/linearLayout2" 
-								android:orientation="vertical" 
-								android:layout_height="wrap_content" 
-								android:background="@drawable/web_container"
-								android:layout_width="match_parent" >						
-							<WebView android:id="@+id/wv1"
-						           android:layout_width="fill_parent"						           
-				            	   android:layout_height="140dip"/>
-				           	</LinearLayout>
+
+							<LinearLayout
+							    android:id="@+id/llGraph"
+							    android:layout_width="match_parent"
+							    android:layout_height="140dip"
+							    android:background="@drawable/web_container"
+							    android:orientation="vertical" >
+
+							    <ProgressBar
+							        android:id="@+id/pBarWaiting"
+							        style="?android:attr/progressBarStyleLarge"
+							        android:layout_width="match_parent"
+							        android:indeterminate="true"
+							        android:layout_height="140dip"
+							        android:layout_weight="0.83" />
+							</LinearLayout>
+
 				</LinearLayout>	
 				<!-- Dettaglio Graph Inizio -->	    
 				

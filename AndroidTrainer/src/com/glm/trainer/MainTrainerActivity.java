@@ -393,7 +393,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	            Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceok),
 		                Toast.LENGTH_SHORT).show();
 	            ExerciseUtils.setLicenceOK(getApplicationContext());  
-	            Log.e(this.getClass().getCanonicalName(), "licence Allow code "+reason);
+	            //Log.e(this.getClass().getCanonicalName(), "licence Allow code "+reason);
 	            isLicence=true;
 	        // Should allow user access.
 	        //displayResult(getString(R.string.lic_ok));
@@ -421,12 +421,12 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	         * DA MODIFICARE A FALSE IN PRODUZIONE
 	         * 
 	         * **/
-	        isLicence=false;
-	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
+	        isLicence=true;
+	        //Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
 	    }
 		@Override
 		public void applicationError(int errorCode) {
-			Log.e(this.getClass().getCanonicalName(), "applicationError on check licence error code "+errorCode);
+			//Log.e(this.getClass().getCanonicalName(), "applicationError on check licence error code "+errorCode);
 			/**
 	         * DA MODIFICARE A FALSE IN PRODUZIONE
 	         * 

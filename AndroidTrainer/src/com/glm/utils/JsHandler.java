@@ -202,12 +202,12 @@ public class JsHandler {
 	private String getTotalMonthOptions(){	
 		String sOptions = "{" +
 						"series: {stack: stack,lines: { show: lines, fill: true, steps: false },bars: { show: true, barWidth: 0.7, align: \"center\"}}," +
-						" xaxis: { ticks: [[1,\""+oContext.getString(R.string.jan)+"\"],[2,\""+oContext.getString(R.string.feb)+"\"], " +
-								"[3,\""+oContext.getString(R.string.mar)+"\"], [4,\""+oContext.getString(R.string.apr)+"\"]," +
-						" [5,\""+oContext.getString(R.string.may)+"\"], [6,\""+oContext.getString(R.string.jun)+"\"],[7,\""+oContext.getString(R.string.jul)+"\"]," +
-								"[8,\""+oContext.getString(R.string.aug)+"\"],[9,\""+oContext.getString(R.string.sep)+"\"]," +
-						" [10,\""+oContext.getString(R.string.oct)+"\"],[11,\""+oContext.getString(R.string.nov)+"\"]," +
-								"[12,\""+oContext.getString(R.string.dec)+"\"]] }" +
+						" xaxis: { ticks: [[1,\""+oContext.getString(R.string.month1)+"\"],[2,\""+oContext.getString(R.string.month2)+"\"], " +
+								"[3,\""+oContext.getString(R.string.month3)+"\"], [4,\""+oContext.getString(R.string.month4)+"\"]," +
+						" [5,\""+oContext.getString(R.string.month5)+"\"], [6,\""+oContext.getString(R.string.month6)+"\"],[7,\""+oContext.getString(R.string.month7)+"\"]," +
+								"[8,\""+oContext.getString(R.string.month8)+"\"],[9,\""+oContext.getString(R.string.month9)+"\"]," +
+						" [10,\""+oContext.getString(R.string.month10)+"\"],[11,\""+oContext.getString(R.string.month11)+"\"]," +
+								"[12,\""+oContext.getString(R.string.month12)+"\"]] }" +
 						"};";				
         	//Log.v(this.getClass().getCanonicalName(), "Option for Jflot: "+sOptions);
 			return sOptions;

@@ -146,18 +146,18 @@
 	<string name="licenceok">Cheking licence ok</string>
 	<string name="licenceko">Cheking licence fail</string>
 	<string name="messagesaveworkout">Save workout?</string>
-	<string name="jan">Jan</string>
-	<string name="feb">Feb</string>
-	<string name="mar">Mar</string>
-	<string name="apr">Apr</string>
-	<string name="may">May</string>
-	<string name="jun">Jun</string>
-	<string name="jul">Jul</string>
-	<string name="aug">Aug</string>
-	<string name="sep">Sep</string>
-	<string name="oct">Oct</string>
-	<string name="nov">Nov</string>
-	<string name="dec">Dec</string>
+	<string name="month1">Jan</string>
+	<string name="month2">Feb</string>
+	<string name="month3">Mar</string>
+	<string name="month4">Apr</string>
+	<string name="month5">May</string>
+	<string name="month6">Jun</string>
+	<string name="month7">Jul</string>
+	<string name="month8">Aug</string>
+	<string name="month9">Sep</string>
+	<string name="month10">Oct</string>
+	<string name="month11">Nov</string>
+	<string name="month12">Dec</string>
 	<string name="autopause_time">Autopause Time</string>
 	<string name="manual">Manual Workout</string>
 	<string name="note">Notes</string>
@@ -192,4 +192,16 @@
     <string name="avg_heart_rate">Average Heart Rate</string>   
     <string name="full">Get Full Version</string>    
     <string name="gpsfix">Waiting for GPS data</string>  
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </resources>

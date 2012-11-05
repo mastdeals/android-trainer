@@ -12,18 +12,21 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.DistancePerExercise;
 import com.glm.bean.ExerciseManipulate;
+import com.glm.chart.BarChart;
+import com.glm.chart.LineChart;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.JsHandler;
 
 public class SummaryActivity extends Activity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
-	private WebView wv;
 	
 	private Button oBtnRun;
 	private Button oBtnWalk;
@@ -33,6 +36,11 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	private TextView oTxtRun;
 	private TextView oTxtWalk;
 	private TextView oTxtBike;
+	
+	private LinearLayout oGraph;
+	
+	private ProgressBar oBarWaiting;
+	
 	/**
 	 * 0=pace
 	 * 1=alt
@@ -50,12 +58,14 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	    	oBtnWalk 	= (Button) findViewById(R.id.btn_history_walk); 
 	    	oBtnBike	= (Button) findViewById(R.id.btn_history_bike); 
 	        
+	    	oGraph			= (LinearLayout) findViewById(R.id.llGraph);
+	        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
+	    	
 	    	oTxtTot		= (TextView) findViewById(R.id.textDistance_tot); 
 	    	oTxtRun		= (TextView) findViewById(R.id.textDistance_run); 
 	    	oTxtWalk	= (TextView) findViewById(R.id.textDistance_walk); 
 	    	oTxtBike	= (TextView) findViewById(R.id.textDistance_bike); 
 	    	
-	        wv = (WebView) findViewById(R.id.wv1); 
 	        
 	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
 	        /**controllo e salvo esercizi non salvati*/
@@ -64,7 +74,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        	//Mi
 	        	sUnit="Mi";
 	        }
-		    ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());
+		    /*ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());
 		 
 	        JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 	        try {	           
@@ -78,16 +88,16 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	            AssetManager assetManager = getAssets();
 	            String[] aSTR = assetManager.list("jflot/trainersummary.html");
 	            //Log.v(this.getClass().getCanonicalName(), "aSTR.length "+aSTR.length);	 	
-	            /*for(int i=0;i<aSTR.length;i++){
+	            for(int i=0;i<aSTR.length;i++){
 	            	//Log.v(this.getClass().getCanonicalName(), "aSTR["+i+"] "+aSTR[i]);	 	           	
-	            }*/
+	            }
 	         
 	            //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/trainersummary.html");
 	            wv.loadUrl("file:///android_asset/jflot/trainersummary.html");
 	        } catch (Exception e) {
 	            // Should never happen!
 	            throw new RuntimeException(e);
-	        }	   
+	        }	 */  
 	       
 			oTable=ExerciseUtils.getDistanceForType(oConfigTrainer, getApplicationContext());
 			int iRun=0,iWalk=0,iBike=0;
@@ -132,7 +142,10 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-        wv.loadUrl("file:///android_asset/jflot/trainersummary.html");  	  
+        //wv.loadUrl("file:///android_asset/jflot/trainersummary.html");  	  
+		BarChart oChart = new BarChart(getApplicationContext(),0);			
+        oGraph.removeAllViews();
+        oGraph.addView(oChart);    
 	}
 	@Override
 	public void onClick(View v) {

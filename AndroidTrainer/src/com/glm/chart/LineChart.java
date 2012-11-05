@@ -49,6 +49,7 @@ public class LineChart extends Chart{
 	 * 			 Type=0 ALT
 	 * 			 Type=1 PACE
 	 *           Type=2 BPM
+	 *           
 	 * */
 	public LineChart(Context context,int Type) {
 		super(context);
