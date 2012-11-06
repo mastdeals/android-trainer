@@ -4,7 +4,7 @@
 	android:id="@+id/bg_about"
 	android:background="@drawable/main_gradient"
 	android:gravity="top" android:layout_height="match_parent">
-    <LinearLayout android:layout_width="fill_parent" android:id="@+id/mainlinearLayout1" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/mainlinearLayout" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
         <RelativeLayout android:padding="6dip" android:background="@drawable/lista_title" android:layout_width="fill_parent" android:layout_height="match_parent" android:id="@+id/relativeLayout1">
             <LinearLayout 
             android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:gravity="center_horizontal">               	
@@ -576,6 +576,7 @@
 
 						    <ProgressBar
 						        android:id="@+id/pBarWaiting"
+						        style="?android:attr/progressBarStyleLarge"
 						        android:layout_width="match_parent"
 						        android:layout_height="0dip"
 						        android:indeterminate="true"
@@ -642,5 +643,8 @@
 			  	
 	        </LinearLayout>
 	  </ScrollView>
-    </LinearLayout> 
+    </LinearLayout>
+
+   
+ 
 </RelativeLayout>

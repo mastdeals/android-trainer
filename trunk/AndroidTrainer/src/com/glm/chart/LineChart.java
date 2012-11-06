@@ -1,26 +1,21 @@
 package com.glm.chart;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.Vector;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.DateAxis;
+import org.afree.chart.axis.NumberAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
 import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.afree.data.general.SeriesException;
 import org.afree.data.time.Day;
-import org.afree.data.time.Month;
-import org.afree.data.time.RegularTimePeriod;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.XYDataset;
@@ -97,7 +92,7 @@ public class LineChart extends Chart{
 		
 		if(oExercise.size()==0) {
 			TimeSeries oSerie = new TimeSeries(oContext.getString(R.string.weight));
-			oSerie.add(RegularTimePeriod.createInstance(getClass(), new Date(0), TimeZone.getDefault()), 0);			
+			oSerie.add(new Day(1,1,9999), 0);				
 			oDataSet.addSeries(oSerie);
 			return oDataSet;
 		}
@@ -209,7 +204,7 @@ public class LineChart extends Chart{
     	
         AFreeChart chart = ChartFactory.createTimeSeriesChart(
         		null,  // title
-        		oContext.getString(R.string.time),    // x-axis label
+        		null,    // x-axis label
         		oContext.getString(R.string.weight),   // y-axis label
             dataset,            // data
             false,               // create legend?
@@ -237,7 +232,8 @@ public class LineChart extends Chart{
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-yyyy"));
-
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         return chart;
 
     }
@@ -363,6 +359,9 @@ public class LineChart extends Chart{
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
         }     
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+      
         return chart;
 
     }	

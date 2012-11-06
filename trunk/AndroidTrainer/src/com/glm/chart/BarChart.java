@@ -1,41 +1,24 @@
 package com.glm.chart;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.Vector;
 
 import org.afree.chart.AFreeChart;
 import org.afree.chart.ChartFactory;
 import org.afree.chart.axis.DateAxis;
 import org.afree.chart.axis.NumberAxis;
-import org.afree.chart.axis.ValueAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
 import org.afree.chart.renderer.xy.XYItemRenderer;
 import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.afree.data.general.SeriesException;
-import org.afree.data.time.Day;
 import org.afree.data.time.Month;
-import org.afree.data.time.RegularTimePeriod;
 import org.afree.data.time.TimeSeries;
 import org.afree.data.time.TimeSeriesCollection;
 import org.afree.data.xy.IntervalXYDataset;
-import org.afree.data.xy.XYDataset;
-import org.afree.data.xy.XYSeries;
-import org.afree.data.xy.XYSeriesCollection;
 import org.afree.graphics.SolidColor;
 import org.afree.ui.RectangleInsets;
 
 import com.glm.bean.DistancePerMonth;
-import com.glm.bean.Exercise;
-import com.glm.bean.ExerciseManipulate;
-import com.glm.bean.WatchPoint;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 

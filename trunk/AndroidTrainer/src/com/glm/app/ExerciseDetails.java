@@ -8,7 +8,6 @@ import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
 import com.glm.chart.LineChart;
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.JsHandler;
 import com.glm.utils.fb.FacebookConnector;
 
 import android.app.Activity;
@@ -21,8 +20,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebView;
-import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -294,9 +291,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			//Chiamo il tackAsink
 			ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, ExerciseManipulate.getiIDExercise());
 		    //Log.v(this.getClass().getCanonicalName(),"IDExercide: " +ExerciseManipulate.getiIDExercise()+" - "+ExerciseManipulate.getsTotalDistance());
-			LineChart oChart = new LineChart(getApplicationContext(),0);			
-	        oGraph.removeAllViews();
-	        oGraph.addView(oChart);    
+			    
 		    
 	        
 	        return null;
@@ -331,7 +326,10 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		    	}
 		    }    
 		    oNote.setText(ExerciseManipulate.getsNote());
-		    oBtn_SaveShare.requestFocus();		    
+		    oBtn_SaveShare.requestFocus();	
+		    LineChart oChart = new LineChart(getApplicationContext(),0);			
+	        oGraph.removeAllViews();
+	        oGraph.addView(oChart);
 		    if(oBarWaiting!=null) oBarWaiting.setVisibility(View.INVISIBLE);
 	        
 	        //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/graphtrainerexercisealt.html");

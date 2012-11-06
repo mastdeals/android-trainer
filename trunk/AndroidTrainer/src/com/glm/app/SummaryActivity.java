@@ -4,13 +4,9 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
-import android.webkit.WebView;
-import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -18,12 +14,9 @@ import android.widget.TextView;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.DistancePerExercise;
-import com.glm.bean.ExerciseManipulate;
 import com.glm.chart.BarChart;
-import com.glm.chart.LineChart;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.JsHandler;
 
 public class SummaryActivity extends Activity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
