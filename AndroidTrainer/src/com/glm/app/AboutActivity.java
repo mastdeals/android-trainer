@@ -3,10 +3,8 @@ package com.glm.app;
 
 import com.glm.app.db.Database;
 import com.glm.trainer.R;
-import com.glm.utils.sensor.BlueToothHelper;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 public class AboutActivity extends Activity implements OnClickListener {
 	private TextView txtVersion;
 	
