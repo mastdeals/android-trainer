@@ -52,6 +52,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gcm.GCMRegistrar;
+
 
 public class MainTrainerActivity  extends Activity implements OnClickListener {
 	private boolean isLicence=false;
@@ -63,6 +65,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
         -46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
         -45, 77, -117, -36, -113, -11, 32, -64, 89
         };
+	private static final String SENDER_ID = "558307532040";
     private TelephonyManager oPhone;
     /**Gestione della licenza*/
 	
@@ -97,6 +100,16 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 	       super.onCreate(savedInstanceState);
 	       setContentView(R.layout.new_main_page);
+	       
+	       
+	       GCMRegistrar.checkDevice(this);
+	       GCMRegistrar.checkManifest(this);
+	       final String regId = GCMRegistrar.getRegistrationId(this);
+	       if (regId.equals("")) {
+	         GCMRegistrar.register(this, SENDER_ID);
+	       } else {
+	         Log.v(this.getClass().getCanonicalName(), "Already registered");
+	       }
 	       
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
