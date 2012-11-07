@@ -7,6 +7,11 @@ import android.content.Intent;
 
 
 public class GCMIntentService extends GCMBaseIntentService{
+	private static final String SENDER_ID = "558307532040";
+	
+	public GCMIntentService() {
+        super(SENDER_ID);
+    }
 	
 	@Override
 	protected void onError(Context context, String arg1) {
