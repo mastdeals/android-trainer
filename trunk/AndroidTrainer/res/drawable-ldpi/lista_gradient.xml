@@ -14,12 +14,12 @@
 	<item>
 		<shape xmlns:android="http://schemas.android.com/apk/res/android"
 			android:shape="rectangle">
-			<gradient android:startColor="#828B3D" android:endColor="#737A3E"
+			<gradient android:startColor="#669900" android:endColor="#56731D"
 				android:angle="270" />
 			<padding android:left="12dp" android:top="7dp" android:right="12dp"
 				android:bottom="7dp" />
 			<corners android:radius="6dp" />
-			<stroke android:width="1dp" android:color="#6A7326" />
+			<stroke android:width="1dp" android:color="#426300" />
 		</shape>
 	</item>
 </selector>
