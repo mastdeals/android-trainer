@@ -3,9 +3,9 @@ package com.glm.app.stopwatch;
 
 
 import com.glm.services.IExerciseService;
-import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
+import com.glm.app.MainTrainerActivity;
 import com.glm.app.OpenStreetMapActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
@@ -553,7 +553,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						
 						iStartTrainer=0;
 						doUnbindService();
-						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainActivity.class);
+						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        				
 		    		});
@@ -573,7 +573,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						mSave=null;
 						iStartTrainer=0;
 						doUnbindService();
-						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainActivity.class);
+						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        		
 					
