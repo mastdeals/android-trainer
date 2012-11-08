@@ -90,7 +90,7 @@ public class LineChart extends Chart{
 		Vector<Exercise> oExercise=ExerciseUtils.getWeightData(oContext);
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		
-		if(oExercise.size()==0) {
+		if(oExercise.size()<2) {
 			TimeSeries oSerie = new TimeSeries(oContext.getString(R.string.weight));
 			oSerie.add(new Day(1,1,9999), 0);				
 			oDataSet.addSeries(oSerie);
@@ -219,21 +219,23 @@ public class LineChart extends Chart{
         plot.setDomainGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setRangeGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-        plot.setDomainCrosshairVisible(true);
-        plot.setRangeCrosshairVisible(true);
+        plot.setDomainCrosshairVisible(false);
+        plot.setRangeCrosshairVisible(false);
         
-        XYItemRenderer r = plot.getRenderer();
+       /* XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-            renderer.setBaseShapesVisible(true);
-            renderer.setBaseShapesFilled(true);
+            renderer.setBaseShapesVisible(false);
+            renderer.setBaseShapesFilled(false);
             renderer.setDrawSeriesLineAsPath(true);
-        }
+           
+        }*/
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-yyyy"));
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
         return chart;
 
     }
@@ -265,16 +267,16 @@ public class LineChart extends Chart{
         plot.setDomainGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setRangeGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-        plot.setDomainCrosshairVisible(true);
-        plot.setRangeCrosshairVisible(true);
+        plot.setDomainCrosshairVisible(false);
+        plot.setRangeCrosshairVisible(false);
 
-        XYItemRenderer r = plot.getRenderer();
+       /* XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
-        }
+        }*/
 
         return chart;
 
@@ -308,16 +310,16 @@ public class LineChart extends Chart{
         plot.setDomainGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setRangeGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-        plot.setDomainCrosshairVisible(true);
-        plot.setRangeCrosshairVisible(true);
+        plot.setDomainCrosshairVisible(false);
+        plot.setRangeCrosshairVisible(false);
 
-        XYItemRenderer r = plot.getRenderer();
+        /*XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
-        }     
+        }    */ 
         return chart;
 
     }
@@ -349,16 +351,16 @@ public class LineChart extends Chart{
         plot.setDomainGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setRangeGridlinePaintType(new SolidColor(Color.WHITE));
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-        plot.setDomainCrosshairVisible(true);
-        plot.setRangeCrosshairVisible(true);
+        plot.setDomainCrosshairVisible(false);
+        plot.setRangeCrosshairVisible(false);
 
-        XYItemRenderer r = plot.getRenderer();
+        /*XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
-        }     
+        }   */  
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
       
