@@ -5,12 +5,11 @@ import java.net.MalformedURLException;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
-import twitter4j.auth.RequestToken;
+
 
 import com.glm.app.UserDetailsActivity;
 import com.glm.app.db.Database;
 import com.glm.bean.ConfigTrainer;
-import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.fb.FacebookConnector;
@@ -346,7 +345,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 			ActivityHelper.startOriginalActivityAndFinish(this);			
 		}catch (NullPointerException e) {
 			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-			Intent intent = ActivityHelper.createActivityIntent(this,MainActivity.class);
+			Intent intent = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
 			//startActivity(intent);
 			ActivityHelper.startNewActivityAndFinish(this, intent);	
 			//Log.e(this.getClass().getCanonicalName(),"Error back");

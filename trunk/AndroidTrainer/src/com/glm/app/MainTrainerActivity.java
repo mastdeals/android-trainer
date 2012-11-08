@@ -2,7 +2,6 @@ package com.glm.app;
 
 import com.glm.app.AboutActivity;
 import com.glm.app.ActivityHelper;
-import com.glm.app.ChangeLogActivity;
 import com.glm.app.GoalActivity;
 import com.glm.app.ManualWorkout;
 import com.glm.app.PrefActivity;
@@ -109,6 +108,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       } else {
 	         Log.v(this.getClass().getCanonicalName(), "Already registered");
 	       }
+	       
+	       ExerciseUtils.removeFirstBoot(getApplicationContext());
 	       
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
