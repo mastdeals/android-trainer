@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.glm.services.IExerciseService;
-import com.glm.trainer.MainTrainerActivity;
+import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.app.ShareFromService;
 import com.glm.bean.CardioDevice;
@@ -683,7 +683,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
         // The PendingIntent to launch our activity if the user selects this notification Controller
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainTrainerActivity.class), 0);
+                new Intent(this, MainActivity.class), 0);
 
         // Set the info for the views that show in the notification panel.
         notification.setLatestEventInfo(this, charSequence,

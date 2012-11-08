@@ -6,7 +6,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import com.glm.bean.ConfigTrainer;
-import com.glm.trainer.MainTrainerActivity;
+import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.tw.Const;
@@ -75,7 +75,7 @@ public class TwitterAuthActivity extends Activity{
                  			ActivityHelper.startOriginalActivityAndFinish(TwitterAuthActivity.this);			
                  		}catch (NullPointerException e) {
                  			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-                 			Intent intentMain = ActivityHelper.createActivityIntent(TwitterAuthActivity.this,MainTrainerActivity.class);
+                 			Intent intentMain = ActivityHelper.createActivityIntent(TwitterAuthActivity.this,MainActivity.class);
                  			//startActivity(intent);
                  			ActivityHelper.startNewActivityAndFinish(TwitterAuthActivity.this, intentMain);	
                  			//Log.e(this.getClass().getCanonicalName(),"Error back");
@@ -91,7 +91,7 @@ public class TwitterAuthActivity extends Activity{
         			ActivityHelper.startOriginalActivityAndFinish(this);			
         		}catch (NullPointerException e1) {
         			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-        			Intent intentMain = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
+        			Intent intentMain = ActivityHelper.createActivityIntent(this,MainActivity.class);
         			//startActivity(intent);
         			ActivityHelper.startNewActivityAndFinish(this, intentMain);	
         			//Log.e(this.getClass().getCanonicalName(),"Error back");
@@ -130,7 +130,7 @@ public class TwitterAuthActivity extends Activity{
     			ActivityHelper.startOriginalActivityAndFinish(this);			
     		}catch (NullPointerException e) {
     			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-    			Intent intentMain = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
+    			Intent intentMain = ActivityHelper.createActivityIntent(this,MainActivity.class);
     			//startActivity(intent);
     			ActivityHelper.startNewActivityAndFinish(this, intentMain);	
     			//Log.e(this.getClass().getCanonicalName(),"Error back");
