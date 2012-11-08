@@ -1,4 +1,4 @@
-package com.glm.trainer;
+package com.glm.app;
 
 import com.glm.app.AboutActivity;
 import com.glm.app.ActivityHelper;
@@ -16,7 +16,6 @@ import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
-import com.glm.trainer.MainTrainerActivity;
 
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.fb.FacebookConnector;
@@ -53,7 +52,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
-
+import com.glm.trainer.R;
 
 public class MainTrainerActivity  extends Activity implements OnClickListener {
 	private boolean isLicence=false;
@@ -541,13 +540,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			    	    Log.i(this.getClass().getCanonicalName(),"Pacchetto Versione"+sVersionPackage);
 			    	} catch (NameNotFoundException e) {
 			    	   Log.e(this.getClass().getCanonicalName(),"Pacchetto non trovato");
-			    	}
-			    	
-				    if(ExerciseUtils.isFirstBoot(getApplicationContext(),oConfigTrainer, sVersionPackage)){
-				    	Intent intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,ChangeLogActivity.class);
-						//startActivity(intent);
-				    	ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);	
-				    }
+			    	}			    					   
 				    
 			    	doBindService();
 			    	

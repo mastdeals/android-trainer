@@ -1,7 +1,7 @@
 package com.glm.app.widget;
 
 import com.glm.bean.Summary;
-import com.glm.trainer.MainTrainerActivity;
+import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 
@@ -34,7 +34,7 @@ public class AndroidTrainerWidget extends AppWidgetProvider {
     	
         
     	
-    	PendingIntent pendingIntent = PendingIntent.getActivity(oContext, 0, new Intent(oContext,MainTrainerActivity.class), 0);
+    	PendingIntent pendingIntent = PendingIntent.getActivity(oContext, 0, new Intent(oContext,MainActivity.class), 0);
     	
     	updateViews.setOnClickPendingIntent(R.id.imgTrainer, pendingIntent);
 		
@@ -77,7 +77,7 @@ public class AndroidTrainerWidget extends AppWidgetProvider {
             	updateViews.setTextViewText(R.id.txtSteps, "-");  
             }
         	             	
-        	PendingIntent pendingIntent = PendingIntent.getActivity(oContext, 0, new Intent(oContext,MainTrainerActivity.class), 0);
+        	PendingIntent pendingIntent = PendingIntent.getActivity(oContext, 0, new Intent(oContext,MainActivity.class), 0);
         	
         	updateViews.setOnClickPendingIntent(R.id.imgTrainer, pendingIntent);
     		   		

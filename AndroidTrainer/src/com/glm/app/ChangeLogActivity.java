@@ -1,8 +1,6 @@
 package com.glm.app;
 
-import java.util.Locale;
-
-import com.glm.trainer.MainTrainerActivity;
+import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import android.app.Activity;
@@ -99,7 +97,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
 			try{			
 				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://market.android.com/details?id=com.glm.trainer");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainerlite");
 				sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(Intent.createChooser(sharingIntent,"Share using"));
 			}catch (Exception e) {
