@@ -1,6 +1,7 @@
 package com.glm.services;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gcm.GCMRegistrar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,7 @@ public class GCMIntentService extends GCMBaseIntentService{
 	@Override
 	protected void onRegistered(Context context, String redID) {
 		// TODO Auto-generated method stub
-		 
+		GCMRegistrar.setRegisteredOnServer(context, true);
 	}
 
 	@Override
