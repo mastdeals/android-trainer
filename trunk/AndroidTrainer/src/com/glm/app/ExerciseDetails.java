@@ -9,6 +9,9 @@ import com.glm.bean.ExerciseManipulate;
 import com.glm.chart.LineChart;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.fb.FacebookConnector;
+import com.glm.utils.quickaction.ActionItem;
+import com.glm.utils.quickaction.QuickAction;
+import com.glm.utils.quickaction.QuickBar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -75,6 +78,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	
 	private RelativeLayout oAvgBpm;
 	
+	private RelativeLayout oInfo;
+	
 	private EditText oNote;
 	
 	private LinearLayout oMainLinearLayout;
@@ -113,15 +118,16 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oTxt_AvgBpm	  = (TextView) findViewById(R.id.textAvgBpm);
         
         oMaxBpm	  		= (RelativeLayout) findViewById(R.id.RLMaxBpm);
-        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);     	
+        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);   
+        oInfo			= (RelativeLayout) findViewById(R.id.btnInfo);   
         oGraph			= (LinearLayout) findViewById(R.id.llGraph);
         oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
         
         oNote		  = (EditText) findViewById(R.id.txtNote);
-        oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
+       /* oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
         oBtnExportGPX = (Button) findViewById(R.id.btnExportGPX);
         oBtnExportTCX = (Button) findViewById(R.id.btnExportTCX);
-        oBtnShareFB   = (ImageButton) findViewById(R.id.btnShareFB);
+      */  oBtnShareFB   = (ImageButton) findViewById(R.id.btnShareFB);
         oBtnGraph     = (Button) findViewById(R.id.btnGraph);
         oBtnGMap	  = (Button) findViewById(R.id.btnGmap);
         
@@ -153,14 +159,14 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
         oBtn_SaveShare.setText(R.string.edit_note);
               
-        oBtn_SaveShare.setOnClickListener(this);
+       /* oBtn_SaveShare.setOnClickListener(this);
         oBtnExportKML.setOnClickListener(this);
         oBtnExportGPX.setOnClickListener(this);
         oBtnExportTCX.setOnClickListener(this);
-        oBtnShareFB.setOnClickListener(this);
+        oBtnShareFB.setOnClickListener(this);*/
         oBtnGraph.setOnClickListener(this);
         oBtnGMap.setOnClickListener(this);
-        
+        oInfo.setOnClickListener(this);
         oMainLinearLayout.clearAnimation();
         oMainLinearLayout.setAnimation(a);        
 	}
@@ -191,6 +197,13 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		}else if(oObj.getId()==R.id.btnShareFB){
 			//Manual Sharing
 			manualShare();
+			//QuickBar oBar = new QuickBar(getApplicationContext());
+			//oBar.getQuickAction().show(oObj);
+		}else if(oObj.getId()==R.id.btnInfo){
+			//Manual Sharing
+			//manualShare();
+			QuickBar oBar = new QuickBar(getApplicationContext());
+			oBar.getQuickAction().show(oObj);
 		}else if(oObj.getId()==R.id.btnExportGPX){	
 			if(ExerciseUtils.writeGPX(-1,getApplicationContext(),oConfigTrainer)){
 				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
