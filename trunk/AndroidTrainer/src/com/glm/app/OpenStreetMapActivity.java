@@ -3,6 +3,7 @@ package com.glm.app;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.NewExercise;
 import com.glm.services.ExerciseService;
@@ -10,6 +11,7 @@ import com.glm.services.IExerciseService;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.JsHandler;
+import com.glm.utils.animation.ActivitySwitcher;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -29,6 +31,7 @@ import android.webkit.WebView;
 import android.webkit.WebSettings.ZoomDensity;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
@@ -47,13 +50,14 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 	boolean mIsBound=false;
 	/**Oggetto connessione al servizio*/
 	private TrainerServiceConnection mConnection = new TrainerServiceConnection();
+	private RelativeLayout oMainLayout;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stopwatch_map);        
 		/**Bind col servizio*/
         doBindService();   
-
+        oMainLayout = (RelativeLayout) findViewById(R.id.MainLayout);
 		wv 				= (WebView) findViewById(R.id.wv1); 
 		oBtnBack 		= (Button) findViewById(R.id.btnBack); 
 		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
@@ -80,14 +84,16 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		btnSkipTrack.setOnClickListener(this);
 	}
 	@Override
-	public void onBackPressed() {
-		
+	public void onBackPressed() {		
 		updateMap.cancel();
 		doUnbindService();
 		ActivityHelper.startOriginalActivityAndFinish(this);
 	}
 	@Override
 	protected void onResume() {
+		
+		// animateIn this activity
+		ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
 		super.onResume();
 		jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 		try {	           
@@ -101,10 +107,10 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 			//Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/map/jsmap.html");
 			wv.loadUrl("file:///android_asset/map/jsmap.html");
 			updateMap();
-		} catch (Exception e) {
-			// Should never happen!
-			throw new RuntimeException(e);
-		}		
+		} catch (RuntimeException e) {
+			Log.e(this.getClass().getCanonicalName(),"Error Runtime");
+		}	
+		
 	}
 
 
@@ -113,7 +119,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		if(oObj.getId()==R.id.btnBack){
 			updateMap.cancel();
 			doUnbindService();
-			ActivityHelper.startOriginalActivityAndFinish(this);
+			ActivityHelper.startOriginalActivityAndFinish(this);			
 		}if(oObj.getId()==R.id.btnSkipTrack){
 			if(oConfigTrainer.isbPlayMusic()){
 				if(mIService!=null){

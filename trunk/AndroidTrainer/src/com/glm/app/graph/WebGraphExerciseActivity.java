@@ -1,6 +1,10 @@
 package com.glm.app.graph;
 
+import org.taptwo.android.widget.CircleFlowIndicator;
+import org.taptwo.android.widget.ViewFlow;
+
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,31 +18,32 @@ import com.glm.bean.ExerciseManipulate;
 import com.glm.chart.LineChart;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.GraphAdapter;
 
-public class WebGraphExerciseActivity extends Activity implements OnClickListener{
-	private ConfigTrainer oConfigTrainer;
-	private Button oBtnALT;
+public class WebGraphExerciseActivity extends Activity{
+	private ConfigTrainer oConfigTrainer;	
 	
-	private Button oBtnPace;
+	private String sType="0";	
 	
-	private Button oBtnBpm;
-	
-	private String sType="0";
-	
-	private LinearLayout oGraphLayout;
-	
+	private ViewFlow viewFlow;
+	private GraphAdapter mGraphadapter;
+	private CircleFlowIndicator indic;
 	public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.web_exercise_graph);        
+	        setContentView(R.layout.flow_exercise_graph);        
 	        
-	        oBtnALT		  = (Button) findViewById(R.id.btnALT);
-	        oBtnPace	  = (Button) findViewById(R.id.btnPace);
-	        oBtnBpm 	  = (Button) findViewById(R.id.btnBPM);
-	        oGraphLayout  = (LinearLayout) findViewById(R.id.graphLayout);
+	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+	        ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());	        	       	      
 	        
-	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);				
-		    ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());
-		 
+	        viewFlow 	  = (ViewFlow) findViewById(R.id.viewflow);
+	        indic 		  = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
+	        
+	        mGraphadapter = new GraphAdapter(getApplicationContext());
+	          
+		    	    
+		    viewFlow.setAdapter(mGraphadapter);
+		    viewFlow.setFlowIndicator(indic);	 
+		    
 	        /*JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 	        try {	           
 	            // Load the local file into the webview\
@@ -54,7 +59,7 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	            // Should never happen!
 	            throw new RuntimeException(e);
 	        }*/
-	        Bundle extras = getIntent().getExtras();
+/*	        Bundle extras = getIntent().getExtras();
 	        if(extras !=null)
 	        {
 	     	   sType = extras.getString("graph");
@@ -80,14 +85,20 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
 	    	}
 	        oBtnALT.setOnClickListener(this);
 	        oBtnPace.setOnClickListener(this);     
-	        oBtnBpm.setOnClickListener(this);
+	        oBtnBpm.setOnClickListener(this);*/
 	 }
+	/* If your min SDK version is < 8 you need to trigger the onConfigurationChanged in ViewFlow manually, like this */	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		viewFlow.onConfigurationChanged(newConfig);
+	}
 	 @Override
 	 public void onBackPressed() {
 		 ActivityHelper.startOriginalActivityAndFinish(this);
 		 this.finish();
 	 }
-	@Override
+	/*@Override
 	public void onClick(View oObj) {
 		if(oObj.getId()==R.id.btnALT){
 			//wv.loadUrl("file:///android_asset/jflot/graphtrainerexercisealt.html");
@@ -105,5 +116,5 @@ public class WebGraphExerciseActivity extends Activity implements OnClickListene
         	oGraphLayout.removeAllViews();
 			oGraphLayout.addView(oChart);
 		}
-	}
+	}*/
 }

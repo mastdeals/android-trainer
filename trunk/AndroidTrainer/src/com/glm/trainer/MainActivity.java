@@ -178,21 +178,22 @@ public class MainActivity  extends Activity{
                 				}
             					intent.putExtra("Status", "service_under_user_pause");
             					ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);
+            				}else{
+            					if(!ExerciseUtils.isUserExist(getApplicationContext())){
+                    				Intent intent = ActivityHelper.createActivityIntent(MainActivity.this,UserDetailsActivity.class);            				
+                    				ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);	
+            			    	}else{
+            			    		Intent intent=ActivityHelper.createActivityIntent(MainActivity.this,MainTrainerActivity.class);            				
+            			    		ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);
+            			    	}
             				}
             				   				
             			}
-            			if(!ExerciseUtils.isUserExist(getApplicationContext())){
-            				Intent intent = ActivityHelper.createActivityIntent(MainActivity.this,UserDetailsActivity.class);            				
-            				ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);	
-    			    	}else{
-    			    		Intent intent=ActivityHelper.createActivityIntent(MainActivity.this,MainTrainerActivity.class);            				
-    			    		ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);
-    			    	}
+            			
 	                }catch (Exception e) {
 	                	Log.e(this.getClass().getCanonicalName(), "onServiceConnected->Remote Exception"+e.getMessage());
 	                	e.printStackTrace();
-					}
-	                
+					}	                
 	        } 
 	        @Override 
 	        public void onServiceDisconnected(ComponentName name) 

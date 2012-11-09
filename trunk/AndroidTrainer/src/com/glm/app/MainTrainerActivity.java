@@ -17,6 +17,7 @@ import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
 
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.animation.ActivitySwitcher;
 import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.tw.Const;
 import com.google.android.vending.licensing.AESObfuscator;
@@ -66,7 +67,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	private static final String SENDER_ID = "558307532040";
     private TelephonyManager oPhone;
     /**Gestione della licenza*/
-	
+    private LinearLayout oMainLayout;
 	private LinearLayout oStartRunningExercise;
 	private LinearLayout oStartWalkingExercise;
 	private LinearLayout oStartBikingExercise;
@@ -99,6 +100,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       super.onCreate(savedInstanceState);
 	       setContentView(R.layout.new_main_page);
 	       
+	       oMainLayout = (LinearLayout) findViewById(R.id.objMainLayout);
 	       
 	       GCMRegistrar.checkDevice(this);
 	       GCMRegistrar.checkManifest(this);
@@ -177,7 +179,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			}else{
 				Intent intent = ActivityHelper.createActivityIntent(this,WorkOutActivity.class);
 				intent.putExtra("type", 100);
-				ActivityHelper.startNewActivityAndFinish(this, intent);			
+				ActivityHelper.startNewActivityAndFinish( MainTrainerActivity.this, intent);			
 			}
 		}else if(oObj.getId()==R.id.btnManualWalk){
 			//Manual WorkOut
@@ -209,7 +211,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			}else{
 				Intent intent = ActivityHelper.createActivityIntent(this,WorkOutActivity.class);
 				intent.putExtra("type", 1);
-				ActivityHelper.startNewActivityAndFinish(this, intent);	
+				ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);	
 			}
 									
 		}else if(oObj.getId()==R.id.btn_history){
@@ -318,7 +320,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	                	mIService= IExerciseService.Stub.asInterface(service);
 	                	
 	            		
-            			if(mIService.isServiceAlive() && 
+            			/*if(mIService.isServiceAlive() && 
             					mIService.isRunning()){
             				//Toast.makeText(MainTrainerActivity.this, "First type: "+mIService.getiTypeExercise(),
         	    	        //        Toast.LENGTH_LONG).show();
@@ -377,7 +379,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
             			}else{
             				//Log.v(this.getClass().getCanonicalName(), "SERVICE NOT IS RUNNING");
             				
-            			}
+            			}*/
 	            		
 	                }catch (Exception e) {
 	                	Log.e(this.getClass().getCanonicalName(), "onServiceConnected->Remote Exception"+e.getMessage());
@@ -600,6 +602,21 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			Toast.makeText(this, "ERROR DIALOG:"+e.getMessage(), Toast.LENGTH_SHORT).show();
 			Log.e("MEEERR: ",e.getMessage());
 		}
+	}
+	
+	private void animatedStartActivity() {
+		// we only animateOut this activity here.
+		// The new activity will animateIn from its onResume() - be sure to implement it.
+		final Intent intent = new Intent(getApplicationContext(), WorkOutActivity.class);
+		// disable default animation for new intent
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		ActivitySwitcher.animationOut(oStartRunningExercise, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener() {
+			@Override
+			public void onAnimationFinished() {
+				startActivity(intent);
+				finish();
+			}
+		});
 	}
 }
 

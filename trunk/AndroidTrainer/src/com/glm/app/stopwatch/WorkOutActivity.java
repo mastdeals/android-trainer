@@ -3,6 +3,7 @@ package com.glm.app.stopwatch;
 
 
 import com.glm.services.IExerciseService;
+import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
 import com.glm.app.MainTrainerActivity;
@@ -12,6 +13,7 @@ import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.StopwatchUtils;
+import com.glm.utils.animation.ActivitySwitcher;
 import com.glm.utils.sensor.BlueToothHelper;
 
 import android.location.LocationManager;
@@ -53,8 +55,7 @@ import android.graphics.Typeface;
 public class WorkOutActivity extends Activity implements OnClickListener{
 	/**indica se è stato premuto il pulsante avvia*/
 	private boolean bInStarting=false; 
-	private float fWeight=0;
-	private Animation a;
+	private float fWeight=0;	
 	protected static final int GUIUPDATEIDENTIFIER = 0x101;
 	protected static final int PAUSEEXERCISE = 0x1337;	
 	protected static final int AUTOPAUSEEXERCISE= 0x1338;
@@ -128,7 +129,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	/**Thread principale che avvia il nuovo esercizio**/
 	private Thread ThreadTrainer;
     
-	private RelativeLayout oMainLayout;
+	private LinearLayout oMainLayout;
 	
 	/**Messaggi del/per server*/
 	//private Messenger mMessenger =null;
@@ -335,11 +336,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         /**Bind col servizio*/
         doBindService();      
         
-        a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
-        a.reset();
+        //a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
+        //a.reset();
         
         setContentView(R.layout.stopwatch_full);      
-        oMainLayout = (RelativeLayout) findViewById(R.id.MainLayout);
+        oMainLayout = (LinearLayout) findViewById(R.id.MainLayout);
          
         //setContentView(this.StopwatchView);
         //Avvio Automatico del timer
@@ -439,11 +440,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         //Cambio lo stato del flop/flop iStartTrainer
 		changeGUIStatus();
 		
-        oMainLayout.clearAnimation();
-        oMainLayout.setAnimation(a);                  
+        //oMainLayout.clearAnimation();
+        //oMainLayout.setAnimation(a);                  
     }
 	@Override
 	protected void onResume() {		
+		ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
 		bShowAlert=true;
 		if(I_TYPE_OF_TRAINER==1){
 			Toast.makeText(this, this.getString(R.string.bike), Toast.LENGTH_SHORT).show();
@@ -456,10 +458,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		super.onResume();
 		
 		//Cambio lo stato del flop/flop iStartTrainer
-		changeGUIStatus();
-		
-		oMainLayout.clearAnimation();
-		oMainLayout.setAnimation(a);   
+		changeGUIStatus();		
 	}
 	
 	/**
@@ -637,12 +636,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				}
 			}
 		}if(oObj.getId()==R.id.btnMaps){			
-				if(oConfigTrainer.isbDisplayMap()) {					
+				if(oConfigTrainer.isbDisplayMap()) {						
 					Intent intent = ActivityHelper.createActivityIntent(this,OpenStreetMapActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					//startActivity(intent);
-					ActivityHelper.startNewActivityAndFinish(this, intent);	   
-					finish();
+					ActivityHelper.startNewActivityAndFinish(oMainLayout,this, intent);					
 				}
 				return;		
 		}
@@ -817,7 +815,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	/**Test code UP**/
 	@Override
 	public void onBackPressed() {	
-		
+		Intent intent = null;
 		if(mIService!=null) {
 			try {
 				if(mIService.isRunning()){
@@ -830,15 +828,17 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					return;
 				}else{
 					doUnbindService();
-					ActivityHelper.startOriginalActivityAndFinish(this);
+					intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);	
+					ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this, intent);					
 				}
 			} catch (RemoteException e) {
 				Log.e(this.getClass().getCanonicalName(),"onBackPressed RemoteException: "+e.getMessage());
-				ActivityHelper.startOriginalActivityAndFinish(this);
+				intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);	
+				ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this, intent);		
 			}
 		}
-		
-		ActivityHelper.startOriginalActivityAndFinish(this);
+		intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);	
+		ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this, intent);		
 	}
 	/**
 	 * Thread principale che viene avviato per far partire l'esercizio
@@ -1078,5 +1078,5 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		    
 			return true;
 		}
-	}
+	}	
 }
