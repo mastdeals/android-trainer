@@ -6,15 +6,14 @@
 	android:layout_margin="0dip"
 	android:id="@+id/objMainLayout" 	
 	android:background="@drawable/main_gradient" android:gravity="right"
-	android:keepScreenOn="true">
+	android:keepScreenOn="true" xmlns:app="http://schemas.android.com/apk/res/com.glm.trainer">
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/lista_gradient"
-        android:padding="6dip" >
-
+        android:padding="6dip" >		
         <Button
             android:id="@+id/btnBPM"
             android:layout_width="wrap_content"
@@ -74,7 +73,7 @@
 							    android:layout_width="match_parent"
 							    android:layout_height="match_parent"
 							    android:background="@drawable/web_container"
-							    android:orientation="vertical" >
+							    android:orientation="vertical" >							    
 				           	</LinearLayout>
 				</LinearLayout>	
 				<!-- Dettaglio Graph Inizio -->	    									            			  	

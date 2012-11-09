@@ -1,7 +1,11 @@
 package com.glm.app;
 
+import com.glm.app.stopwatch.WorkOutActivity;
+import com.glm.utils.animation.ActivitySwitcher;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 public class ActivityHelper {
     static private final String EXTRA_WRAPPED_INTENT = "ActivityHelper_wrappedIntent";
@@ -42,9 +46,27 @@ public class ActivityHelper {
      * @param intent
      */
     public static void startNewActivityAndFinish(Activity activity,
-            Intent intent) {
+            Intent intent) {    	
         activity.startActivity(intent);
         activity.finish();        
+    }
+    /**
+     * Start the precondition activity using a given intent, which should have
+     * been created by calling createPreconditionIntent.
+     * @param activity
+     * @param intent
+     */
+    public static void startNewActivityAndFinish(View container, final Activity activity,
+    		final Intent intent) {      	
+		// disable default animation for new intent
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		ActivitySwitcher.animationOut(container, activity.getWindowManager(), new ActivitySwitcher.AnimationFinishedListener() {
+			@Override
+			public void onAnimationFinished() {
+				activity.startActivity(intent);
+				activity.finish();
+			}
+		});
     }
     /**
      * Ritorna l'activity che ha lanciato l'attuale
