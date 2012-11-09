@@ -62,11 +62,11 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	
 	private TextView oTxt_AvgBpm;
 	
-	private Button oBtnExportKML;
+	/*private Button oBtnExportKML;
 	
 	private Button oBtnExportGPX;
 	
-	private Button oBtnExportTCX;
+	private Button oBtnExportTCX;*/
 	
 	private ImageButton oBtnShareFB;
 	
@@ -127,7 +127,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
        /* oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
         oBtnExportGPX = (Button) findViewById(R.id.btnExportGPX);
         oBtnExportTCX = (Button) findViewById(R.id.btnExportTCX);
-      */  oBtnShareFB   = (ImageButton) findViewById(R.id.btnShareFB);
+      */  
+        oBtnShareFB   = (ImageButton) findViewById(R.id.btnShareFB);
         oBtnGraph     = (Button) findViewById(R.id.btnGraph);
         oBtnGMap	  = (Button) findViewById(R.id.btnGmap);
         
