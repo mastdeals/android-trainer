@@ -119,7 +119,7 @@
 				</receiver>
 		</activity>			
 		<activity android:name="com.glm.app.AboutActivity"  android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name="com.glm.app.ExerciseDetails"  android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>		
+		<activity android:name="com.glm.app.ExerciseDetails"  android:configChanges="orientation|keyboardHidden" android:launchMode="standard" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>		
 		<activity android:name="com.glm.app.SummaryActivity"  android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="com.glm.app.ManualWorkout"  android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="com.glm.app.GMapActivity"  android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"></activity>		
