@@ -33,6 +33,7 @@ import com.glm.utils.ExerciseUtils;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class LineChart extends Chart{
 	
@@ -192,6 +193,12 @@ public class LineChart extends Chart{
 		return dataset;
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	/**
      * Creates a chart.
      *
