@@ -182,11 +182,11 @@ public class HistoryActivity extends Activity implements OnClickListener {
      * **/
 	private void populateHistoryRow(LinearLayout oRowLayout, String sIDExercise, 
 									String sTitle, String sNote, String sStart, String sEnd, int iBar,final String sDistanceFormatted,
-									final String sAVGSpeed, final String sTotalTime, final String sTotalKalories, int iTypeExercise, int nRow) {
+									final String sAVGSpeed, final String sTotalTime, final String sTotalKalories, final int iTypeExercise, int nRow) {
 		
 		//Inserimento della riga dinamica
 	    LinearLayout oLinear = new LinearLayout(this);
-	    oLinear = (LinearLayout) getLayoutInflater().inflate(R.layout.new_row_history, null);
+	    oLinear = (LinearLayout) getLayoutInflater().inflate(R.layout.new_row_history1, null);
 	    String sDistance="";
 
 	    
@@ -208,7 +208,8 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	    			for(int j=0;j<jChild;j++){
 	   	    				//Log.v(this.getClass().getCanonicalName(),"oInternalRelative "+i+": "+ oInternalRelative.getChildAt(j).getClass().getCanonicalName());
 	   		   	 	   	 
-	   	   	   	    		if(j==0){	   	   	   	       
+	   	   	   	    		if(j==0){
+	   	   	   	    			if(j==0) continue;
 	   	   	   	    			//BarLinear
 	   	   	   	    			/**BAR LINEAR*/
 	   	   	   	    			LinearLayout oTopLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   	 
@@ -340,7 +341,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	   	   	    					oTextDett.setText(sTotalTime);
 	   	   	   	    				}else if (iTopLinear==2){
 	   	   	   	    					//Kalorie
-	   	   	   	    					oTextDett.setText(sTotalKalories);
+	   	   	   	    					oTextDett.setText(sTotalKalories+" "+getString(R.string.kalories));
 	   	   	   	    				}
 	   	   	   	    				oTextDett=null;
 	   	   	    				}
@@ -455,8 +456,60 @@ public class HistoryActivity extends Activity implements OnClickListener {
 									}
 								});
 	   	   	    				oBottomLinear=null;
+	   	   	    			/**BOTTOM LINEAR*/  
+	   	    				}else if(j==4){
+	   	    					LinearLayout oBottomLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   
+	   	    					int iBottomChild=oBottomLinear.getChildCount();
+	   	   	    				for(int iBottomLinear=0;iBottomLinear<iBottomChild;iBottomLinear++){
+	   	   	    					if(iBottomLinear==0){
+	   	   	    						//Type Exercise
+		   	    	   	   	    		ImageView oImgType = (ImageView)oBottomLinear.getChildAt(iBottomLinear);
+		   	    	   	   	    		oImgType.setClickable(true);
+		   	    	   	   	    		oImgType.setOnClickListener(new OnClickListener() {
+											@Override
+											public void onClick(View oRow) {									
+												if(iTypeExercise==1000
+														||iTypeExercise==1001 ||
+														iTypeExercise==10000){
+													Toast.makeText(getBaseContext(), getApplicationContext().getString(R.string.not_avail_manual), Toast.LENGTH_SHORT)
+													.show();
+												}else{
+													ExerciseManipulate.setiIDExercise(oRow.getId());
+													Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,ExerciseDetails.class);
+													//startActivity(intent);
+													ActivityHelper.startNewActivityAndFinish(HistoryActivity.this, intent);	
+												}
+											}   	   	   	    				
+			   	   	   	    			});
+	   	   	    					}
+	   	   	    				}  	 	   	   	    			
+		   	   	    			oBottomLinear.setClickable(true);
+		   	   	    			oBottomLinear.setId(Integer.parseInt(sIDExercise));
+			   	   	    		if(iTypeExercise==1000
+										||iTypeExercise==1001 ||
+										iTypeExercise==10000){
+			   	   	    			oBottomLinear.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View oRow) {									
+										Toast.makeText(getBaseContext(), getApplicationContext().getString(R.string.not_avail_manual), Toast.LENGTH_SHORT)
+										.show();	
+									}   	   	   	    				
+	   	   	   	    			});
+								}else{
+									oBottomLinear.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View oRow) {									
+											
+											ExerciseManipulate.setiIDExercise(oRow.getId());
+											Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,ExerciseDetails.class);
+											//startActivity(intent);
+											ActivityHelper.startNewActivityAndFinish(HistoryActivity.this, intent);	
+											
+										}   	   	   	    				
+		   	   	   	    			});
+								}
 	   	    				}
-	   	    				/**BOTTOM LINEAR*/  	    				   	   	   	    		  	   	   	    		  	   	   	    		   	    				
+	   	    					    				   	   	   	    		  	   	   	    		  	   	   	    		   	    				
 	   	   	   	    	}
 	   	    		}   	    		
 	   	    	}   	    	   	    
@@ -626,7 +679,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
    			int iNote = oCursor.getColumnIndex("note");
    			int iStart = oCursor.getColumnIndex("start_date");
    			int iEnd = oCursor.getColumnIndex("end_date");
-   			int iKalories = oCursor.getColumnIndex("calorie_burn");
+   			int iKalories = oCursor.getColumnIndex("kalories");
    			int iTypeExercise = oCursor.getColumnIndex("id_type_exercise");
    			int iAVGSpeed = oCursor.getColumnIndex("avg_speed");
    			int iTotalTime = oCursor.getColumnIndex("total_time");
@@ -653,7 +706,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
    				oExerxise.setiTypeExercise(oCursor.getInt(iTypeExercise));   				
    				oExerxise.setfDistance(fDistance);
    				oExerxise.setsDistanceFormatted(ExerciseUtils.getTotalDistanceFormattated(fDistance, oConfigTrainer,true));   				
-   				oExerxise.setsTotalKalories(oCursor.getString(iKalories));
+   				oExerxise.setsTotalKalories(String.valueOf(oCursor.getInt(iKalories)));
    				oExerxise.setsTotalTime(oCursor.getString(iTotalTime));  
    				oExerxise.setsAVGSpeed(ExerciseUtils.getFormattedAVGSpeedMT(oCursor.getDouble(iAVGSpeed),oConfigTrainer));
    				vExercise.add(oExerxise); 				

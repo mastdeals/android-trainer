@@ -2,8 +2,6 @@ package com.glm.app;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.NewExercise;
 import com.glm.services.ExerciseService;
@@ -110,6 +108,12 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		} catch (RuntimeException e) {
 			Log.e(this.getClass().getCanonicalName(),"Error Runtime");
 		}	
+		
+		if(oConfigTrainer.isbPlayMusic()){
+	       	btnSkipTrack.setVisibility(View.VISIBLE);
+	    }else{
+	      	btnSkipTrack.setVisibility(View.INVISIBLE);
+	    }
 		
 	}
 

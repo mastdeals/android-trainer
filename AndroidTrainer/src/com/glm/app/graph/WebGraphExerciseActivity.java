@@ -91,7 +91,7 @@ public class WebGraphExerciseActivity extends Activity{
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		viewFlow.onConfigurationChanged(newConfig);
+		//viewFlow.onConfigurationChanged(newConfig);
 	}
 	 @Override
 	 public void onBackPressed() {
