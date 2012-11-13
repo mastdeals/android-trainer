@@ -997,8 +997,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	if(MotivatorTimer!=null) MotivatorTimer.cancel();
     	//SAVE
     	bStopListener=true;
-    	mNM.cancel(NOTIFICATION);
-	    bStopListener=true;
+    	mNM.cancel(NOTIFICATION);	    
 	    isRunning = false;	    
 	    isAutoPause=false;
 	    ExerciseUtils.saveExercise(mContext,oConfigTrainer,iStep);	 
@@ -1166,6 +1165,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		@Override
 		public void shutDown() throws RemoteException {
+			bStopListener	= true;
+	    	isRunning 		= false;  
+	    	isServiceAlive 	= true;
+	    	isAutoPause     = false;
+	    	if(mNM!=null) mNM.cancel(NOTIFICATION);	
 			stopSelf();
 		}
 		@Override
