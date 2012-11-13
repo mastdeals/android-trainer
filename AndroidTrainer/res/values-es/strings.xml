@@ -175,4 +175,5 @@
     <string name="heart_rate">frecuencia cardiaca</string>
     <string name="vote">Votar</string>  
     <string name="gpsfix">Esperando a los datos del GPS</string>
+<string name="erase">Eliminar</string>
 </resources>

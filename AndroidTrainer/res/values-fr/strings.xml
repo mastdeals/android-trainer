@@ -188,4 +188,5 @@
     <string name="heart_rate">"fréquence cardiaque"</string>
     <string name="vote">"Voter"</string>      
     <string name="gpsfix">En attente de données GPS</string>
+<string name="erase">Supprimer</string>
 </resources>

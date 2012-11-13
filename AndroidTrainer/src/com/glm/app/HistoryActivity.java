@@ -186,7 +186,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 		
 		//Inserimento della riga dinamica
 	    LinearLayout oLinear = new LinearLayout(this);
-	    oLinear = (LinearLayout) getLayoutInflater().inflate(R.layout.new_row_history1, null);
+	    oLinear = (LinearLayout) getLayoutInflater().inflate(R.layout.new_row_history, null);
 	    String sDistance="";
 
 	    
