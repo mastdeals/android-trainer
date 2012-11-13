@@ -51,6 +51,10 @@ public class TrackOverlay extends Overlay {
     }
     
     private GeoPoint[] populateTrackPoints(GeoPoint[] routePoints, ArrayList<WatchPoint> aWPList) {
+    	if((aWPList.size()-1) <= 0) {
+    		routePoints = new GeoPoint[1];
+    		return routePoints;
+    	}
     	routePoints = new GeoPoint[aWPList.size()-1];  	 		
 		if(aWPList.size()==0) return null;
 		int iSize=aWPList.size()-2;

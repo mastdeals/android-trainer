@@ -5,7 +5,7 @@
 	android:layout_width="match_parent" 
 	android:orientation="vertical"
 	android:layout_margin="0dip"
-	android:background="@drawable/lista_title">
+	android:background="@drawable/lista_title_options">
 	<TableLayout android:id="@+id/tableLayout1" 
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content">

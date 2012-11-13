@@ -27,9 +27,7 @@ public class QuickBar{
         mKMLItem    = new ActionItem(6, "KML", mContext.getResources().getDrawable(R.drawable.export));
         mGPXItem    = new ActionItem(7, "GPX", mContext.getResources().getDrawable(R.drawable.export));
         mTCXItem    = new ActionItem(8, "TCX", mContext.getResources().getDrawable(R.drawable.export));
-
-        mMapItem.setSticky(true);
-        mGraphItem.setSticky(true);
+        
         quickAction = new QuickAction(mContext, QuickAction.VERTICAL);
 
         //add action items into QuickAction
@@ -41,7 +39,7 @@ public class QuickBar{
         quickAction.addActionItem(mKMLItem);
         quickAction.addActionItem(mGPXItem);
         quickAction.addActionItem(mTCXItem);
-        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
+        /*quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
                 //here we can filter which action item was clicked with pos or actionId parameter
@@ -55,7 +53,7 @@ public class QuickBar{
             public void onDismiss() {
                 Toast.makeText(mContext, "Dismissed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
        
 	}
 

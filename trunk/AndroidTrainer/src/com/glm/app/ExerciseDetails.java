@@ -14,6 +14,8 @@ import com.glm.utils.quickaction.QuickAction;
 import com.glm.utils.quickaction.QuickBar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -203,7 +205,111 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		}else if(oObj.getId()==R.id.btnInfo){
 			//Manual Sharing
 			//manualShare();
-			QuickBar oBar = new QuickBar(getApplicationContext());
+			final QuickBar oBar = new QuickBar(getApplicationContext());
+			oBar.getQuickAction().setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+	                //here we can filter which action item was clicked with pos or actionId parameter
+	                ActionItem actionItem = source.getActionItem(pos);
+	                Log.v(this.getClass().getCanonicalName(),"Item Click Pos: "+actionItem.getActionId());
+	                
+	                switch (actionItem.getActionId()) {
+					
+	                case 1:
+						manualShare();
+						break;
+					case 2:
+						//Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,GraphExerciseActivity.class);
+						Intent intent = ActivityHelper.createActivityIntent(ExerciseDetails.this,WebGraphExerciseActivity.class);
+						intent.putExtra("graph", "0");		
+						ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intent);						
+						break;
+					case 3:
+						//Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,GraphExerciseActivity.class);
+						Intent intentMap = ActivityHelper.createActivityIntent(ExerciseDetails.this,GMapActivity.class);
+						intentMap.putExtra("exercise", ExerciseManipulate.getiIDExercise());
+						ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intentMap);	
+						break;
+					case 4:	
+						if(oNote.isEnabled()){				
+							oBtn_SaveShare.setText(R.string.edit_note);
+							ExerciseUtils.saveNote(getApplicationContext(), ExerciseManipulate.getiIDExercise(), oNote.getText().toString());
+							ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, ExerciseManipulate.getiIDExercise());			
+						}else{
+							oNote.requestFocus();
+							oBtn_SaveShare.setText(R.string.save_note);			
+						}
+						oNote.setEnabled(!oNote.isEnabled());
+						break;
+					case 5:
+						//Erase
+						oBar.getQuickAction().dismiss();
+						deleteExercise(ExerciseManipulate.getiIDExercise());
+						break;
+					case 6:
+						if(ExerciseUtils.writeKML(-1,getApplicationContext(),oConfigTrainer)){
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+							.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
+				        	emailIntent.setType("plain/text"); 
+				        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
+				        	File fileIn = new File(ExerciseUtils.sExportFile);
+				            Uri u = Uri.fromFile(fileIn);       
+				            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+				        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+							.show();
+						}					
+						break;
+											
+					case 7:
+						if(ExerciseUtils.writeGPX(-1,getApplicationContext(),oConfigTrainer)){
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+							.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
+				        	emailIntent.setType("plain/text"); 
+				        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
+				        	File fileIn = new File(ExerciseUtils.sExportFile);
+				            Uri u = Uri.fromFile(fileIn);       
+				            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+				        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+							.show();
+						}				
+						break;	
+					case 8:
+						if(ExerciseUtils.writeTCX(-1,getApplicationContext(),oConfigTrainer)){
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+							.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
+				        	emailIntent.setType("plain/text"); 
+				        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
+				        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
+				        	File fileIn = new File(ExerciseUtils.sExportFile);
+				            Uri u = Uri.fromFile(fileIn);       
+				            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+				        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+							.show();
+						}	
+						break;
+					default:
+						break;
+					}
+	                Toast.makeText(getApplicationContext(), actionItem.getTitle() + " selected", Toast.LENGTH_SHORT).show();                
+	            }
+	        });        
 			oBar.getQuickAction().show(oObj);
 		}else if(oObj.getId()==R.id.btnExportGPX){	
 			if(ExerciseUtils.writeGPX(-1,getApplicationContext(),oConfigTrainer)){
@@ -349,5 +455,30 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	        //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/graphtrainerexercisealt.html");
 	        //wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");
 		}
+	}
+	protected void deleteExercise(final int id) {		
+		AlertDialog alertDialog;
+    	alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
+    	alertDialog.setTitle(getString(R.string.titledeleteexercise));
+    	alertDialog.setMessage(getString(R.string.messagedeleteexercise));
+    	alertDialog.setButton(getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				if(ExerciseUtils.deleteExercise(getApplicationContext(), oConfigTrainer, String.valueOf(id))){
+					onBackPressed();
+				}
+			}        				
+    		});
+    	
+    	alertDialog.setButton2(getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {					
+				
+			}        		
+			
+    		});
+    	alertDialog.show();
 	}
 }
