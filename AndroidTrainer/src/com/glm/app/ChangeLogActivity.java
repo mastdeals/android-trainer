@@ -30,7 +30,7 @@ import android.widget.Toast;
 public class ChangeLogActivity extends Activity implements OnClickListener {
 	private ImageButton oShareButton;
 	private Button oStartButton;
-	private Button oVoteButton;
+	private ImageButton oVoteButton;
 	private WebView owvChangeLog;
 	private String URI_MARKET;
 	private String sPackageName="";
@@ -130,7 +130,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
         
         oShareButton  = (ImageButton) findViewById(R.id.btnShare);
         oStartButton = (Button) findViewById(R.id.btnStart);
-        oVoteButton   = (Button) findViewById(R.id.btnVote);
+        oVoteButton   = (ImageButton) findViewById(R.id.btnVote);
         owvChangeLog  = (WebView) findViewById(R.id.wvChangeLog);
         
         oShareButton.setOnClickListener(this);
