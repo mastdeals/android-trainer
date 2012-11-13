@@ -563,7 +563,8 @@
 						android:orientation="vertical" 
 						android:layout_height="wrap_content" 
 						android:background="@drawable/lista_gradient" 
-						android:layout_width="match_parent">
+						android:layout_width="match_parent"
+						android:visibility="gone">
 						<RelativeLayout
 					        android:orientation="horizontal"
 					        android:layout_width="fill_parent"
@@ -632,7 +633,8 @@
 					android:orientation="vertical" 
 					android:layout_height="wrap_content" 
 					android:background="@drawable/lista_gradient" 
-					android:layout_width="match_parent">						
+					android:layout_width="match_parent"
+					android:visibility="gone">						
 	                <TableLayout android:id="@+id/linearLayout4" 
 	                android:layout_height="wrap_content" 
 	                android:layout_width="match_parent">
