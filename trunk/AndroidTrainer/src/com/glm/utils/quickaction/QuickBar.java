@@ -1,5 +1,6 @@
 package com.glm.utils.quickaction;
 
+import com.glm.bean.ExerciseManipulate;
 import com.glm.trainer.R;
 
 import android.content.Context;
@@ -29,16 +30,16 @@ public class QuickBar{
         mTCXItem    = new ActionItem(8, "TCX", mContext.getResources().getDrawable(R.drawable.export));
         
         quickAction = new QuickAction(mContext, QuickAction.VERTICAL);
-
+        
         //add action items into QuickAction
+        quickAction.addActionItem(mShareItem);   
         quickAction.addActionItem(mGraphItem);
-        quickAction.addActionItem(mMapItem);
-        quickAction.addActionItem(mEditItem);
-        quickAction.addActionItem(mShareItem);
-        quickAction.addActionItem(mEraseItem);
+        quickAction.addActionItem(mMapItem);                     
         quickAction.addActionItem(mKMLItem);
         quickAction.addActionItem(mGPXItem);
         quickAction.addActionItem(mTCXItem);
+        quickAction.addActionItem(mEditItem);
+        quickAction.addActionItem(mEraseItem);
         /*quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -52,6 +53,7 @@ public class QuickBar{
             @Override
             public void onDismiss() {
                 Toast.makeText(mContext, "Dismissed", Toast.LENGTH_SHORT).show();
+               
             }
         });*/
        

@@ -206,6 +206,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			//Manual Sharing
 			//manualShare();
 			final QuickBar oBar = new QuickBar(getApplicationContext());
+			
 			oBar.getQuickAction().setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -242,9 +243,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 						oNote.setEnabled(!oNote.isEnabled());
 						break;
 					case 5:
-						//Erase
-						oBar.getQuickAction().dismiss();
-						deleteExercise(ExerciseManipulate.getiIDExercise());
+						//Erase						
+						//deleteExercise(ExerciseManipulate.getiIDExercise());  
 						break;
 					case 6:
 						if(ExerciseUtils.writeKML(-1,getApplicationContext(),oConfigTrainer)){
@@ -306,10 +306,9 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 						break;
 					default:
 						break;
-					}
-	                Toast.makeText(getApplicationContext(), actionItem.getTitle() + " selected", Toast.LENGTH_SHORT).show();                
+					}	                                
 	            }
-	        });        
+	        });			
 			oBar.getQuickAction().show(oObj);
 		}else if(oObj.getId()==R.id.btnExportGPX){	
 			if(ExerciseUtils.writeGPX(-1,getApplicationContext(),oConfigTrainer)){
@@ -456,7 +455,8 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	        //wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");
 		}
 	}
-	protected void deleteExercise(final int id) {		
+	protected void deleteExercise(final int id) {
+		Log.v(this.getClass().getCanonicalName(), "Delete: "+id);
 		AlertDialog alertDialog;
     	alertDialog = new AlertDialog.Builder(getApplicationContext()).create();
     	alertDialog.setTitle(getString(R.string.titledeleteexercise));
@@ -479,6 +479,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			}        		
 			
     		});
+    	
     	alertDialog.show();
 	}
 }
