@@ -46,7 +46,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        super.onCreate(savedInstanceState);
 	        
 	    	
-	        setContentView(R.layout.summary_history);        
+	        setContentView(R.layout.new_summary_history);        
 	        oBtnRun 	= (Button) findViewById(R.id.btn_history_run); 
 	    	oBtnWalk 	= (Button) findViewById(R.id.btn_history_walk); 
 	    	oBtnBike	= (Button) findViewById(R.id.btn_history_bike); 

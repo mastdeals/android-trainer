@@ -79,7 +79,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
        super.onCreate(savedInstanceState);
        oContext=this;
        oConfigTrainer = ExerciseUtils.loadConfiguration(this);
-       setContentView(R.layout.new_history);
+       setContentView(R.layout.new_new_history);
        
        
        Display display = getWindowManager().getDefaultDisplay(); 
