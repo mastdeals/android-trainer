@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="0dip"	
+	android:id="@+id/objMainLayout" 	
+	android:gravity="right">
+
+    <LinearLayout
+        android:id="@+id/internal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_gradient_no_corners"
+        android:orientation="vertical"
+        android:padding="1dip" >
+
+        <RelativeLayout
+            android:id="@+id/InternalRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/glm_main_popup"
+            android:padding="0dip" >
+            
+            <RelativeLayout
+                android:id="@+id/TopLinear"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal" 
+                android:background="@drawable/glm_popup">
+
+                <RelativeLayout
+                    android:id="@+id/btnInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/circle_gradient"
+                    android:clickable="true"
+                    android:padding="2dip" android:layout_marginRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageButton1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/expand" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imgTypeWorkOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/TopLinear"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="-4dp"
+                android:src="@drawable/glm_arrow_down" />
+			
+            <ScrollView
+                android:id="@+id/scrollView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                 >
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:id="@+id/LLDett"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/btn_expand"
+                            android:layout_below="@+id/btn_expand"
+                            android:layout_weight="1"
+                            android:orientation="vertical" >
+
+                            <RelativeLayout
+                                android:id="@+id/RLTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayout2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/textTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/time"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLDistance"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayout2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+                                    android:id="@+id/view3"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_toRightOf="@+id/relativeLayout2"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textDistance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/distance"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLKal"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayout2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+                                    android:id="@+id/view3"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textKalories"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/kalories"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLAvgSpeed"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayout2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+                                    android:id="@+id/view3"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textAVGSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/speed_avg"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxSpeed"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View02"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textMAXSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/speed_max"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLPace"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/RelativeLayout01"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+                                    android:id="@+id/View01"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/pace_avg"
+                                    android:textColor="#FFFFFF" />
+
+                                <TextView
+                                    android:id="@+id/textPace"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxPace"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View03"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textMAXPace"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/pace_max"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLStep"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View01"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dip"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textStep"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignRight="@+id/View01"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/step"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxBpm"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View01"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textMaxBpm"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignRight="@+id/View01"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/max_heart_rate"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLAvgBpm"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View01"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#A7CC5C" />
+
+                                <TextView
+                                    android:id="@+id/textAvgBpm"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignRight="@+id/View01"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/avg_heart_rate"
+                                    android:textColor="#FFFFFF" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="0dip"
+                        android:layout_marginLeft="20dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_marginTop="2dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/main_gradient" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/lista_gradient"
+                        android:orientation="vertical"
+                        android:visibility="gone" >
+
+                        <RelativeLayout
+                            android:id="@+id/btn_expand"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/lista_gradient"
+                            android:orientation="horizontal"
+                            android:padding="10dip" >
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" >
+
+                                <Button
+                                    android:id="@+id/btnGraph"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/lista_gradient"
+                                    android:clickable="true"
+                                    android:text="@string/exercise_graph"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/btnGmap"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dip"
+                                    android:background="@drawable/lista_gradient"
+                                    android:clickable="true"
+                                    android:text="@string/maps"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llGraph"
+                            android:layout_width="match_parent"
+                            android:layout_height="170dip"
+                            android:layout_marginTop="10dip"
+                            android:background="@drawable/web_container"
+                            android:orientation="vertical" >
+
+                            <ProgressBar
+                                android:id="@+id/pBarWaiting"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dip"
+                                android:layout_weight="0.88"
+                                android:indeterminate="true" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="0dip"
+                        android:layout_marginLeft="20dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_marginTop="2dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/main_gradient" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/lista_gradient"
+                        android:orientation="vertical"
+                        android:visibility="gone" >
+
+                        <TableLayout
+                            android:id="@+id/linearLayout4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+
+                            <EditText
+                                android:id="@+id/txtNote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="130dip"
+                                android:layout_weight="1"
+                                android:background="@drawable/note_gradient"
+                                android:enabled="false"
+                                android:gravity="top"
+                                android:singleLine="false"
+                                android:textColor="#FFFFFF" >
+
+                                <requestFocus />
+                            </EditText>
+
+                            <View
+                                android:id="@+id/view3"
+                                android:layout_width="fill_parent"
+                                android:layout_height="10dip"
+                                android:layout_marginBottom="0dip"
+                                android:layout_marginLeft="20dip"
+                                android:layout_marginRight="20dip"
+                                android:layout_marginTop="2dip"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/btnSaveShareNote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/lista_gradient"
+                                android:text="@string/edit_note"
+                                android:textColor="#FFFFFF" />
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+            
+            
+        </RelativeLayout>
+    </LinearLayout>
+		
+</LinearLayout>

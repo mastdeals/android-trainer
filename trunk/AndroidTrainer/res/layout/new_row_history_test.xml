@@ -19,73 +19,15 @@
             android:id="@+id/InternalRelative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/lista_gradient"
-            android:padding="6dip" >
-
-            <LinearLayout
-					    android:id="@+id/TopBar"
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content" 
-					    android:background="@drawable/lista_gradient"
-					    android:visibility="gone">
-
-					    <Button
-					        android:id="@+id/btnExportKML"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="kml"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-
-					    <Button
-					        android:id="@+id/btnExportGPX"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:layout_marginLeft="5dip"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="gpx"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-						<Button
-					        android:id="@+id/btnExportTCX"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:layout_marginLeft="5dip"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="tcx"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-						
-					    <ImageButton 
-				                    android:src="@drawable/share"
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_marginLeft="5dip"
-				                	android:layout_height="wrap_content" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnShareFB"                	
-				                	android:text="@string/share"
-				                	android:textColor="#FFFFFF" />
-					</LinearLayout>
+            android:background="@drawable/glm_main_popup"
+            android:padding="0dip" >
             
             <LinearLayout
                 android:id="@+id/TopLinear"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:orientation="horizontal" 
-                android:background="@drawable/lista_gradient">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/biking" 
-                     />
+                android:background="@drawable/glm_popup">
 
             </LinearLayout>
 
@@ -95,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dip"
                 android:orientation="vertical"
-                android:padding="10dip" >
+                android:padding="10dip">
 
                 <LinearLayout
                     android:id="@+id/MiddleTopLinear"
@@ -162,6 +104,16 @@
                 android:layout_height="10dip"
                 android:layout_marginTop="220dip"
                 android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/TopLinear"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="-4dp"
+                android:src="@drawable/glm_arrow_down" />
 
         </RelativeLayout>
     </LinearLayout>
