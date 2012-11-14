@@ -30,13 +30,13 @@
 		        android:clickable="true"
 		        android:padding="2dip" >
 
-		        <ImageView
-		            android:id="@+id/imgBack"
+		        <Button
+		            android:id="@+id/btn_back"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerHorizontal="true"
 		            android:layout_centerVertical="true"
-		            android:src="@drawable/left" />
+		            android:background="@drawable/left" />
 		    </RelativeLayout>
 
 		    <RelativeLayout
@@ -50,13 +50,13 @@
 		        android:clickable="true"
 		        android:padding="2dip" >
 
-		        <ImageView
-		            android:id="@+id/imgBack"
+		        <Button
+		            android:id="@+id/btn_forward"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerHorizontal="true"
 		            android:layout_centerVertical="true"
-		            android:src="@drawable/right" />
+		            android:background="@drawable/right" />
 		    </RelativeLayout>
 
 		    <TextView

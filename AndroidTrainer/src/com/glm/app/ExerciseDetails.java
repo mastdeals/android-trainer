@@ -98,7 +98,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.exercise_details);
+        setContentView(R.layout.new_exercise_details);
         
         a = AnimationUtils.loadAnimation(this, R.animator.fadein);
         a.reset();

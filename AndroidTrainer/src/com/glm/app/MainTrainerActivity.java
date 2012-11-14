@@ -98,7 +98,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	       super.onCreate(savedInstanceState);
-	       setContentView(R.layout.new_main_page);
+	       setContentView(R.layout.new_new_main_page);
 	       
 	       oMainLayout = (LinearLayout) findViewById(R.id.objMainLayout);
 	       

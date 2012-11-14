@@ -34,7 +34,7 @@ public class GMapActivity extends MapActivity implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.exercise_gmap);
+	    setContentView(R.layout.new_exercise_gmap);
 	   	    
 	   
 	    oMapView = (MapView) findViewById(R.id.gmap);
