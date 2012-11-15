@@ -17,28 +17,36 @@
 		    android:id="@+id/TopLinear"
 		    android:layout_width="match_parent"
 		    android:layout_height="50dp"
-		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentTop="true"
-		    android:background="@drawable/glm_popup">
+		    android:background="@drawable/glm_popup" >
+
+		    <ImageButton
+		        android:id="@+id/btn_back"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+		        android:background="@drawable/circle_gradient"
+		        android:padding="2dip"
+		        android:src="@drawable/left" />
+
 		    <RelativeLayout
-                    android:id="@+id/btnInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/circle_gradient"
-                    android:clickable="true"
-                    android:padding="2dip" android:layout_marginLeft="10dp">
+		        android:id="@+id/RelativeLayout01"
+		        android:layout_width="match_parent"
+		        android:layout_height="50dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:background="@drawable/glm_popup" >
 
-                    <ImageView
-                        android:id="@+id/imgBack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/left"/>
-
-                </RelativeLayout>
+		        <ImageButton
+		            android:id="@+id/ImageButton01"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentLeft="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:background="@drawable/circle_gradient"
+		            android:padding="2dip"
+		            android:src="@drawable/left" />
+		    </RelativeLayout>
 		</RelativeLayout>
 
 		<LinearLayout
