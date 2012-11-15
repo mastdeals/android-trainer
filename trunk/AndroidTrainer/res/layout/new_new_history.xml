@@ -19,45 +19,30 @@
 		    android:layout_height="50dp"
 		    android:background="@drawable/glm_popup" >
 
-		    <RelativeLayout
-		        android:id="@+id/btnInfo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentLeft="true"
-		        android:layout_centerVertical="true"
-		        android:layout_marginLeft="10dp"
-		        android:background="@drawable/circle_gradient"
-		        android:clickable="true"
-		        android:padding="2dip" >
+		   
 
-		        <Button
+		        <ImageButton
+		            android:background="@drawable/circle_gradient"
+		            android:padding="2dip"		            
+		            android:layout_marginLeft="10dp"
 		            android:id="@+id/btn_back"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:layout_centerHorizontal="true"
+		            android:layout_alignParentLeft="true"
 		            android:layout_centerVertical="true"
-		            android:background="@drawable/left" />
-		    </RelativeLayout>
+		            android:src="@drawable/left" />	
 
-		    <RelativeLayout
-		        android:id="@+id/btnInfo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentRight="true"
-		        android:layout_centerVertical="true"
-		        android:layout_marginRight="10dp"
-		        android:background="@drawable/circle_gradient"
-		        android:clickable="true"
-		        android:padding="2dip" >
-
-		        <Button
+		        <ImageButton
+		            android:padding="2dip" 
+		            android:layout_alignParentRight="true"
+		        	android:layout_centerVertical="true"
+		        	android:layout_marginRight="10dp"
+		        	android:background="@drawable/circle_gradient"
 		            android:id="@+id/btn_forward"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:layout_centerHorizontal="true"
-		            android:layout_centerVertical="true"
-		            android:background="@drawable/right" />
-		    </RelativeLayout>
+		            android:src="@drawable/right" />
+
 
 		    <TextView
 		        android:id="@+id/text_title"
