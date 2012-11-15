@@ -6,8 +6,8 @@
         android:layout_height="fill_parent"
         android:background="@drawable/main_gradient"
         android:padding="0dp">
-	<RelativeLayout android:padding="1dp"
-	        xmlns:android="http://schemas.android.com/apk/res/android"
+	<RelativeLayout android:padding="0dp"
+	       android:background="@drawable/glm_main_popup"
 	        android:orientation="vertical"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"	             
