@@ -47,8 +47,8 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	private int iInitialStep=0;
 	/**usato per definire la paginazione*/
 	private int iPageStep=10;
-	private Button oBtn_prev;
-	private Button oBtn_next;
+	private ImageButton oBtn_prev;
+	private ImageButton oBtn_next;
 	private TextView oTextTitle;
 	private int iRow=0;
 	private int iWritedRow=0;
@@ -98,8 +98,8 @@ public class HistoryActivity extends Activity implements OnClickListener {
        
        getWindowManager().getDefaultDisplay().getMetrics(dm); 
        
-       oBtn_next = (Button) findViewById(R.id.btn_forward);
-       oBtn_prev = (Button) findViewById(R.id.btn_back);
+       oBtn_next = (ImageButton) findViewById(R.id.btn_forward);
+       oBtn_prev = (ImageButton) findViewById(R.id.btn_back);
        oTextTitle = (TextView) findViewById(R.id.text_title);
        
        

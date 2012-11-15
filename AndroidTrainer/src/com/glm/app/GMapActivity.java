@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.maps.MapActivity;
 
@@ -23,7 +23,7 @@ import com.glm.utils.TrackOverlay;
 
 public class GMapActivity extends MapActivity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
-	private Button oBtnBack;
+	private ImageButton oBtnBack;
 	private MapView oMapView;
 	
 	private List<Overlay> mapOverlays;
@@ -38,7 +38,7 @@ public class GMapActivity extends MapActivity implements OnClickListener{
 	   	    
 	   
 	    oMapView = (MapView) findViewById(R.id.gmap);
-	    oBtnBack = (Button) findViewById(R.id.btn_back); 
+	    oBtnBack = (ImageButton) findViewById(R.id.btn_back); 
 	    oBtnBack.setOnClickListener(this);
 	}
 	

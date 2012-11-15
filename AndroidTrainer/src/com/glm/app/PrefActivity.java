@@ -47,7 +47,7 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
         a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
         a.reset();
         
-        setContentView(R.layout.new_pref);                                         
+        setContentView(R.layout.new_new_pref);                                         
         
         Oscrol = (LinearLayout) findViewById(R.id.objMainLayout);                       
         

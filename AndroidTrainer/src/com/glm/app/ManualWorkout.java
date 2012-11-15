@@ -58,7 +58,7 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.manual_workout);
+        setContentView(R.layout.new_manual_workout);
         
         a = AnimationUtils.loadAnimation(this, R.animator.fadein);
         a.reset();

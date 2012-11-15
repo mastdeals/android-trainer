@@ -81,7 +81,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
         a.reset();
         
-        setContentView(R.layout.user_details);
+        setContentView(R.layout.new_user_details);
         oMainLayout = (LinearLayout) findViewById(R.id.main_layout);
         //obtn_back   = (Button) findViewById(R.id.btn_back);        
         obtn_Save   = (Button) findViewById(R.id.btnSave);

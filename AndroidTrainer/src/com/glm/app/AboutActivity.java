@@ -31,7 +31,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 		Notification notification = new Notification(icon,text,when);						
 		notificationManager.notify(APP_NOTIFICATION_ID, notification);
 		*/
-        setContentView(R.layout.info);
+        setContentView(R.layout.new_info);
         
         Button oMailButton = (Button) findViewById(R.id.btn_mail_segnalazione);
         
