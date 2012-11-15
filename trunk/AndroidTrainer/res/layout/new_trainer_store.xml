@@ -2,20 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
 	android:layout_height="match_parent" 
 	android:layout_width="match_parent" 
-	android:orientation="vertical"
-	android:layout_margin="0dip"
+	android:orientation="vertical"	
 	android:id="@+id/objMainLayout" 	
 	android:background="@drawable/main_gradient" 
-	android:clickable="true" android:gravity="right"
+	android:gravity="right"
 	android:padding="0dp">
-	<RelativeLayout android:padding="1dp"
+	<RelativeLayout android:padding="0dp"
 		android:layout_height="match_parent" 
 		android:layout_width="match_parent" 
-		android:orientation="vertical"
-		android:layout_margin="0dip"
+		android:orientation="vertical"		
 		android:id="@+id/objMainLayout" 	
-		android:background="@drawable/glm_main_popup" 
-		android:clickable="true" android:gravity="right">
+		android:background="@drawable/glm_main_popup">
 		
 	    <RelativeLayout
 	        android:id="@+id/TopLinear"

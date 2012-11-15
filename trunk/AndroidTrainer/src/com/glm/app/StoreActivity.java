@@ -95,8 +95,7 @@ public class StoreActivity extends Activity implements OnClickListener {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
+                
         setContentView(R.layout.new_trainer_store);
         
         obtnDonate = (LinearLayout) findViewById(R.id.btnDonate);
