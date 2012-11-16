@@ -27,10 +27,12 @@ import com.google.android.vending.licensing.ServerManagedPolicy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -105,10 +107,14 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       GCMRegistrar.checkDevice(this);
 	       GCMRegistrar.checkManifest(this);
 	       final String regId = GCMRegistrar.getRegistrationId(this);
+	       registerReceiver(mHandleMessageReceiver,
+	                new IntentFilter("com.glm.app.DISPLAY_MESSAGE"));	       
+	       
 	       if (regId.equals("")) {
 	         GCMRegistrar.register(this, SENDER_ID);
+	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+regId);
 	       } else {
-	         Log.v(this.getClass().getCanonicalName(), "Already registered");
+	         Log.v(this.getClass().getCanonicalName(), "Already registered: "+regId);
 	       }
 	       
 	       ExerciseUtils.removeFirstBoot(getApplicationContext());
@@ -148,7 +154,12 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		//startActivity(intent);
 		ActivityHelper.startNewActivityAndFinish(this, intent);	
 	}
-  
+	@Override
+    protected void onDestroy() {       
+        unregisterReceiver(mHandleMessageReceiver);
+        GCMRegistrar.onDestroy(this);
+        super.onDestroy();
+    }
 	@Override
 	public void onClick(View oObj) {
 		if(User.getsNick().compareToIgnoreCase("laverdone")==0){
@@ -618,5 +629,12 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			}
 		});
 	}
+	 private final BroadcastReceiver mHandleMessageReceiver =
+         new BroadcastReceiver() {
+	     @Override
+	     public void onReceive(Context context, Intent intent) {
+	         Log.v(this.getClass().getCanonicalName(),"onReceive");
+	     }
+	 };
 }
 

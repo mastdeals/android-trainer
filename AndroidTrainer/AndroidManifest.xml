@@ -50,7 +50,7 @@
     <service android:name="com.glm.utils.vending.BillingService" />
 
     <!-- GCM  -->
-    <service android:name="com.glm.services.GCMIntentService" />
+    <service android:name=".GCMIntentService" />
     <!-- GCM  -->
     
     <receiver android:name="com.glm.utils.vending.BillingReceiver">
