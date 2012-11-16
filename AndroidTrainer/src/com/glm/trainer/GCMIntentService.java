@@ -36,9 +36,9 @@ public class GCMIntentService extends GCMBaseIntentService{
 
 	private void generateNotification(Context context, String stringExtra) {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
-
+		
 		// Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.pause_trainer, getText(R.string.app_name_pro),
+        Notification notification = new Notification(R.drawable.biking, getText(R.string.app_name_pro),
                 System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification Controller
