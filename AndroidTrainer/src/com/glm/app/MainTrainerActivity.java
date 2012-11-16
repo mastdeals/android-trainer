@@ -156,8 +156,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	}
 	@Override
     protected void onDestroy() {       
-        unregisterReceiver(mHandleMessageReceiver);
-        GCMRegistrar.onDestroy(this);
+        unregisterReceiver(mHandleMessageReceiver);        
         super.onDestroy();
     }
 	@Override
