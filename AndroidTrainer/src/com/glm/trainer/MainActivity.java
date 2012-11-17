@@ -1,59 +1,36 @@
 package com.glm.trainer;
 
-import com.glm.app.AboutActivity;
+
 import com.glm.app.ActivityHelper;
 import com.glm.app.ChangeLogActivity;
-import com.glm.app.GoalActivity;
+
 import com.glm.app.MainTrainerActivity;
-import com.glm.app.ManualWorkout;
-import com.glm.app.PrefActivity;
-import com.glm.app.StoreActivity;
-import com.glm.app.SummaryActivity;
+
 import com.glm.app.UserDetailsActivity;
 import com.glm.app.db.Database;
-import com.glm.app.graph.WebGraphWeightActivity;
+
 import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
-import com.glm.bean.User;
+
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
 import com.glm.trainer.MainActivity;
 
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.fb.FacebookConnector;
-import com.glm.utils.tw.Const;
-import com.google.android.vending.licensing.AESObfuscator;
-import com.google.android.vending.licensing.LicenseChecker;
-import com.google.android.vending.licensing.LicenseCheckerCallback;
-import com.google.android.vending.licensing.ServerManagedPolicy;
+
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.provider.Settings;
-//import android.telephony.TelephonyManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.android.gcm.GCMRegistrar;
 
 
 public class MainActivity  extends Activity{
