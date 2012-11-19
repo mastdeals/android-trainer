@@ -406,45 +406,20 @@ public class ExerciseUtils {
 	 * @param iStep 
 	 * 
 	 * **/
-	public synchronized static boolean saveExercise(Context oContext, ConfigTrainer oConfigTrainer, int iStep) {
-		int iIDExercise=0;
+	public synchronized static boolean saveExercise(Context oContext, ConfigTrainer oConfigTrainer, int iStep) {		
 		String sSQL_SAVE_EXERCISE ="";
 		//Log.v(ExerciseUtils.class.getCanonicalName(), "Save EXERICE ");
 		//Uso la populate per salvare le calorie e il tempo???
 		//Prelevo l'id dell'esercizio che devo salvare
 		Database oDB = new Database(oContext);
 		try{
-			
-			oDB.open();
-			
-			String sSQL_CURRENT_EXERCISE="SELECT MAX(id_exercise) as exercise FROM trainer_exercise";
-			Cursor oCursor = oDB.rawQuery(sSQL_CURRENT_EXERCISE, null);
-			if(oCursor!=null){
-				int iCurrentIDExercise = oCursor.getColumnIndex("exercise");
-	            
-	    		while(oCursor.moveToNext()){    
-	    			iIDExercise=oCursor.getInt(iCurrentIDExercise);
-	    			//Log.v(ExerciseUtils.class.getCanonicalName(), "ID EXERICE: "+iIDExercise);
-	    		}
-			}
-			oCursor.close();
-			oDB.close();
-			oCursor=null;
-			//Aggiorno la data di fine exercise
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP WHERE id_exercise ="+iIDExercise;
-			oDB.open();
-			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
-			oDB.close();
-			
 			//Popolo gli altri dettagli
-			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
+			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, getLastExercise(oContext));
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET steps_count="+iStep+", calorie_burn='" +ExerciseManipulate.getsCurrentCalories()+
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", calorie_burn='" +ExerciseManipulate.getsCurrentCalories()+
 				" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeedMT()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
-				"' WHERE id_exercise ="+iIDExercise;
-		
-		
-			
+				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
@@ -3022,5 +2997,38 @@ public class ExerciseUtils {
         	oDB=null;
         	return;
 		}   	
+	}
+	/**
+	 * Ritorna il MAX id exercise 
+	 * 
+	 * */
+	private static int getLastExercise(Context oContext){
+		int iIDExercise=-2;
+		Database oDB = new Database(oContext);
+		try{
+			
+			oDB.open();
+			
+			String sSQL_CURRENT_EXERCISE="SELECT MAX(id_exercise) as exercise FROM trainer_exercise";
+			Cursor oCursor = oDB.rawQuery(sSQL_CURRENT_EXERCISE, null);
+			if(oCursor!=null){
+				int iCurrentIDExercise = oCursor.getColumnIndex("exercise");
+	            
+	    		while(oCursor.moveToNext()){    
+	    			iIDExercise=oCursor.getInt(iCurrentIDExercise);
+	    			//Log.v(ExerciseUtils.class.getCanonicalName(), "ID EXERICE: "+iIDExercise);
+	    		}
+			}
+			oCursor.close();
+			oDB.close();
+			oCursor=null;
+			oDB=null;
+			return iIDExercise;
+		}catch (SQLException e) {
+    		Log.e(ExerciseUtils.class.getCanonicalName(),"Error restore workout");
+    		oDB.close();   
+        	oDB=null;
+        	return -2;
+		}
 	}
 }
