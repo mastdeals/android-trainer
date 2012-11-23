@@ -3,7 +3,7 @@
 	android:layout_height="wrap_content" 
 	android:layout_width="match_parent" 
 	android:orientation="vertical"
-	android:layout_margin="0dip"	
+	android:layout_margin="2dip"	
 	android:id="@+id/objMainLayout" 	
 	android:gravity="right">
 
@@ -12,126 +12,120 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"        
         android:orientation="vertical"
-        android:padding="5dip" >
-
+       
+        android:padding="1dip" >
+
         <RelativeLayout
             android:id="@+id/InternalRelative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/popup"
-            android:padding="5dip" >
+            android:background="@drawable/main_gradient_no_corners"
+            android:padding="0dip" >
 
-            <LinearLayout
-					    android:id="@+id/TopBar"
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content" 
-					    android:background="@drawable/lista_gradient"
-					    android:visibility="gone">
-
-					    <Button
-					        android:id="@+id/btnExportKML"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="kml"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-
-					    <Button
-					        android:id="@+id/btnExportGPX"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:layout_marginLeft="5dip"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="gpx"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-						<Button
-					        android:id="@+id/btnExportTCX"
-					        android:layout_width="wrap_content"
-					        android:layout_height="40dp"
-					        android:layout_marginLeft="5dip"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:text="tcx"
-					        android:textColor="#FFFFFF"
-					        android:textSize="16sp" />
-						
-					    <ImageButton 
-				                    android:src="@drawable/share"
-				                	android:clickable="true" 
-				                	android:layout_width="wrap_content" 
-				                	android:textSize="16sp" 
-				                	android:layout_marginLeft="5dip"
-				                	android:layout_height="wrap_content" 
-				                	android:background="@drawable/lista_gradient" 
-				                	android:id="@+id/btnShareFB"                	
-				                	android:text="@string/share"
-				                	android:textColor="#FFFFFF" />
-					</LinearLayout>
-            
-            <LinearLayout
-                android:id="@+id/TopLinear"
+            <RelativeLayout
+                android:id="@+id/titleBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal" >
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/glm_title" >
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="10 Lug 2012"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtDate"
+                    android:layout_alignBottom="@+id/txtDate"
+                    android:layout_alignParentRight="true"
+                    android:editable="false"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="30Km"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout02"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/lista_gradient_no_corners" >
+
+                <ImageButton
+                    android:id="@+id/btnDett"
+                    android:layout_width="30dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/lista_gradient"
+                    android:src="@drawable/expand_right"
+                    android:text="Button" />
+
+                <ImageView
+                    android:id="@+id/imgTypeExercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/btnDett"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/biking" />
 
                 <TextView
                     android:id="@+id/TextView03"
                     android:layout_width="wrap_content"
                     android:layout_height="30dip"
-                    android:layout_marginLeft="1dip"
-                    android:layout_marginRight="0dip"
-                    android:layout_marginTop="0dip"
-                    android:background="@drawable/gradient_history_dett"
-                    android:editable="false"
+                    android:layout_alignBottom="@+id/imgTypeExercise"
+                    android:layout_toRightOf="@+id/imgTypeExercise"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="4dip"
                     android:text="10,5 Km/h"
                     android:textColor="#FFFFFF"
-                    android:textSize="16dip" />
+                    android:textSize="12dip" />
 
                 <TextView
                     android:id="@+id/TextView02"
                     android:layout_width="wrap_content"
                     android:layout_height="30dip"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginRight="0dip"
-                    android:layout_marginTop="0dip"
-                    android:background="@drawable/gradient_history_dett"
-                    android:editable="false"
+                    android:layout_alignLeft="@+id/TextView03"
+                    android:layout_alignParentTop="true"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="4dip"
                     android:text="75 Min"
                     android:textColor="#FFFFFF"
-                    android:textSize="16dip" />
+                    android:textSize="12dip" />
 
                 <TextView
                     android:id="@+id/TextView01"
                     android:layout_width="wrap_content"
                     android:layout_height="30dip"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginRight="0dip"
-                    android:layout_marginTop="0dip"
-                    android:background="@drawable/gradient_history_dett"
-                    android:editable="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_toLeftOf="@+id/btnDett"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="4dip"
                     android:text="368 Kal"
                     android:textColor="#FFFFFF"
-                    android:textSize="16dip" />
-            </LinearLayout>
+                    android:textSize="12dip" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/MiddleLinear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dip"
+                android:layout_marginTop="113dip"
                 android:orientation="vertical"
-                android:padding="10dip" >
+                android:background="@drawable/glm_title"
+                android:padding="5dip" >
 
                 <LinearLayout
                     android:id="@+id/MiddleTopLinear"
@@ -143,81 +137,30 @@
 
                     <LinearLayout
                         android:id="@+id/BarFrameBG"
-                        android:layout_width="match_parent"
+                        android:layout_width="230dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dip"
+                        android:layout_weight="0.24"
                         android:background="@drawable/gradient_history_pbar"
                         android:orientation="vertical"
                         android:padding="0dip" >
 
-                        <TextView
-                            android:id="@+id/textDistance"
+                        <View
+                            android:id="@+id/pBarDistance"
                             android:layout_width="200dip"
-                            android:layout_height="40dip"
+                            android:layout_height="20dip"
                             android:layout_marginLeft="0dip"
                             android:layout_marginRight="0dip"
                             android:layout_marginTop="0dip"
                             android:background="@drawable/gradient_history_pbar_bg"
-                            android:editable="false"
                             android:gravity="center_vertical|center_horizontal"
-                            android:text="30Km"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/BottomLinear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dip"
-                android:clickable="true"
-                android:background="@drawable/lista_gradient"
-                android:orientation="vertical"
-                android:padding="10dip" >
-
-                <ImageView
-                    android:id="@+id/imgTypeExercise"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dip"
-                    android:layout_marginTop="0dip" />
-
-                <TextView
-                    android:id="@+id/textNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dip"
-                    android:text="Running and good job"
-                    android:textColor="#FFFFFF" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btnInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/TopLinear"
-                android:background="@drawable/circle_gradient"
-                android:clickable="true"
-                android:padding="6dip" 
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/imgInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"                  
-                    android:src="@drawable/info"/>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="fill_parent"
-                android:layout_height="10dip"
-                android:layout_marginTop="150dip"
-                android:layout_weight="1" />
-
         </RelativeLayout>
+
     </LinearLayout>
 		
 </LinearLayout>

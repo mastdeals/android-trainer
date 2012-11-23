@@ -8,7 +8,7 @@
 			<padding android:left="12dp" android:top="7dp" android:right="12dp"
 				android:bottom="7dp" />
 			<corners android:radius="6dp" />
-			<stroke android:width="2dp" android:color="#55AAAAAA" />
+			<stroke android:width="0.5dp" android:color="#55AAAAAA" />
 		</shape>
 	</item>
 	<item>
@@ -19,7 +19,7 @@
 			<padding android:left="12dp" android:top="7dp" android:right="12dp"
 				android:bottom="7dp" />
 			<corners android:radius="6dp" />
-			<stroke android:width="2dp" android:color="#44444444" />
+			<stroke android:width="0.5dp" android:color="#44444444" />
 		</shape>
 	</item>
 </selector>

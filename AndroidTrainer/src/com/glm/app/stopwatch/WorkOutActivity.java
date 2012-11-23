@@ -3,7 +3,6 @@ package com.glm.app.stopwatch;
 
 
 import com.glm.services.IExerciseService;
-import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.app.ActivityHelper;
 import com.glm.app.MainTrainerActivity;
@@ -26,7 +25,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,7 +48,7 @@ import android.content.ServiceConnection;
 import android.graphics.Typeface;
 
 public class WorkOutActivity extends Activity implements OnClickListener{
-	/**indica se è stato premuto il pulsante avvia*/
+	/**indica se e' stato premuto il pulsante avvia*/
 	private boolean bInStarting=false; 
 	private float fWeight=0;	
 	protected static final int GUIUPDATEIDENTIFIER = 0x101;
@@ -543,14 +541,14 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
 						iStartTrainer=0;
-						Log.i(this.getClass().getCanonicalName()," esercizio stop");
+						Log.i(this.getClass().getCanonicalName()," esercizio save");
 						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
 						WorkOutActivity.this.ThreadTrainer.interrupt();	
 						
 						iStartTrainer=0;
-						doUnbindService();
-						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
-						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
+
+						//Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
+						//ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        				
 		    		});
 		    	
@@ -568,9 +566,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
 						iStartTrainer=0;
-						doUnbindService();
-						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
-						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
+						
+						//Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
+						//ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        		
 					
 		    		});
@@ -781,34 +779,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	
 	boolean mBackPressed = false;
 	
-	//@Override
-	public boolean onKeyDown1(int keyCode, KeyEvent event) {
-	    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-	        switch (keyCode) {
-	        case KeyEvent.KEYCODE_BACK:
-	            mBackPressed = true;
-	            break;
-	        case KeyEvent.KEYCODE_MENU:
-	            if (mBackPressed)
-	                unLock();
-	            break;
-	        default:
-	            mBackPressed = false;
-	            showMessage();
-	            break;
-	        }
-	    }
-	    return true;
-	}
-	private void showMessage() {
-	    Toast.makeText(getBaseContext(), "Back + Menu", Toast.LENGTH_SHORT)
-	            .show();
-	}
-	
-	private void unLock() {
-	    this.setResult(Activity.RESULT_OK);
-	    this.finish();
-	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		doUnbindService();
+	}			
 	/**Test code UP**/
 	@Override
 	public void onBackPressed() {	
