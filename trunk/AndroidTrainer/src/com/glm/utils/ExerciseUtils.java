@@ -39,6 +39,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Contiene tutti i metodi che mi serviranno per calcolare tutte le metriche
@@ -433,6 +434,7 @@ public class ExerciseUtils {
 			oDB=null;			
 			//Log.v(ExerciseUtils.class.getCanonicalName(), "Save SQL: "+sSQL_SAVE_EXERCISE);
 		}catch (Exception e) {
+			Toast.makeText(oContext, "Error Savind Exercise", Toast.LENGTH_LONG).show();
 			Log.e(ExerciseUtils.class.getCanonicalName(), e.getMessage()+" - "+sSQL_SAVE_EXERCISE);
 			if(oDB!=null) oDB.close();
 			oDB=null;
