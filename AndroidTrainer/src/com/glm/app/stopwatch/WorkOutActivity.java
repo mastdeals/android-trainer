@@ -25,6 +25,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +49,7 @@ import android.content.ServiceConnection;
 import android.graphics.Typeface;
 
 public class WorkOutActivity extends Activity implements OnClickListener{
-	/**indica se e' stato premuto il pulsante avvia*/
+	/**indica se è stato premuto il pulsante avvia*/
 	private boolean bInStarting=false; 
 	private float fWeight=0;	
 	protected static final int GUIUPDATEIDENTIFIER = 0x101;
@@ -305,6 +306,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						StopwatchUtils.updateCurrentPaceVm(txtPace,"0");
 						StopwatchUtils.updateCurrentKalories(txtKalories,"0");
 						
+						doUnbindService();
+						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
+						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 	                } catch (RemoteException e) {
 	                	Log.e(this.getClass().getCanonicalName(), "RemoteException SAVEEXERCISE");
 	                } catch (NullPointerException e) {
@@ -541,14 +545,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
 						iStartTrainer=0;
-						Log.i(this.getClass().getCanonicalName()," esercizio save");
+						Log.i(this.getClass().getCanonicalName()," esercizio stop");
 						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
 						WorkOutActivity.this.ThreadTrainer.interrupt();	
 						
 						iStartTrainer=0;
-
-						//Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
-						//ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
+						
 					}        				
 		    		});
 		    	
@@ -566,7 +568,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mSave);
 						mSave=null;
 						iStartTrainer=0;
-						
+						//doUnbindService();
 						//Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						//ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 					}        		
@@ -779,12 +781,34 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	
 	boolean mBackPressed = false;
 	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		doUnbindService();
-	}			
+	//@Override
+	public boolean onKeyDown1(int keyCode, KeyEvent event) {
+	    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+	        switch (keyCode) {
+	        case KeyEvent.KEYCODE_BACK:
+	            mBackPressed = true;
+	            break;
+	        case KeyEvent.KEYCODE_MENU:
+	            if (mBackPressed)
+	                unLock();
+	            break;
+	        default:
+	            mBackPressed = false;
+	            showMessage();
+	            break;
+	        }
+	    }
+	    return true;
+	}
+	private void showMessage() {
+	    Toast.makeText(getBaseContext(), "Back + Menu", Toast.LENGTH_SHORT)
+	            .show();
+	}
+	
+	private void unLock() {
+	    this.setResult(Activity.RESULT_OK);
+	    this.finish();
+	}
 	/**Test code UP**/
 	@Override
 	public void onBackPressed() {	
