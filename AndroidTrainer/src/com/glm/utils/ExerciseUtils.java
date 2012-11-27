@@ -2572,7 +2572,7 @@ public class ExerciseUtils {
 	 * 
 	 * */
 	public synchronized static boolean addManualWorkout(String Hours, String Minutes,String Weight,
-			int Distance, String Kalories, String 
+			int Distance, String Kalories,double iKalories, String 
 			Speed, String sNote, String sType, Context context,ConfigTrainer oConfigTrainer) {
 		try{
 			Database oDB = new Database(context);
@@ -2585,9 +2585,15 @@ public class ExerciseUtils {
 				//Insersce Miglia e le converto in KM
 				Distance=(int) (Distance/MILES_TO_KM);
 			}
+			if(Hours.length()==1){
+				Hours="0"+Hours;
+			}
+			if(Minutes.length()==1){
+				Minutes="0"+Minutes;
+			}
 			oDB.getOpenedDatabase().execSQL("INSERT INTO trainer_exercise (id_users, id_type_exercise, end_date, " +
-					"total_time, avg_speed, distance, calorie_burn, weight, note) VALUES ("+oConfigTrainer.getiUserID()+","+sType+", current_date, '"+
-					Hours+":"+Minutes+"','"+Speed+"','"+Distance+"','"+Kalories+" Kal',"+Weight+",'"+sNote.replaceAll("'", "''")+"')");
+					"total_time, avg_speed, distance, calorie_burn,kalories, weight, note) VALUES ("+oConfigTrainer.getiUserID()+","+sType+", current_date, '"+
+					Hours+":"+Minutes+":00','"+Speed+"','"+Distance+"','"+Kalories+" Kal',"+iKalories+","+Weight+",'"+sNote.replaceAll("'", "''")+"')");
 					
 			//Log.v(Exercise.class.getCanonicalName(),"INSERT INTO TRAINER_EXERCISE_DETT (id_exercise,id_users, id_type_exercise, distance,long,lat,alt,watch_point_date,watch_point_date_prev)  " +
 			//		" VALUES ((select max(id_exercise) from TRAINER_EXERCISE),"+oConfigTrainer.getiUserID()+","+sType+",'"+Distance+"',0,0,0)");
