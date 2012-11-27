@@ -209,9 +209,9 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	    				//Log.v(this.getClass().getCanonicalName(),"oInternalRelative "+i+": "+ oInternalRelative.getChildAt(j).getClass().getCanonicalName());
 	   		   	 	   	 
 	   	   	   	    		if(j==0){
-	   	   	   	    			if(j==0) continue;
+	   	   	   	    			/*if(j==0) continue;
 	   	   	   	    			//BarLinear
-	   	   	   	    			/**BAR LINEAR*/
+	   	   	   	    			*//**BAR LINEAR*//*
 	   	   	   	    			LinearLayout oTopLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   	 
 	   	   	   	    			int iTopChild=oTopLinear.getChildCount();
 	   	    					for(int iTopLinear=0;iTopLinear<iTopChild;iTopLinear++){
@@ -322,12 +322,12 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	   	   	    				}
 	   	   	   	    				
 	   	   	    				}
-	   	    					oTopLinear=null;
+	   	    					oTopLinear=null;*/
 	   	    					/**BAR LINEAR*/
-	   	    				}if(j==1){	   	   	   	       
+	   	    				}if(j==0){	   	   	   	       
 	   	   	   	    			//TopLinear
 	   	   	   	    			/**TOP LINEAR*/
-	   	   	   	    			LinearLayout oTopLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   	   	    				
+	   	   	   	    			RelativeLayout oTopLinear = ((RelativeLayout) oInternalRelative.getChildAt(j));   	   	    				
 	   	    					int iTopChild=oTopLinear.getChildCount();
 	   	   	   	    			for(int iTopLinear=0;iTopLinear<iTopChild;iTopLinear++){
 	   	    						//Log.v(this.getClass().getCanonicalName(),"oTopLinear "+iTopLinear+": "+ oTopLinear.getChildAt(j).getClass().getCanonicalName());
@@ -335,27 +335,85 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	   	    					TextView oTextDett = (TextView)oTopLinear.getChildAt(iTopLinear);
 	   	   	   	    				if(iTopLinear==0){
 	   	   	   	    					//Pace
-	   	   	   	    					oTextDett.setText(sAVGSpeed);
-	   	   	   	    				}else if(iTopLinear==1){
-	   	   	   	    					//Tempo
-	   	   	   	    					oTextDett.setText(sTotalTime);
-	   	   	   	    				}else if (iTopLinear==2){
-	   	   	   	    					//Kalorie
-	   	   	   	    					oTextDett.setText(sTotalKalories+" "+getString(R.string.kalories));
+	   	   	   	    					oTextDett.setText(sStart);
 	   	   	   	    				}
 	   	   	   	    				oTextDett=null;
 	   	   	    				}
 	   	    					oTopLinear=null;
 	   	    					/**TOP LINEAR*/
-	   	    				}else if(j==2){   	    	
+	   	    				}else if(j==1){   	    	
 	   	    					//PBar
 	   	    					/**MIDDLE LINEAR*/
-	   	    					LinearLayout oMiddleLinear = ((LinearLayout) oInternalRelative.getChildAt(j)); 
+	   	    					RelativeLayout oMiddleLinear = ((RelativeLayout) oInternalRelative.getChildAt(j)); 
 	   	    					int iMiddChild=oMiddleLinear.getChildCount();
 	   	   	    				for(int iMiddleLinear=0;iMiddleLinear<iMiddChild;iMiddleLinear++){
 	   	   	    					//Log.v(this.getClass().getCanonicalName(),"oMiddleLinear "+iMiddleLinear+": "+ oMiddleLinear.getChildAt(iMiddleLinear).getClass().getCanonicalName());
-
-		   	   	    				LinearLayout oMiddleTopLinear = ((LinearLayout) oMiddleLinear.getChildAt(iMiddleLinear));   	
+	   	   	    					
+	   	   	    					if(iMiddleLinear==0){
+	   	   	    						ImageButton oButtonExerciseDetails = (ImageButton)oMiddleLinear.getChildAt(iMiddleLinear);
+	   	   	    						//Bottone Dettagli
+		   	   	    					oButtonExerciseDetails.setClickable(true);
+				   	   	    			oButtonExerciseDetails.setId(Integer.parseInt(sIDExercise));
+					   	   	    		if(iTypeExercise==1000
+												||iTypeExercise==1001 ||
+												iTypeExercise==10000){
+					   	   	    			oButtonExerciseDetails.setOnClickListener(new OnClickListener() {
+											@Override
+											public void onClick(View oRow) {									
+												Toast.makeText(getBaseContext(), getApplicationContext().getString(R.string.not_avail_manual), Toast.LENGTH_SHORT)
+												.show();	
+											}   	   	   	    				
+			   	   	   	    			});
+										}else{
+											oButtonExerciseDetails.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View oRow) {									
+													
+													ExerciseManipulate.setiIDExercise(oRow.getId());
+													Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,ExerciseDetails.class);
+													//startActivity(intent);
+													ActivityHelper.startNewActivityAndFinish(HistoryActivity.this, intent);	
+													
+												}   	   	   	    				
+				   	   	   	    			});
+										}
+	   	   	    					}else if(iMiddleLinear==2){
+	   	   	    						//Type Exercise
+		   	    	   	   	    		ImageView oImgType = (ImageView)oMiddleLinear.getChildAt(iMiddleLinear);
+		   	 		   	   	   	    	if(sType.compareToIgnoreCase("0")==0){
+		   	 	  	   	    				//Runnnig
+		   	 	  	   	    				oImgType.setBackgroundResource(R.drawable.running);		   	   	   	    		
+		   	 	   	   	   	            	oTextTitle.setText(getString(R.string.history_run));
+		   	 	  	   	    			}else if(sType.compareToIgnoreCase("1")==0){
+		   	 	  	   	    				oImgType.setBackgroundResource(R.drawable.biking);
+		   	 	  	   	    				oTextTitle.setText(getString(R.string.history_bike));
+		   	 	  	   	    			}else if(sType.compareToIgnoreCase("100")==0){
+		   	 	  	   	    				oImgType.setBackgroundResource(R.drawable.walking);	   	   
+		   	 	   	   	   	            	oTextTitle.setText(getString(R.string.history_walk));
+		   	 	  	   	    			}
+	   	   	    					}else if(iMiddleLinear==5){
+	   	   	    						//Distance
+	   	   	    						TextView oTextDett = (TextView)oMiddleLinear.getChildAt(iMiddleLinear);
+	   	   	   	    					oTextDett.setText(sDistanceFormatted);
+	   	   	   	    					oTextDett=null;
+	   	   	    					}else if(iMiddleLinear==6){
+	   	   	    						//Kal
+	   	   	    						TextView oTextDett = (TextView)oMiddleLinear.getChildAt(iMiddleLinear);
+	   	   	   	    					oTextDett.setText(sTotalKalories+" "+getString(R.string.kalories));
+	   	   	   	    					oTextDett=null;
+	   	   	    					}else if(iMiddleLinear==7){
+	   	   	    						//Pace
+	   	   	    						TextView oTextDett = (TextView)oMiddleLinear.getChildAt(iMiddleLinear);
+	   	   	   	    					oTextDett.setText(sAVGSpeed);
+	   	   	   	    					oTextDett=null;
+	   	   	    					}else if(iMiddleLinear==8){
+	   	   	    						//Pace
+	   	   	    						TextView oTextDett = (TextView)oMiddleLinear.getChildAt(iMiddleLinear);
+	   	   	   	    					oTextDett.setText(sTotalTime);
+	   	   	   	    					oTextDett=null;
+	   	   	    					}
+	   	   	    					
+		   	   	    				/*LinearLayout oMiddleTopLinear = ((LinearLayout) oMiddleLinear.getChildAt(iMiddleLinear));   	
 		   	   	    				int iMiddTopChild=oMiddleTopLinear.getChildCount();
 		   	   	    				for(int iMiddleTopLinear=0;iMiddleTopLinear<iMiddTopChild;iMiddleTopLinear++){
 		   	   	    					//Log.v(this.getClass().getCanonicalName(),"oMiddleTopLinear "+iMiddleTopLinear+": "+ oMiddleTopLinear.getChildAt(iMiddleTopLinear).getClass().getCanonicalName());
@@ -383,12 +441,12 @@ public class HistoryActivity extends Activity implements OnClickListener {
 			   	   	    					
 			   	   	    				}
 		   	   	    				
-		   	   	    				}
+		   	   	    				}*/
 	   	   	    				}    					
 	   	    					/**MIDDLE LINEAR*/
 	   	    				}else if(j==3){
 	   	    					/**BOTTOM LINEAR*/
-	   	    					// Note Image
+	   	    					/*// Note Image
 	   	    					//BottomLinear
 	   	   	    				LinearLayout oBottomLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   
 	   	   	    				int iBottomChild=oBottomLinear.getChildCount();
@@ -455,10 +513,10 @@ public class HistoryActivity extends Activity implements OnClickListener {
 										return false;
 									}
 								});
-	   	   	    				oBottomLinear=null;
+	   	   	    				oBottomLinear=null;*/
 	   	   	    			/**BOTTOM LINEAR*/  
 	   	    				}else if(j==4){
-	   	    					LinearLayout oBottomLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   
+	   	    					/*LinearLayout oBottomLinear = ((LinearLayout) oInternalRelative.getChildAt(j));   
 	   	    					int iBottomChild=oBottomLinear.getChildCount();
 	   	   	    				for(int iBottomLinear=0;iBottomLinear<iBottomChild;iBottomLinear++){
 	   	   	    					if(iBottomLinear==0){
@@ -507,7 +565,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 											
 										}   	   	   	    				
 		   	   	   	    			});
-								}
+								}*/
 	   	    				}
 	   	    					    				   	   	   	    		  	   	   	    		  	   	   	    		   	    				
 	   	   	   	    	}

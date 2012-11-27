@@ -165,6 +165,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
                     	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException STARTEXERCISE");
+                    	WorkOutActivity.this.ThreadTrainer.interrupt();
                     } catch (NullPointerException e) {
                     	Log.e(this.getClass().getCanonicalName(), "NullPointerException STARTEXERCISE");          
 					} catch (IllegalArgumentException e) {

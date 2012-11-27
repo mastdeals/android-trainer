@@ -100,16 +100,18 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 			}
 			
 			int Distance=0;
+			double Kalories=0;
 			try{
-				Integer.parseInt(oTxt_Distance.getText().toString());
+				Distance=Integer.parseInt(oTxt_Distance.getText().toString());
+				Kalories=Double.parseDouble(oTxt_Kalories.getText().toString().replace(",", "."));
 			}catch (NumberFormatException e) {
-				Log.e(this.getClass().getCanonicalName(),"Error Distance Manual Workout");
+				Log.e(this.getClass().getCanonicalName(),"Error NumberFormatException Manual Workout");
 			}
 			if(ExerciseUtils.addManualWorkout(oTimeManual.getCurrentHour().toString(),
 					oTimeManual.getCurrentMinute().toString(),
 					oTxt_Weight.getText().toString(),
 					Distance,
-					oTxt_Kalories.getText().toString(),
+					oTxt_Kalories.getText().toString(),Kalories,
 					oTxt_Speed.getText().toString(),oTxt_Note.getText().toString(),sType, getApplicationContext(),oConfigTrainer)){
 				ActivityHelper.startOriginalActivityAndFinish(this);
 				finish();

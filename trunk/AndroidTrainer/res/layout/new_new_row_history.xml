@@ -12,9 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"        
         android:orientation="vertical"
-       
-        android:padding="1dip" >
-
+        android:padding="0dp">
         <RelativeLayout
             android:id="@+id/InternalRelative"
             android:layout_width="match_parent"
@@ -35,44 +33,20 @@
                     android:id="@+id/txtDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:text="10 Lug 2012"
                     android:textColor="#FFFFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/txtDate"
-                    android:layout_alignBottom="@+id/txtDate"
-                    android:layout_centerHorizontal="true"
-                    android:editable="false"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="30Km"
-                    android:textColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/txtTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:padding="4dip"
-                    android:text="75 Min"
-                    android:textColor="#FFFFFF"/>
-
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/MiddleBar"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="30dp"                
-                android:background="@drawable/lista_gradient_no_corners" >
+                android:layout_height="84dp"
+                android:layout_marginTop="29dp"                
+                android:background="@drawable/glm_lista_gradient_no_corners" >
 
                 <ImageButton
                     android:id="@+id/btnDett"
@@ -84,38 +58,82 @@
                     android:text="Button" />
 
                 <ImageView
+                    android:id="@+id/imgBurn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignBottom="@+id/txtKal"
+                    android:layout_marginLeft="124dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/burn" />
+
+                <ImageView
                     android:id="@+id/imgTypeExercise"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/imgMetric"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="124dp"
+                    android:src="@drawable/metrics" />
+
+                <ImageView
+                    android:id="@+id/imgTime"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/time" />
+
+                <TextView
+                    android:id="@+id/txtDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/btnDett"
-                    android:layout_alignParentLeft="true"
-                    android:src="@drawable/biking" />
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="170dp"
+                    android:editable="false"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="30Km"
+                    android:textColor="#FFFFFF" 
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/txtKal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="170dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="368 Kal"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dip" />
 
                 <TextView
                     android:id="@+id/txtKm"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dip"
-                    android:layout_alignBottom="@+id/imgTypeExercise"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_alignParentBottom="true"
                     android:gravity="center_vertical|center_horizontal"
-                    android:padding="4dip"
                     android:text="10,5 Km/h"
                     android:textColor="#FFFFFF"
                     android:textSize="12dip" />
 
                 <TextView
-                    android:id="@+id/txtKal"
+                    android:id="@+id/txtTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dip"
-                    android:layout_alignBaseline="@+id/txtKm"
-                    android:layout_alignBottom="@+id/txtKm"
-                    android:layout_marginLeft="14dp"
-                    android:layout_toRightOf="@+id/txtKm"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="50dp"
                     android:gravity="center_vertical|center_horizontal"
-                    android:padding="4dip"
-                    android:text="368 Kal"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12dip" />
+                    android:text="75 Min"
+                    android:textColor="#FFFFFF" 
+                    android:layout_marginTop="10dp"/>
 
             </RelativeLayout>
 
@@ -126,7 +144,8 @@
                 android:layout_marginTop="113dip"
                 android:orientation="vertical"
                 android:background="@drawable/glm_title"
-                android:padding="5dip" >
+                android:padding="5dip" 
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/MiddleTopLinear"
