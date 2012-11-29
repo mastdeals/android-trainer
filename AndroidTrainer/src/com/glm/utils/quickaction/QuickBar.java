@@ -11,7 +11,7 @@ public class QuickBar{
 	private ActionItem mGraphItem;
 	private ActionItem mMapItem;
 	private ActionItem mEditItem;	
-	private ActionItem mEraseItem;
+	//private ActionItem mEraseItem;
 	private ActionItem mKMLItem;
 	private ActionItem mGPXItem;
 	private ActionItem mTCXItem;
@@ -24,7 +24,7 @@ public class QuickBar{
 		mGraphItem  = new ActionItem(2, mContext.getString(R.string.exercise_graph), mContext.getResources().getDrawable(R.drawable.graph));
 	    mMapItem    = new ActionItem(3, mContext.getString(R.string.maps), mContext.getResources().getDrawable(R.drawable.map));
 	    mEditItem   = new ActionItem(4, mContext.getString(R.string.edit_note), mContext.getResources().getDrawable(R.drawable.edit));
-        mEraseItem  = new ActionItem(5, mContext.getString(R.string.erase), mContext.getResources().getDrawable(R.drawable.erase));
+        //mEraseItem  = new ActionItem(5, mContext.getString(R.string.erase), mContext.getResources().getDrawable(R.drawable.erase));
         mKMLItem    = new ActionItem(6, "KML", mContext.getResources().getDrawable(R.drawable.export));
         mGPXItem    = new ActionItem(7, "GPX", mContext.getResources().getDrawable(R.drawable.export));
         mTCXItem    = new ActionItem(8, "TCX", mContext.getResources().getDrawable(R.drawable.export));
@@ -39,7 +39,7 @@ public class QuickBar{
         quickAction.addActionItem(mGPXItem);
         quickAction.addActionItem(mTCXItem);
         quickAction.addActionItem(mEditItem);
-        quickAction.addActionItem(mEraseItem);
+        //quickAction.addActionItem(mEraseItem);
         /*quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
