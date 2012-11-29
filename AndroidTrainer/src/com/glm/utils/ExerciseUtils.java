@@ -860,14 +860,13 @@ public class ExerciseUtils {
 		
 		ExerciseManipulate.setfCurrentDistance(getTotalDistanceUnFormattated(oContext, oConfigTrainer, String.valueOf(iIDExercise),null));
 		
-		ExerciseManipulate.setsCurrentCalories(ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getfCurrentDistance()));
-	
+		
 		String sTotalTimeFormatted="";
 		int iHours=0;
 		int iMinutes=0;
 		int iSeconds=0;
 		int iTotSeconds=0;
-		
+		String sKalories="";
 		String sUnit=" Km/h";
 		String sMinutePerUnit=" Min/Km";
 		if(oConfigTrainer.getiUnits()==1){
@@ -907,8 +906,8 @@ public class ExerciseUtils {
 												   " strftime('%Y',start_date) as EYEAR, " + 
 											       " strftime('%H',start_date) as EHOUR, " + 
 												   " strftime('%M',start_date) as EMIN, " + 
-												   " strftime('%S',start_date) as ESEC " +
-												   " FROM trainer_exercise WHERE id_exercise='"+String.valueOf(iIDExercise)+"'";
+												   " strftime('%S',start_date) as ESEC, " +
+												   " kalories as kalories FROM trainer_exercise WHERE id_exercise='"+String.valueOf(iIDExercise)+"'";
 		oDB.open();
 		Cursor oCursor = oDB.rawQuery(sSQLAVGSpeed,null);
 		if(oCursor!=null){      				   		
@@ -919,6 +918,7 @@ public class ExerciseUtils {
 	   			int iSteps_Count 	= oCursor.getColumnIndex("steps_count");
 	   			int iNote 			= oCursor.getColumnIndex("note");
 	   			int iTypeTrainer 	= oCursor.getColumnIndex("id_type_exercise");
+	   			int iKalories 		= oCursor.getColumnIndex("kalories");
 	   			
 	   			//DATA Avvio Esercizio
 	   			int iEDay 		= oCursor.getColumnIndex("EDAY");
@@ -936,6 +936,7 @@ public class ExerciseUtils {
 		   			iMinutes	=	oCursor.getInt(iTrainerMinute);
 		   			iSeconds	=	oCursor.getInt(iTrainerSecond);
 		   			iTotSeconds =   oCursor.getInt(iTotSecond);
+		   			sKalories	=	oCursor.getString(iKalories);
 		   			
 		   			sTotalTimeFormatted=String.format ("%d:%02d", oCursor.getInt(iTrainerHour), oCursor.getInt(iTrainerMinute))+String.format (":%02d", oCursor.getInt(iTrainerSecond));;
 		   			ExerciseManipulate.setsNote(oCursor.getString(iNote));
@@ -957,6 +958,8 @@ public class ExerciseUtils {
 		   			
 		   		}
 		   		oCursor.close();		   			 
+		   		
+		   		ExerciseManipulate.setsCurrentCalories(sKalories+" "+oContext.getString(R.string.kalories));
 		   		
 		   		ExerciseManipulate.setsTotalTime(sTotalTimeFormatted);		   		
 				try{
