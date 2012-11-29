@@ -409,22 +409,33 @@ public class ExerciseUtils {
 	 * **/
 	public synchronized static boolean saveExercise(Context oContext, ConfigTrainer oConfigTrainer, int iStep) {		
 		String sSQL_SAVE_EXERCISE ="";
+		int iIDExercise=0;
 		//Log.v(ExerciseUtils.class.getCanonicalName(), "Save EXERICE ");
 		//Uso la populate per salvare le calorie e il tempo???
 		//Prelevo l'id dell'esercizio che devo salvare
 		Database oDB = new Database(oContext);
 		try{
+			iIDExercise=getLastExercise(oContext);
 			//Popolo gli altri dettagli
-			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, getLastExercise(oContext));
+			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
 			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", calorie_burn='" +ExerciseManipulate.getsCurrentCalories()+
 				" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeedMT()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
 				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 
+			
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
 			
+			//Eseguo la doppia insert per calcolare bene il Time e AVG
+			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
+			
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET avg_speed='"+ExerciseManipulate.getdAVGSpeedMT()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
+				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+			oDB.open();
+			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
+			oDB.close();
 			//Cancello tutti gli esercizi sporchi in DB
 			//String sSQL_PURGE_EXERCISE="delete from TRAINER_EXERCISE where (end_date is null) or (distance=0)";
 			//oDB.open();
