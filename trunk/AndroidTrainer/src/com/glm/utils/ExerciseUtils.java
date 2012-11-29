@@ -970,7 +970,7 @@ public class ExerciseUtils {
 		   		}
 		   		oCursor.close();		   			 
 		   		
-		   		ExerciseManipulate.setsCurrentCalories(sKalories+" "+oContext.getString(R.string.kalories));
+		   		ExerciseManipulate.setsCurrentCalories(sKalories);
 		   		
 		   		ExerciseManipulate.setsTotalTime(sTotalTimeFormatted);		   		
 				try{
