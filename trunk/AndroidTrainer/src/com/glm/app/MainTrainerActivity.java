@@ -19,6 +19,7 @@ import com.glm.services.IExerciseService;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.animation.ActivitySwitcher;
 import com.glm.utils.fb.FacebookConnector;
+import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.tw.Const;
 import com.google.android.vending.licensing.AESObfuscator;
 import com.google.android.vending.licensing.LicenseChecker;
@@ -85,6 +86,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	private Button oWeight;
 	private Button oStore;
 	
+	private String sGCMId="";
 	/**Oggetto connessione al servizio*/
 	private TrainerServiceConnection mConnection = new TrainerServiceConnection();
 	private ConfigTrainer oConfigTrainer;
@@ -106,16 +108,18 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       
 	       GCMRegistrar.checkDevice(this);
 	       GCMRegistrar.checkManifest(this);
-	       final String regId = GCMRegistrar.getRegistrationId(this);
+	       sGCMId = GCMRegistrar.getRegistrationId(this);
 	       registerReceiver(mHandleMessageReceiver,
 	                new IntentFilter("com.glm.app.DISPLAY_MESSAGE"));	       
 	       
-	       if (regId.equals("")) {
+	       if (sGCMId.equals("")) {
 	         GCMRegistrar.register(this, SENDER_ID);
-	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+regId);
+	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);	         
 	       } else {
-	         Log.v(this.getClass().getCanonicalName(), "Already registered: "+regId);
+	         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);
 	       }
+	       
+	       
 	       
 	       ExerciseUtils.removeFirstBoot(getApplicationContext());
 	       
@@ -511,8 +515,10 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 						oFB = new FacebookConnector(getApplicationContext(),MainTrainerActivity.this);
 					}
 		       }
-		        
-				
+		       
+		       //Send Id to Android Trainer WEB Server via POST METHOD
+		       HttpClientHelper oHttpHelper = new HttpClientHelper();
+		       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);
 			       
 				try{
 					   
