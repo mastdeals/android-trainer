@@ -419,7 +419,7 @@ public class ExerciseUtils {
 			//Popolo gli altri dettagli
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", calorie_burn='" +ExerciseManipulate.getsCurrentCalories()+
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", calorie_burn='" +ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+
 				" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
 				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 
