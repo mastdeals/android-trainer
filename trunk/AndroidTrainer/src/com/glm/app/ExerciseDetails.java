@@ -391,7 +391,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainer \n\n"+getString(R.string.time)+": "+ExerciseManipulate.getsTotalTime()+
 					" " + 
 					getString(R.string.distance)+": "+ExerciseManipulate.getsTotalDistance() +" "+
-					getString(R.string.pace)+": "+ExerciseManipulate.getsMinutePerDistance()+" "+getString(R.string.kalories)+": "+
+					getString(R.string.speed_avg)+": "+ExerciseManipulate.getsAVGSpeed()+" "+getString(R.string.kalories)+": "+
 					ExerciseManipulate.getsCurrentCalories()+" Kcal ");
 			sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(Intent.createChooser(sharingIntent,"Share using"));
