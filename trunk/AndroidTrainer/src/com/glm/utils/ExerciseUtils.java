@@ -431,8 +431,10 @@ public class ExerciseUtils {
 			//Eseguo la doppia insert per calcolare bene il Time e AVG
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
-				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET calorie_burn='" +ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+
+					" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double)" +
+					" WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+			
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
