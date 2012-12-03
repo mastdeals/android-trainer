@@ -29,7 +29,7 @@ public final class ExerciseManipulate {
 	/**battiti massimi*/
 	private static int iMAXBpm;
 	/**Velocità media in MT/H*/
-	private static double dAVGSpeedMT=0.0;
+	private static double dAVGSpeed=0.0;
 	/**Distanza Totale di esercizio*/
 	private static double dTotalDistance=0.0;
 		
@@ -451,11 +451,11 @@ public final class ExerciseManipulate {
 	public static synchronized void setsTotalTime(String sTotalTime) {
 		ExerciseManipulate.sTotalTime = sTotalTime;
 	}
-	public static synchronized double getdAVGSpeedMT() {
-		return dAVGSpeedMT;
+	public static synchronized double getdAVGSpeed() {
+		return dAVGSpeed;
 	}
-	public static synchronized void setdAVGSpeedMT(double dAVGSpeedMT) {
-		ExerciseManipulate.dAVGSpeedMT = dAVGSpeedMT;
+	public static synchronized void setdAVGSpeed(double dAVGSpeed) {
+		ExerciseManipulate.dAVGSpeed = dAVGSpeed;
 	}
 	public static synchronized double getdTotalDistance() {
 		return dTotalDistance;

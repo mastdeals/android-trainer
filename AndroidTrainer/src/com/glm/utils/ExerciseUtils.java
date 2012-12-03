@@ -420,7 +420,7 @@ public class ExerciseUtils {
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
 			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", calorie_burn='" +ExerciseManipulate.getsCurrentCalories()+
-				" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeedMT()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
+				" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
 				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 
 			
@@ -431,7 +431,7 @@ public class ExerciseUtils {
 			//Eseguo la doppia insert per calcolare bene il Time e AVG
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET avg_speed='"+ExerciseManipulate.getdAVGSpeedMT()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
 				"' WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
@@ -987,7 +987,7 @@ public class ExerciseUtils {
 					//		String.valueOf(iIDExercise),"MT"),  
 					//		oConfigTrainer, oContext);
 					
-					double dDistanceInMeter = getAVGSpeed(iHours,iMinutes,iSeconds, getTotalDistanceUnFormattated(oContext, 
+					double dSpeedKmHours = getAVGSpeed(iHours,iMinutes,iSeconds, getTotalDistanceUnFormattated(oContext, 
 							null, 
 							String.valueOf(iIDExercise),"MT"),  
 							null, oContext);
@@ -1026,7 +1026,7 @@ public class ExerciseUtils {
 					 * **/
 					setMAXAVGOfSpeedBpm(oContext, oDB,iIDExercise,sUnit);
 					
-					ExerciseManipulate.setdAVGSpeedMT(dDistanceInMeter);
+					ExerciseManipulate.setdAVGSpeed(dSpeedKmHours);
 					
 					ExerciseManipulate.setsMinutePerDistance(getAVGPace(oContext, oDB,iIDExercise)+sMinutePerUnit);
 					ExerciseManipulate.setsMAXMinutePerDistance(getMAXPace(oContext, oDB,iIDExercise)+sMinutePerUnit);
@@ -1200,7 +1200,7 @@ public class ExerciseUtils {
 			
 			if(DB==null) oDB.open();
 			
-			String sSQL_CURRENT_VM = "select avg(speed*3.6) as vm  from trainer_exercise_dett where id_exercise="+iIDExercise;
+			String sSQL_CURRENT_VM = "select (sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6 as vm  from trainer_exercise_dett where id_exercise="+iIDExercise;
 			oCursor = oDB.rawQuery(sSQL_CURRENT_VM,null);
 			if(oCursor!=null){      		
 			   		int iVM = oCursor.getColumnIndex("vm");
@@ -1259,7 +1259,7 @@ public class ExerciseUtils {
 			
 			if(DB==null) oDB.open();
 			
-			String sSQL_CURRENT_VM = "select max(speed*3.6) as maxvm, avg(speed*3.6) as avgvm, max(bpm) as maxbpm, avg(bpm) as avgbpm from trainer_exercise_dett where id_exercise="+iIDExercise;
+			String sSQL_CURRENT_VM = "select max(speed*3.6) as maxvm, (sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6 as avgvm, max(bpm) as maxbpm, avg(bpm) as avgbpm from trainer_exercise_dett where id_exercise="+iIDExercise;
 			oCursor = oDB.rawQuery(sSQL_CURRENT_VM,null);
 			if(oCursor!=null){      		
 			   		int iMaxVM  = oCursor.getColumnIndex("maxvm");
@@ -1372,7 +1372,7 @@ public class ExerciseUtils {
 			
 			if(DB==null) oDB.open();
 			
-			String sSQL_CURRENT_VM = "select CAST((60/AVG((speed*3.6))) as INTEGER) ||\".\"|| CAST((((60/AVG((speed*3.6))) - CAST((60/AVG((speed*3.6))) as INTEGER))*60) as INTEGER) as pace  from trainer_exercise_dett where id_exercise="+iIDExercise;
+			String sSQL_CURRENT_VM = "select CAST((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) as INTEGER) ||\".\"|| CAST((((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) - CAST((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) as INTEGER))*60) as INTEGER) as pace  from trainer_exercise_dett where id_exercise="+iIDExercise;
 			oCursor = oDB.rawQuery(sSQL_CURRENT_VM,null);
 			if(oCursor!=null){      		
 			   		int iPace = oCursor.getColumnIndex("pace");
@@ -1479,7 +1479,7 @@ public class ExerciseUtils {
 								"(select max(id_watch_point)-1 from TRAINER_EXERCISE_DETT WHERE id_exercise=" +
 								"(select max(id_exercise) from TRAINER_EXERCISE_DETT))";
 		*/	////Log.v(ExerciseUtils.class.getCanonicalName(),"SQL Pace: "+s_SQL_PACE);
-			String s_SQL_PACE="SELECT CAST((60/AVG((speed*3.6))) as INTEGER) ||\".\"|| CAST((((60/AVG((speed*3.6))) - CAST((60/AVG((speed*3.6))) as INTEGER))*60) as INTEGER) as pace from trainer_exercise_dett WHERE id_exercise=(select max(id_exercise) from TRAINER_EXERCISE_DETT)";
+			String s_SQL_PACE="SELECT CAST((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) as INTEGER) ||\".\"|| CAST((((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) - CAST((60/((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6)) as INTEGER))*60) as INTEGER) as pace from trainer_exercise_dett WHERE id_exercise=(select max(id_exercise) from TRAINER_EXERCISE_DETT)";
 			oDB.open();
 			oCursor = oDB.rawQuery(s_SQL_PACE,null);
 			if(oCursor!=null){      			  
@@ -1524,7 +1524,7 @@ public class ExerciseUtils {
 								"(select max(id_watch_point)-1 from TRAINER_EXERCISE_DETT WHERE id_exercise=" +
 								"(select max(id_exercise) from TRAINER_EXERCISE_DETT))";
 			 */	
-			String s_SQL_PACE="SELECT AVG((speed*3.6)) as Vm from trainer_exercise_dett WHERE id_exercise=(select max(id_exercise) from TRAINER_EXERCISE_DETT)";
+			String s_SQL_PACE="SELECT ((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6) as Vm from trainer_exercise_dett WHERE id_exercise=(select max(id_exercise) from TRAINER_EXERCISE_DETT)";
 			
 			////Log.v(ExerciseUtils.class.getCanonicalName(),"SQL Pace: "+s_SQL_PACE);		
 			oDB.open();
@@ -2244,7 +2244,7 @@ public class ExerciseUtils {
 						"<Lap StartTime=\""+sTime+"\">\n" +
 						"	<TotalTimeSeconds>"+ExerciseManipulate.getiTotalTimeInSeconds()+"</TotalTimeSeconds>\n" +
 						"	<DistanceMeters>"+(ExerciseManipulate.getdTotalDistance()*1000)+"</DistanceMeters>\n" +
-						"	<MaximumSpeed>"+ExerciseManipulate.getdAVGSpeedMT()+"</MaximumSpeed>\n" +
+						"	<MaximumSpeed>"+ExerciseManipulate.getdAVGSpeed()+"</MaximumSpeed>\n" +
 						"	<Calories>"+ExerciseManipulate.getsCurrentCalories()+"</Calories>\n" +
 						"	<Intensity>Active</Intensity>\n" +
 						"	<TriggerMethod>Manual</TriggerMethod>\n" +
@@ -2794,7 +2794,7 @@ public class ExerciseUtils {
 			
 			oDB.open();
 			
-			String sSQL_CURRENT_VM = "select avg(speed*3.6) as vm  from trainer_exercise_dett where id_exercise=(select max(id_exercise) from trainer_exercise_dett)";
+			String sSQL_CURRENT_VM = "select ((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6) as vm  from trainer_exercise_dett where id_exercise=(select max(id_exercise) from trainer_exercise_dett)";
 			oCursor = oDB.rawQuery(sSQL_CURRENT_VM,null);
 			if(oCursor!=null){      		
 			   		int iVM = oCursor.getColumnIndex("vm");
@@ -2978,7 +2978,7 @@ public class ExerciseUtils {
 			if(bRestoreWorkout){
 				oDB.getOpenedDatabase().execSQL("insert into trainer_exercise (id_exercise, id_users,id_type_exercise, creation_date,start_date,end_date,note,calorie_burn,distance,avg_speed,total_time,weight,kalories) " + 
 
-		    			" select id_exercise, id_users,id_type_exercise, min(watch_point_date) as creation_date, min(watch_point_date) as start_date,max(watch_point_date) as end_date, 'restore workout' as note, (case when id_type_exercise=0 then (0.9*sum(distance)*"+oConfigTrainer.getiWeight()+") when id_type_exercise=1 then (0.105*sum(distance)*"+oConfigTrainer.getiWeight()+") else (0.45*sum(distance)*"+oConfigTrainer.getiWeight()+") end ) as calorie_burn, sum(distance) as distance,avg(speed)*3.6 as avg_speed, " +  
+		    			" select id_exercise, id_users,id_type_exercise, min(watch_point_date) as creation_date, min(watch_point_date) as start_date,max(watch_point_date) as end_date, 'restore workout' as note, (case when id_type_exercise=0 then (0.9*sum(distance)*"+oConfigTrainer.getiWeight()+") when id_type_exercise=1 then (0.105*sum(distance)*"+oConfigTrainer.getiWeight()+") else (0.45*sum(distance)*"+oConfigTrainer.getiWeight()+") end ) as calorie_burn, sum(distance) as distance,((sum(distance*1000)/(abs(((strftime('%s',min(watch_point_date))-strftime('%s',max(watch_point_date)))))))*3.6) as avg_speed, " +  
 		    		
 				    	" case when length(abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600))) = 1 then " + 
 					    "     '0' || abs(((strftime('%s',max(watch_point_date))-strftime('%s',min(watch_point_date)))/3600)) else " + 
