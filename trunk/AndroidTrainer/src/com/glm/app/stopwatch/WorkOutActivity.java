@@ -268,10 +268,10 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 								btnStart.setText(getApplication().getString(R.string.btnstop));
 							}							
 						}						
-					} catch (RemoteException e1) {
-						
+					} catch (RemoteException e1) {						
 						Log.e(this.getClass().getCanonicalName(), "RemoteException GUIUPDATEIDENTIFIER");
 						WorkOutActivity.this.ThreadTrainer.interrupt();
+						System.exit(1);
 					} catch (NullPointerException e) {
                     	Log.e(this.getClass().getCanonicalName(), "NullPointerException GUIUPDATEIDENTIFIER");
                     	e.printStackTrace();
