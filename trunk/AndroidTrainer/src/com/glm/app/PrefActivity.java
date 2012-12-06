@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -35,7 +36,7 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
 	private LinearLayout Oscrol;
 	private Animation a;
 	private ConfigTrainer oConfigTrainer;
-	
+	private ImageButton obtn_Back;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +51,15 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
         setContentView(R.layout.new_new_pref);                                         
         
         Oscrol = (LinearLayout) findViewById(R.id.objMainLayout);                       
-        
+        obtn_Back  	= (ImageButton) findViewById(R.id.btn_back);
+    	
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);       
         
         LinearLayout oLinearUser = new LinearLayout(this);
 		oLinearUser = (LinearLayout) LayoutInflater.from(oContext).inflate(R.layout.row_user, null);
 		Oscrol.addView(oLinearUser);
-		ImageView oImgUserDett = (ImageView) findViewById(R.id.imgUserDett);
+		ImageButton oImgUserDett = (ImageButton) findViewById(R.id.btnUserDett);
 		oImgUserDett.setOnClickListener(new OnClickListener() {
    	    					
 			@Override
@@ -169,6 +171,8 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
         	//Toast.makeText(this, "Error Insert RUNT-TIME!"+e, Toast.LENGTH_LONG).show();
         	e.printStackTrace();
 		}
+        
+        obtn_Back.setOnClickListener(this);
         Oscrol.clearAnimation();
         Oscrol.setAnimation(a);       
     }
@@ -333,7 +337,9 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
 
 	@Override
     public void onClick(View v) {
-		
+		if (v.getId() == R.id.btn_back) {
+			ActivityHelper.startOriginalActivityAndFinish(this);
+		}
     }
 
 	@Override

@@ -1992,7 +1992,7 @@ public class ExerciseUtils {
 		   			//Date date = format.parse(oCursor.getString(iData));
 		   			Calendar date = new GregorianCalendar(
 		   					Integer.parseInt(oCursor.getString(iYear)), 
-		   					Integer.parseInt(oCursor.getString(iMonth)), 
+		   					Integer.parseInt(oCursor.getString(iMonth))-1, 
 		   					Integer.parseInt(oCursor.getString(iDay)));
 		   			//Log.v(ExerciseUtils.class.getCanonicalName(),"Date Utils Pre: "+
 		   			//		Integer.parseInt(oCursor.getString(iDay))+"/"+

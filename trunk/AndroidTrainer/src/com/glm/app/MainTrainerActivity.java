@@ -50,6 +50,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,9 +72,9 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
     private TelephonyManager oPhone;
     /**Gestione della licenza*/
     private LinearLayout oMainLayout;
-	private LinearLayout oStartRunningExercise;
-	private LinearLayout oStartWalkingExercise;
-	private LinearLayout oStartBikingExercise;
+	private ImageButton oStartRunningExercise;
+	private ImageButton oStartWalkingExercise;
+	private ImageButton oStartBikingExercise;
 	private RelativeLayout oBMI;
 	private Button oManualWalk;
 	private Button oManualRun;
@@ -467,9 +468,9 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	private class DBTask extends AsyncTask<Database, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			oStartRunningExercise = (LinearLayout) findViewById(R.id.btn_start_running);
-		       oStartWalkingExercise = (LinearLayout) findViewById(R.id.btn_start_walking);
-		       oStartBikingExercise  = (LinearLayout) findViewById(R.id.btn_start_biking);
+			   oStartRunningExercise = (ImageButton) findViewById(R.id.btn_start_running);
+		       oStartWalkingExercise = (ImageButton) findViewById(R.id.btn_start_walking);
+		       oStartBikingExercise  = (ImageButton) findViewById(R.id.btn_start_biking);
 		       oBMI					 = (RelativeLayout) findViewById(R.id.btn_bmi);
 		       
 		       oHistory		= (Button) findViewById(R.id.btn_history);

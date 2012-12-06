@@ -47,7 +47,6 @@
 					            android:text="@string/bmi"
 					            android:textColor="#FFFFFF"
 					            android:textSize="20sp" />
-							
 							<TextView
 							    android:id="@+id/txtBMIGO"
 							    android:layout_width="wrap_content"

@@ -111,7 +111,7 @@ public class LineChart extends Chart{
 				oSerie.addOrUpdate(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
 						oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));
 			}
-													
+			Log.v(this.getClass().getCanonicalName(), "Value to evauate:"+i);										
 		}
 		try{
 			oSerie.add(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 

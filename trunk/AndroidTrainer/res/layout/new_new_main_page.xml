@@ -95,17 +95,14 @@
 	
 							</RelativeLayout>			      
 					</LinearLayout>
-				    
 					<!-- Run Workout -->
-
-				    <RelativeLayout
+					<RelativeLayout
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
 				        android:layout_marginTop="10dip"
 				        android:orientation="horizontal"
 				        android:padding="10dip" >
-
-				        <Button
+							<Button
 				            android:id="@+id/btnManualRun"
 				            android:layout_width="wrap_content"
 				            android:layout_height="fill_parent"
@@ -117,33 +114,15 @@
 				            android:textColor="#FFFFFF"
 				            android:textSize="16sp" />
 
-				        <LinearLayout
-				            android:id="@+id/btn_start_running"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-				            android:layout_alignParentLeft="true"
-				            android:layout_centerVertical="true"
-				            android:background="@drawable/lista_gradient"
-				            android:clickable="true"
-				            android:orientation="horizontal"
-				            android:padding="10dip" >
+				        
 
-				            <ImageView
-				                android:id="@+id/imgTypeExercise"
+				            <ImageButton
+				                android:id="@+id/btn_start_running"
 				                android:layout_width="wrap_content"
 				                android:layout_height="wrap_content"
 				                android:layout_marginTop="0dip"
-				                android:src="@drawable/running" />
-
-				            <LinearLayout
-				                android:layout_width="match_parent"
-				                android:layout_height="match_parent"
-				                android:layout_marginTop="0dip"
-				                android:orientation="vertical"
-				                android:padding="0dip" >
-
-				            </LinearLayout>
-				        </LinearLayout>
+				                android:src="@drawable/running" 
+				                android:background="@drawable/lista_gradient"/>
 
 				        <TextView
 				            android:id="@+id/textNote"
@@ -168,30 +147,15 @@
 							android:padding="10dip"
 							android:layout_marginTop="10dip" 
 							android:orientation="vertical" >
-							<LinearLayout 
-								android:layout_height="wrap_content" 
-								android:layout_width="wrap_content" 
-								android:background="@drawable/lista_gradient"
-								android:padding="10dip"
-								android:layout_marginTop="0dip" 
-								android:orientation="horizontal"
-								android:clickable="true"
-							    android:id="@+id/btn_start_walking">
-								<ImageView 
+							
+								<ImageButton
 									android:layout_height="wrap_content" 
 									android:layout_width="wrap_content" 								
-									android:id="@+id/imgTypeExercise" 
+									android:id="@+id/btn_start_walking" 
 									android:src="@drawable/walking" 
-									android:layout_marginTop="0dip"></ImageView>
-								<LinearLayout 
-									android:layout_height="match_parent" 
-									android:layout_width="match_parent" 
-									android:padding="0dip"
-									android:layout_marginTop="0dip" 
-									android:orientation="vertical">
-									</LinearLayout>
-							</LinearLayout>
-
+									android:layout_marginTop="0dip"
+									android:background="@drawable/lista_gradient"/>
+							
 							<Button
 							    android:id="@+id/btnManualWalk"
 							    android:layout_width="wrap_content"
@@ -225,21 +189,14 @@
 							android:padding="10dip"
 							android:layout_marginTop="10dip" 
 							android:orientation="vertical">
-							<LinearLayout 
-								android:layout_height="wrap_content" 
-								android:layout_width="wrap_content" 
-								android:background="@drawable/lista_gradient"
-								android:padding="10dip"
-								android:layout_marginTop="0dip" 
-								android:orientation="horizontal"
-								android:clickable="true"
-							    android:id="@+id/btn_start_biking">
-								<ImageView 
+							
+								<ImageButton 
 									android:layout_height="wrap_content" 
 									android:layout_width="wrap_content" 								
-									android:id="@+id/imgTypeExercise" 
+									android:id="@+id/btn_start_biking" 
 									android:src="@drawable/biking" 
-									android:layout_marginTop="0dip"></ImageView>
+									android:layout_marginTop="0dip"
+									android:background="@drawable/lista_gradient"/>
 								<LinearLayout 
 									android:layout_height="match_parent" 
 									android:layout_width="match_parent" 
@@ -247,7 +204,6 @@
 									android:layout_marginTop="0dip" 
 									android:orientation="vertical">
 									</LinearLayout>
-							</LinearLayout>
 
 							<Button
 							    android:id="@+id/btnManualBike"

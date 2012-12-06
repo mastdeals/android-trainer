@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 public class UserDetailsActivity extends Activity implements OnClickListener{
 	private Button obtn_Save;
 	private Button obtn_Cancel;
+	private ImageButton obtn_Back;
 	
 	/**Pulsanti +/- Weight*/
 	private TextView oTxtWeight;
@@ -85,7 +87,8 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         oMainLayout = (LinearLayout) findViewById(R.id.main_layout);
         //obtn_back   = (Button) findViewById(R.id.btn_back);        
         obtn_Save   = (Button) findViewById(R.id.btnSave);
-        obtn_Cancel = (Button) findViewById(R.id.btnCancel);               
+        obtn_Cancel = (Button) findViewById(R.id.btnCancel);                      
+        obtn_Back   = (ImageButton) findViewById(R.id.btn_back);
         
         oTxtWeight  = (TextView) findViewById(R.id.txtWeight);
         oTxtAge		= (TextView) findViewById(R.id.txtAge);
@@ -108,6 +111,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         //obtn_back.setOnClickListener(this);
         obtn_Save.setOnClickListener(this);
         obtn_Cancel.setOnClickListener(this);
+        obtn_Back.setOnClickListener(this);
         oCkFB.setOnClickListener(this);
     	oCkGooglePlus.setOnClickListener(this);
     	oCkTwitter.setOnClickListener(this);
@@ -209,6 +213,16 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				//startActivity(intent);
 				ActivityHelper.startNewActivityAndFinish(this, intent);	
 				Log.e(this.getClass().getCanonicalName(),"Error back");
+			}
+		}else if(oView.getId()==R.id.btn_back){
+			try{
+				ActivityHelper.startOriginalActivityAndFinish(this);			
+			}catch (NullPointerException e) {
+				//ActivityHelper.startOriginalActivityAndFinish(getParent());		
+				Intent intent = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
+				//startActivity(intent);
+				ActivityHelper.startNewActivityAndFinish(this, intent);	
+				//Log.e(this.getClass().getCanonicalName(),"Error back");
 			}
 		}else if(oView.getId()==R.id.btnCancel){
 			try{
