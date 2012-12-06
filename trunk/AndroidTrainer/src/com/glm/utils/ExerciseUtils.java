@@ -429,7 +429,7 @@ public class ExerciseUtils {
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
 			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET calorie_burn='" +ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+
-					" Kal', kalories=CAST(replace('"+ExerciseManipulate.getsCurrentCalories()+"',',','.') as double)" +
+					" Kal', kalories=CAST(replace('"+ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
 					" WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 			
 			oDB.open();
@@ -2480,7 +2480,9 @@ public class ExerciseUtils {
 	 * */
 	public synchronized static Vector<DistancePerExercise> getDistanceForType(ConfigTrainer oConfigTrainer, Context oContext){
 		Vector<DistancePerExercise> table = new Vector<DistancePerExercise>();
-		String s_SQL_DISTANCE="select case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+" else sum(distance) end as somma, (case when id_type_exercise=1000 then 0 WHEN id_type_exercise=1001 then 1 WHEN id_type_exercise=10000 then 100 else id_type_exercise end) as id_type_exercise from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)=strftime('%Y','now') group by case when id_type_exercise=1000 then 0 WHEN id_type_exercise=1001 then 1 WHEN id_type_exercise=10000 then 100 else id_type_exercise end";
+		String s_SQL_DISTANCE="select case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+" else sum(distance) end as somma, " +
+				"					   (case when id_type_exercise=1000 then 0 WHEN id_type_exercise=1001 then 1 WHEN id_type_exercise=10000 then 100 else id_type_exercise end) as id_type_exercise " +
+				"					  from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)=strftime('%Y','now') group by case when id_type_exercise=1000 then 0 WHEN id_type_exercise=1001 then 1 WHEN id_type_exercise=10000 then 100 else id_type_exercise end";
 		Database oDB = new Database(oContext);
 		
 		try{
@@ -2496,10 +2498,12 @@ public class ExerciseUtils {
 				
 		   		while(oCursor.moveToNext()){ 
 		   			int iType = oCursor.getInt(i_TypeExercise);
+		   			
 		   			double dDistance = oCursor.getLong(iSomma);
 		   			if(oConfigTrainer.getiUnits()!=0){
 		   				dDistance = (int) (dDistance * MILES_TO_KM);
 		   			}
+		   			
 		   			
 		   			String sDistance =oNFormat.format(dDistance); 
 		   			DistancePerExercise oDistancePerExercise = new DistancePerExercise();
@@ -2507,6 +2511,30 @@ public class ExerciseUtils {
 		   			oDistancePerExercise.setsDistance(sDistance);
 		   			table.add(oDistancePerExercise);		   			
 		   			oDistancePerExercise=null;
+		   		}
+		   		oCursor.close();
+			}
+			oDB.close();
+			String s_SQL_Kalories="select (case when id_type_exercise=1000 then 0 WHEN id_type_exercise=1001 then 1 WHEN id_type_exercise=10000 then 100 else id_type_exercise end) as id_type_exercise, sum(kalories) as kalories from trainer_exercise where strftime('%Y',start_date)=strftime('%Y','now') group by id_type_exercise";
+			oDB.open();
+			oCursor = oDB.rawQuery(s_SQL_Kalories,null);
+			if(oCursor!=null){      						   
+		   		int i_KaloriesExercise = oCursor.getColumnIndex("kalories");
+		   		int i_TypeExercise = oCursor.getColumnIndex("id_type_exercise");
+		   		int iIndex=0;
+		   		NumberFormat oNFormat = NumberFormat.getNumberInstance();
+				oNFormat.setMaximumFractionDigits(2);
+				
+		   		while(oCursor.moveToNext()){ 
+		   			int iKalories = oCursor.getInt(i_KaloriesExercise);
+		   			int iType = oCursor.getInt(i_TypeExercise);
+		   				
+		   			for(iIndex=0;iIndex<table.size();iIndex++){
+		   				String sKalories =oNFormat.format(iKalories);
+		   				if(table.get(iIndex).getiTypeExercise()==iType){
+			   				table.get(iIndex).setsCalories(sKalories);
+			   			}
+		   			}
 		   		}
 		   		oCursor.close();
 			}

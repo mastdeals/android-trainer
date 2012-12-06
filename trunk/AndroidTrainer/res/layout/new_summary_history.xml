@@ -153,7 +153,7 @@
 					        android:background="@drawable/glm_lista_gradient_no_corners" >
 
 					        <ImageButton
-					            android:id="@+id/textDistance_run"
+					            android:id="@+id/btn_history_run"
 					            android:layout_width="30dp"
 					            android:layout_height="70dp"
 					            android:layout_alignParentRight="true"
@@ -195,7 +195,7 @@
 					            android:src="@drawable/time" />
 
 					        <TextView
-					            android:id="@+id/txtDistance"
+					            android:id="@+id/textDistance_run"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
 					            android:layout_alignParentTop="true"
@@ -203,17 +203,17 @@
 					            android:layout_marginTop="10dp"
 					            android:editable="false"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="30Km"
+					            android:text="-"
 					            android:textColor="#FFFFFF" />
 
 					        <TextView
-					            android:id="@+id/txtKal"
+					            android:id="@+id/textKal_run"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
 					            android:layout_alignParentBottom="true"
 					            android:layout_marginLeft="170dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="368 Kal"
+					            android:text="-"
 					            android:textColor="#FFFFFF"
 					            android:textSize="12dip" />
 
@@ -224,7 +224,7 @@
 					            android:layout_alignParentBottom="true"
 					            android:layout_marginLeft="50dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="10,5 Km/h"
+					            android:text="-"
 					            android:textColor="#FFFFFF"
 					            android:textSize="12dip" />
 
@@ -236,7 +236,7 @@
 					            android:layout_marginLeft="50dp"
 					            android:layout_marginTop="10dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="75 Min"
+					            android:text="-"
 					            android:textColor="#FFFFFF" />
 					    </RelativeLayout>
 
@@ -286,7 +286,7 @@
 					            android:background="@drawable/glm_lista_gradient_no_corners" >
 
 					            <ImageButton
-					                android:id="@+id/TextView04"
+					                android:id="@+id/btn_history_walk"
 					                android:layout_width="30dp"
 					                android:layout_height="70dp"
 					                android:layout_alignParentRight="true"
@@ -327,7 +327,7 @@
 					                android:src="@drawable/time" />
 
 					            <TextView
-					                android:id="@+id/TextView02"
+					                android:id="@+id/textDistance_walk"
 					                android:layout_width="wrap_content"
 					                android:layout_height="wrap_content"
 					                android:layout_alignParentTop="true"
@@ -335,17 +335,17 @@
 					                android:layout_marginTop="10dp"
 					                android:editable="false"
 					                android:gravity="center_vertical|center_horizontal"
-					                android:text="30Km"
+					                android:text="-"
 					                android:textColor="#FFFFFF" />
 
 					            <TextView
-					                android:id="@+id/TextView05"
+					                android:id="@+id/textKal_walk"
 					                android:layout_width="wrap_content"
 					                android:layout_height="wrap_content"
 					                android:layout_alignParentBottom="true"
 					                android:layout_marginLeft="170dp"
 					                android:gravity="center_vertical|center_horizontal"
-					                android:text="368 Kal"
+					                android:text="-"
 					                android:textColor="#FFFFFF"
 					                android:textSize="12dip" />
 
@@ -356,7 +356,7 @@
 					                android:layout_alignParentBottom="true"
 					                android:layout_marginLeft="50dp"
 					                android:gravity="center_vertical|center_horizontal"
-					                android:text="10,5 Km/h"
+					                android:text="-"
 					                android:textColor="#FFFFFF"
 					                android:textSize="12dip" />
 
@@ -368,7 +368,7 @@
 					                android:layout_marginLeft="50dp"
 					                android:layout_marginTop="10dp"
 					                android:gravity="center_vertical|center_horizontal"
-					                android:text="75 Min"
+					                android:text="-"
 					                android:textColor="#FFFFFF" />
 					        </RelativeLayout>		
 		            <!-- WALK -->
@@ -414,7 +414,7 @@
 					        android:background="@drawable/glm_lista_gradient_no_corners" >
 
 					        <ImageButton
-					            android:id="@+id/TextView08"
+					            android:id="@+id/btn_history_bike"
 					            android:layout_width="30dp"
 					            android:layout_height="70dp"
 					            android:layout_alignParentRight="true"
@@ -455,7 +455,7 @@
 					            android:src="@drawable/time" />
 
 					        <TextView
-					            android:id="@+id/TextView06"
+					            android:id="@+id/textDistance_bike"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
 					            android:layout_alignParentTop="true"
@@ -463,17 +463,17 @@
 					            android:layout_marginTop="10dp"
 					            android:editable="false"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="30Km"
+					            android:text="-"
 					            android:textColor="#FFFFFF" />
 
 					        <TextView
-					            android:id="@+id/TextView10"
+					            android:id="@+id/textKal_bike"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
 					            android:layout_alignParentBottom="true"
 					            android:layout_marginLeft="170dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="368 Kal"
+					            android:text="-"
 					            android:textColor="#FFFFFF"
 					            android:textSize="12dip" />
 
@@ -484,7 +484,7 @@
 					            android:layout_alignParentBottom="true"
 					            android:layout_marginLeft="50dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="10,5 Km/h"
+					            android:text="-"
 					            android:textColor="#FFFFFF"
 					            android:textSize="12dip" />
 
@@ -496,7 +496,7 @@
 					            android:layout_marginLeft="50dp"
 					            android:layout_marginTop="10dp"
 					            android:gravity="center_vertical|center_horizontal"
-					            android:text="75 Min"
+					            android:text="-"
 					            android:textColor="#FFFFFF" />
 					    </RelativeLayout>
 					</RelativeLayout>

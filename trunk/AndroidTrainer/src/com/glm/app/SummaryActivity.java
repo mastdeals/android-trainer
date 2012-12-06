@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,14 +21,19 @@ import com.glm.utils.ExerciseUtils;
 public class SummaryActivity extends Activity implements OnClickListener{
 	private ConfigTrainer oConfigTrainer;
 	
-	private Button oBtnRun;
-	private Button oBtnWalk;
-	private Button oBtnBike;
+	private ImageButton oBtnRun;
+	private ImageButton oBtnWalk;
+	private ImageButton oBtnBike;
 	
 	private TextView oTxtTot;
 	private TextView oTxtRun;
 	private TextView oTxtWalk;
 	private TextView oTxtBike;
+
+	private TextView oTxtKalRun;
+	private TextView oTxtKalWalk;
+	private TextView oTxtKalBike;
+
 	
 	private LinearLayout oGraph;
 	
@@ -47,9 +52,9 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        
 	    	
 	        setContentView(R.layout.new_summary_history);        
-	        oBtnRun 	= (Button) findViewById(R.id.btn_history_run); 
-	    	oBtnWalk 	= (Button) findViewById(R.id.btn_history_walk); 
-	    	oBtnBike	= (Button) findViewById(R.id.btn_history_bike); 
+	        oBtnRun 	= (ImageButton) findViewById(R.id.btn_history_run); 
+	    	oBtnWalk 	= (ImageButton) findViewById(R.id.btn_history_walk); 
+	    	oBtnBike	= (ImageButton) findViewById(R.id.btn_history_bike); 
 	        
 	    	oGraph			= (LinearLayout) findViewById(R.id.llGraph);
 	        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
@@ -59,6 +64,9 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	    	oTxtWalk	= (TextView) findViewById(R.id.textDistance_walk); 
 	    	oTxtBike	= (TextView) findViewById(R.id.textDistance_bike); 
 	    	
+	    	oTxtKalRun	= (TextView) findViewById(R.id.textKal_run); 
+	    	oTxtKalWalk	= (TextView) findViewById(R.id.textKal_walk); 
+	    	oTxtKalBike	= (TextView) findViewById(R.id.textKal_bike);
 	        
 	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
 	        /**controllo e salvo esercizi non salvati*/
@@ -105,6 +113,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 						iRun=0;
 					}
 	        		oTxtRun.setText(oTable.get(i).getsDistance()+sUnit);
+	        		oTxtKalRun.setText(oTable.get(i).getsCalories()+" "+getString(R.string.kalories));
 	        	}else if(oTable.get(i).getiTypeExercise()==1){
 	        		//Bike
 	        		try{
@@ -113,6 +122,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        			iBike=0;
 					}
 	        		oTxtBike.setText(oTable.get(i).getsDistance()+sUnit);
+	        		oTxtKalBike.setText(oTable.get(i).getsCalories()+" "+getString(R.string.kalories));
 	        	}else if(oTable.get(i).getiTypeExercise()==100){
 	        		//walk
 	        		try{
@@ -121,6 +131,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        			iWalk=0;
 					}
 	        		oTxtWalk.setText(oTable.get(i).getsDistance()+sUnit);
+	        		oTxtKalWalk.setText(oTable.get(i).getsCalories()+" "+getString(R.string.kalories));
 	        	}
 	        }
 	        oTxtTot.setText((iRun+iBike+iWalk)+sUnit);
