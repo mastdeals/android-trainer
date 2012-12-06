@@ -424,7 +424,7 @@ public class ExerciseUtils {
 					"avg_speed='"+ExerciseUtils.getVelocitaMedia(oContext)+"'," +
 					"kalories=(select ROUND((case when id_type_exercise = 0 then ("+I_BURN_RUNNING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 1 then ("+I_BURN_BIKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 100 then ("+I_BURN_WALKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" end),2) as kalories from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)), " +
 					"calorie_burn=(select ROUND((case when id_type_exercise = 0 then ("+I_BURN_RUNNING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 1 then ("+I_BURN_BIKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 100 then ("+I_BURN_WALKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" end),2) as kalories from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise))|| ' Kal', " +					
-					"total_time=(select (strftime(\"%H\",strftime(\"%J\",end_date)-strftime(\"%J\",start_date))-12)||strftime(\":%M:%S\",strftime(\"%J\",end_date)-strftime(\"%J\",start_date)) from trainer_exercise where id_exercise=(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)) " +				
+					"total_time=(select (strftime(\"%H\",strftime(\"%J\",CURRENT_TIMESTAMP)-strftime(\"%J\",start_date))-12)||strftime(\":%M:%S\",strftime(\"%J\",CURRENT_TIMESTAMP)-strftime(\"%J\",start_date)) from trainer_exercise where id_exercise=(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)) " +				
 					"  WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 			
 			oDB.open();
