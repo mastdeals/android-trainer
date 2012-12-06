@@ -52,6 +52,9 @@ public class ExerciseUtils {
 	private static Vector<Music> vListOfMusic = new Vector<Music>();
 	private static int iTypeExercise=0;
 	private final static double MILES_TO_KM=0.621371192;
+	private final static double I_BURN_RUNNING=0.9;
+	private final static double I_BURN_WALKING=0.45;
+	private final static double I_BURN_BIKING=0.105;
 	/***
 	 * Calcola la distanza a partire da un paio di coordinate,
 	 * la distanza pu essere calcolata in K (Kilometri) M (Miles) N (Nautical Miles)
@@ -417,24 +420,27 @@ public class ExerciseUtils {
 		try{
 			
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+"" +
-					" WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET end_date = CURRENT_TIMESTAMP, steps_count="+iStep+", distance=(select sum(distance) from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)),  " +
+					"avg_speed='"+ExerciseUtils.getVelocitaMedia(oContext)+"'," +
+					"kalories=(select ROUND((case when id_type_exercise = 0 then ("+I_BURN_RUNNING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 1 then ("+I_BURN_BIKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 100 then ("+I_BURN_WALKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" end),2) as kalories from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)), " +
+					"calorie_burn=(select ROUND((case when id_type_exercise = 0 then ("+I_BURN_RUNNING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 1 then ("+I_BURN_BIKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 100 then ("+I_BURN_WALKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" end),2) as kalories from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise))|| ' Kal', " +					
+					"total_time=(select (strftime(\"%H\",strftime(\"%J\",end_date)-strftime(\"%J\",start_date))-12)||strftime(\":%M:%S\",strftime(\"%J\",end_date)-strftime(\"%J\",start_date)) from trainer_exercise where id_exercise=(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)) " +				
+					"  WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 			
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
 			
-			iIDExercise=getLastExercise(oContext);
+			/*iIDExercise=getLastExercise(oContext);
 			//Popolo gli altri dettagli
 			ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, iIDExercise);
 			
-			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET calorie_burn='" +ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+
-					" Kal', kalories=CAST(replace('"+ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseManipulate.getdTotalDistance())+"',',','.') as double), distance='"+ExerciseManipulate.getdTotalDistance()+"' , avg_speed='"+ExerciseManipulate.getdAVGSpeed()+"',total_time= '" +ExerciseManipulate.getsTotalTime() +
+			sSQL_SAVE_EXERCISE = "UPDATE trainer_exercise SET total_time= '" +ExerciseManipulate.getsTotalTime() +
 					" WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
 			
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
-			oDB.close();
+			oDB.close();*/
 			//Cancello tutti gli esercizi sporchi in DB
 			//String sSQL_PURGE_EXERCISE="delete from TRAINER_EXERCISE where (end_date is null) or (distance=0)";
 			//oDB.open();
@@ -1862,9 +1868,7 @@ public class ExerciseUtils {
 	public synchronized static String getKaloriesBurn(ConfigTrainer oConfig, double dCurrentDistance){
 		String sKalories="";
 		double dKaloriesBurn=0.0;
-		double I_BURN_RUNNING=0.9;
-		double I_BURN_WALKING=0.45;
-		double I_BURN_BIKING=0.105;
+		
 		NumberFormat oNFormat = NumberFormat.getNumberInstance();
 		oNFormat.setMaximumFractionDigits(2);
 		if(iTypeExercise==0){
