@@ -130,7 +130,6 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oBtnExportGPX = (Button) findViewById(R.id.btnExportGPX);
         oBtnExportTCX = (Button) findViewById(R.id.btnExportTCX);
       */  
-        oBtnShareFB   = (ImageButton) findViewById(R.id.btnShareFB);
         oBtnGraph     = (Button) findViewById(R.id.btnGraph);
         oBtnGMap	  = (Button) findViewById(R.id.btnGmap);
         
@@ -197,11 +196,6 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 				oBtn_SaveShare.setText(R.string.save_note);			
 			}
 			oNote.setEnabled(!oNote.isEnabled());
-		}else if(oObj.getId()==R.id.btnShareFB){
-			//Manual Sharing
-			manualShare();
-			//QuickBar oBar = new QuickBar(getApplicationContext());
-			//oBar.getQuickAction().show(oObj);
 		}else if(oObj.getId()==R.id.btnInfo){
 			//Manual Sharing
 			//manualShare();
@@ -310,60 +304,6 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	            }
 	        });			
 			oBar.getQuickAction().show(oObj);
-		}else if(oObj.getId()==R.id.btnExportGPX){	
-			if(ExerciseUtils.writeGPX(-1,getApplicationContext(),oConfigTrainer)){
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
-				.show();
-				//Send via mail
-				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
-	        	emailIntent.setType("plain/text"); 
-	        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
-	        	File fileIn = new File(ExerciseUtils.sExportFile);
-	            Uri u = Uri.fromFile(fileIn);       
-	            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
-	        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-			}else{
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
-				.show();
-			}				
-		}else if(oObj.getId()==R.id.btnExportTCX){	
-			if(ExerciseUtils.writeTCX(-1,getApplicationContext(),oConfigTrainer)){
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
-				.show();
-				//Send via mail
-				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
-	        	emailIntent.setType("plain/text"); 
-	        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
-	        	File fileIn = new File(ExerciseUtils.sExportFile);
-	            Uri u = Uri.fromFile(fileIn);       
-	            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
-	        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-			}else{
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
-				.show();
-			}				
-		}else if(oObj.getId()==R.id.btnExportKML){	
-			if(ExerciseUtils.writeKML(-1,getApplicationContext(),oConfigTrainer)){
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
-				.show();
-				//Send via mail
-				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
-	        	emailIntent.setType("plain/text"); 
-	        	//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"}); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.message_subject)); 
-	        	emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.message_text)); 
-	        	File fileIn = new File(ExerciseUtils.sExportFile);
-	            Uri u = Uri.fromFile(fileIn);       
-	            emailIntent.putExtra(Intent.EXTRA_STREAM, u);
-	        	startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-			}else{
-				Toast.makeText(getBaseContext(), getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
-				.show();
-			}
 		}else if(oObj.getId()==R.id.btnGraph){
 			//Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,GraphExerciseActivity.class);
 			Intent intent = ActivityHelper.createActivityIntent(ExerciseDetails.this,WebGraphExerciseActivity.class);

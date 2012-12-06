@@ -24,6 +24,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	private ImageButton oBtnRun;
 	private ImageButton oBtnWalk;
 	private ImageButton oBtnBike;
+	private ImageButton obtn_Back;
 	
 	private TextView oTxtTot;
 	private TextView oTxtRun;
@@ -55,7 +56,8 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        oBtnRun 	= (ImageButton) findViewById(R.id.btn_history_run); 
 	    	oBtnWalk 	= (ImageButton) findViewById(R.id.btn_history_walk); 
 	    	oBtnBike	= (ImageButton) findViewById(R.id.btn_history_bike); 
-	        
+	    	obtn_Back  	= (ImageButton) findViewById(R.id.btn_back);
+	    	 
 	    	oGraph			= (LinearLayout) findViewById(R.id.llGraph);
 	        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
 	    	
@@ -138,6 +140,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	        oBtnRun.setOnClickListener(this);
 	    	oBtnWalk.setOnClickListener(this);
 	    	oBtnBike.setOnClickListener(this);
+	    	obtn_Back.setOnClickListener(this);
 	 }
 	 @Override
 	 public void onBackPressed() {
@@ -168,7 +171,8 @@ public class SummaryActivity extends Activity implements OnClickListener{
 			//startActivity(intent);
 			intent.putExtra("history", "1");
 			ActivityHelper.startNewActivityAndFinish(this, intent);	
+		}else if (v.getId() == R.id.btn_back) {
+			ActivityHelper.startOriginalActivityAndFinish(this);
 		}
-		
 	}
 }

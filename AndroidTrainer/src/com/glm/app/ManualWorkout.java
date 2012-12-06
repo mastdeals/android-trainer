@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -47,7 +48,9 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 	
 	private Button oBtnSAVE;
 	
-	private Button oBtnCAMCEL;
+	private Button oBtnCANCEL;
+	
+	private ImageButton obtn_Back;
 	
 	private LinearLayout oMainLinearLayout;
 	
@@ -66,8 +69,9 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
         oMainLinearLayout = (LinearLayout) findViewById(R.id.main_layout); 
         
         oBtnSAVE 	  	= 	(Button) findViewById(R.id.btnSave);
-        oBtnCAMCEL    	= 	(Button) findViewById(R.id.btnCancel);
-       
+        oBtnCANCEL    	= 	(Button) findViewById(R.id.btnCancel);
+        obtn_Back   	= (ImageButton) findViewById(R.id.btn_back);
+        
         oTimeManual = ((TimePicker) findViewById(R.id.timeManual));       	    				
         oTimeManual.setIs24HourView(true);
         oTimeManual.setCurrentHour(0);
@@ -80,7 +84,8 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
         oTxt_Note		=	(EditText) findViewById(R.id.txtNote);
         
         oBtnSAVE.setOnClickListener(this);
-        oBtnCAMCEL.setOnClickListener(this);
+        oBtnCANCEL.setOnClickListener(this);
+        obtn_Back.setOnClickListener(this);
         oTxt_Distance.setOnFocusChangeListener(this);
         
         oConfigTrainer = ExerciseUtils.loadConfiguration(this);
@@ -121,6 +126,9 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 			}
 				
 		}else if(oObj.getId()==R.id.btnCancel){
+			ActivityHelper.startOriginalActivityAndFinish(this);
+			finish();
+		}else if(oObj.getId()==R.id.btn_back){
 			ActivityHelper.startOriginalActivityAndFinish(this);
 			finish();
 		}

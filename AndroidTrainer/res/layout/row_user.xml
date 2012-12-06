@@ -40,11 +40,14 @@
 				android:layout_width="match_parent" 
 				android:layout_height="wrap_content"></TextView>
 			</LinearLayout>
-			<ImageView 
-				android:layout_height="wrap_content" 
-				android:src="@drawable/right" 
-				android:layout_width="wrap_content" 
-				android:layout_margin="10dip" android:id="@+id/imgUserDett"></ImageView>			
+			<ImageButton
+                    android:id="@+id/btnUserDett"
+                    android:layout_width="30dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/lista_gradient"
+                    android:src="@drawable/expand_right"              
+                    android:layout_marginTop="2dip"/>			
 		</TableRow>		
 	</TableLayout>	
 	<View 

@@ -21,7 +21,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/glm_main_popup"
             android:padding="0dip" >
-            
             <RelativeLayout
                 android:id="@+id/TopLinear"
                 android:layout_width="match_parent"
