@@ -6,14 +6,15 @@ import com.google.android.gcm.server.Sender;
 
 
 public class GMCStart {
-	private static final String sIDN1="APA91bE8_7tmXgEJ44xthlifprgzF8N_GlMQPURwg5DGrXxyADHMrga0F7maHurXrflucYX4xZ5JMYrTTkugt3_i8S0oFfRZXnR7h-EWtgOrlO6F0XTkAl2qXFnMIwyX1xJLYfdpOetk";
+	private static String sIDN1="";
 	private static final String myApiKey="AIzaSyCgbCcesCqLGdAFJtZxnbxMKhl4lcNBvcA";
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		sIDN1=args[0];		
 		Sender sender = new Sender(myApiKey);
-		System.out.println("start send message");
+		System.out.println("start send message"+sIDN1);
 		//Message message = new Message.Builder().collapseKey("1").timeToLive(3).delayWhileIdle(true).addData("message",
 		//  "this text will be seen in notification bar!!").build();
 		Message message = new Message.Builder().addData("message",
