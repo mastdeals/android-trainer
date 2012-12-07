@@ -20,10 +20,11 @@ import com.glm.bean.ConfigTrainer;
 public class HttpClientHelper {
 	private HttpClient httpclient = null;
 	private HttpPost httppost = null;
+	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/register";
 	/**costruttore*/
 	public HttpClientHelper(){
 		httpclient = new DefaultHttpClient();
-		httppost = new HttpPost("http://www.yoursite.com/script.php");
+		httppost = new HttpPost(sURI_Register);
 	}
 	
 	public void registerToAndroidTrainerServer(String sGCMId, ConfigTrainer oConfigTrainer) {	   
@@ -32,13 +33,18 @@ public class HttpClientHelper {
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 	        nameValuePairs.add(new BasicNameValuePair("gcmid", sGCMId));
 	        //Add Others value
+	        nameValuePairs.add(new BasicNameValuePair("age", String.valueOf(oConfigTrainer.getiAge())));
+	        nameValuePairs.add(new BasicNameValuePair("weight", String.valueOf(oConfigTrainer.getiWeight())));
+	        nameValuePairs.add(new BasicNameValuePair("gender", oConfigTrainer.getsGender()));
+	        nameValuePairs.add(new BasicNameValuePair("name",  oConfigTrainer.getsName()));
+	        nameValuePairs.add(new BasicNameValuePair("nick", oConfigTrainer.getsNick()));
 	        
-	        nameValuePairs.add(new BasicNameValuePair("stringdata", "AndDev is Cool!"));
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 	        // Execute HTTP Post Request
 	        HttpResponse response = httpclient.execute(httppost);
 	        Log.v(this.getClass().getCanonicalName(),"Register to Android Trainer Server");
+	        Log.v(this.getClass().getCanonicalName(),"response: "+response.getStatusLine().getStatusCode());
 	    } catch (ClientProtocolException e) {
 	    	Log.e(this.getClass().getCanonicalName(),"Error ClientProtocolException Register to Android Trainer Server");
 	    } catch (IOException e) {
