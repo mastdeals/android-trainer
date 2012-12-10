@@ -874,7 +874,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     		oMediaPlayer.play(false);
     		listenForIncomingCall();
     	}
-    	if(oConfigTrainer.isbDisplayMap()){	
+    	if(oConfigTrainer.isbAutoPause()){	
     		if(oConfigTrainer.getiAutoPauseTime()==0){
     			//Short 1 Min
     			iAutoPauseDelay=ExerciseService.SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY;
