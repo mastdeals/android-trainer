@@ -820,8 +820,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					if(!mIService.isGPSFixPosition()){
 						oWaitForGPSFix.dismiss();
 						mIService.stopGPSFix();
-						mIService.stopExercise();
-						doUnbindService();
+						mIService.stopExercise();						
 					}
 					return;
 				}else{
