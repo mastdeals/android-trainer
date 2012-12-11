@@ -11,6 +11,7 @@ import com.glm.services.IExerciseService;
 
 import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
+import com.glm.app.MainTrainerActivity;
 import com.glm.app.ShareFromService;
 import com.glm.bean.CardioDevice;
 import com.glm.bean.ConfigTrainer;
@@ -35,6 +36,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.location.GpsStatus.NmeaListener;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
@@ -287,11 +289,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
             }
         });*/
     }
-   
     
 	@Override
-    public void onStart(Intent intent, int startId) {
-			 	
+    public void onStart(Intent intent, int startId) {		
         super.onStart(intent, startId);       
     }
     
@@ -301,7 +301,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * **/
     public int onStartCommand(Intent intent, int flags, int startId) {
     	mContext=getApplicationContext();
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    	SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
     	sPid=sdf.format(new Date());
 
     	Log.i("Start Service ExerciseSevice", "OK");
@@ -328,8 +328,19 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
     	//Creazione di un Thread separato che ogni secondo incrementa il tempo di corsa
   		startGPSFix();
-    	 //startLoggingService();
-            //startMonitoringTimer();            
+    	//startLoggingService();
+        //startMonitoringTimer();
+  		  		  		
+  		Notification notification = new Notification(R.drawable.icon, getText(R.string.app_name_buy),
+		        System.currentTimeMillis());
+  		
+		Intent notificationIntent = new Intent(this, MainTrainerActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(this, getText(R.string.name),
+		        getText(R.string.ride), pendingIntent);
+		
+		startForeground(Integer.parseInt(sPid), notification);
+  		  		
         return Service.START_STICKY;
     }
     
