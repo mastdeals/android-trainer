@@ -57,7 +57,7 @@ public class MainActivity  extends Activity{
 	}
 	@Override
 	protected void onPause() {
-		doUnbindService();
+		//doUnbindService();
 		super.onPause();
 	}
 	
