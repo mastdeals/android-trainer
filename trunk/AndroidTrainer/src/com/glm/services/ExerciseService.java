@@ -1,5 +1,7 @@
 package com.glm.services;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ import com.glm.services.IExerciseService;
 
 import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
-import com.glm.app.MainTrainerActivity;
 import com.glm.app.ShareFromService;
 import com.glm.bean.CardioDevice;
 import com.glm.bean.ConfigTrainer;
@@ -36,7 +37,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.location.GpsStatus.NmeaListener;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
@@ -137,7 +137,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
     private static int NOTIFICATION = R.string.app_name_pro;
-
+    private PendingIntent contentIntent;
+    private Notification notification;
     // this is a hack and need to be changed, here the offset is the length of the tag XML "</Document></kml", 
     // we minus this offset from the end of the file and write the next Placemark entry.  
     //private static final int KML_INSERT_OFFSET = 17;
@@ -223,6 +224,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     public static final int SAVEEXERCISE=5;
 	
     
+    
     //private final IBinder mBinder = new TrainerServiceBinder(); 
     
     /**Continene tutte le configurazioni del Trainer**/
@@ -256,7 +258,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     @Override
     public void onCreate() {    	      
         mContext=getApplicationContext();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
         sPid=sdf.format(new Date());
         
         Log.i("Start Service ExerciseSevice", "OK");
@@ -280,8 +282,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 			oBTHelper = new BlueToothHelper();
 		}
 		
-		
-		super.onCreate();
+		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
+		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
+			
+		//super.onCreate();
 		/*oBackupManager.requestRestore(new RestoreObserver() {
             public void restoreFinished(int error) {
                 *//** Done with the restore!  Now draw the new state of our data *//*
@@ -289,20 +293,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
             }
         });*/
     }
-    
-	@Override
-    public void onStart(Intent intent, int startId) {		
-        super.onStart(intent, startId);       
-    }
-    
     /**
      * Esecuzione di avvio esercizio
      * 
      * **/
     public int onStartCommand(Intent intent, int flags, int startId) {
     	mContext=getApplicationContext();
-    	SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
-    	sPid=sdf.format(new Date());
+    	
 
     	Log.i("Start Service ExerciseSevice", "OK");
     	//Carico la configurazione
@@ -324,23 +321,24 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
     		oBTHelper = new BlueToothHelper();
     	} 		 		
+    	
+    	startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
+		
     	//Oggetto per la gestione delle notifiche
-    	mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
+    	/*mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
+    	if(!ExerciseService.isRunning){
+  			startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)));
+  			
+  			Log.i(this.getClass().getCanonicalName(),"Start Service startForeground: "+sPid);
+  		}else{
+  			Log.i(this.getClass().getCanonicalName(),"Service is runnung too as startForeground: "+sPid);
+  		}*/ 	
     	//Creazione di un Thread separato che ogni secondo incrementa il tempo di corsa
   		startGPSFix();
     	//startLoggingService();
         //startMonitoringTimer();
-  		  		  		
-  		Notification notification = new Notification(R.drawable.icon, getText(R.string.app_name_buy),
-		        System.currentTimeMillis());
   		
-		Intent notificationIntent = new Intent(this, MainTrainerActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-		notification.setLatestEventInfo(this, getText(R.string.name),
-		        getText(R.string.ride), pendingIntent);
-		
-		startForeground(Integer.parseInt(sPid), notification);
-  		  		
+  		
         return Service.START_STICKY;
     }
     
@@ -683,18 +681,18 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * 
      * @param String sMessageToShow
      */
-    private void showNotification(int iIcon, CharSequence charSequence) {
+    private Notification showNotification(int iIcon, CharSequence charSequence) {
     	//Controllo la configurazione dal DB
-    	if(!oConfigTrainer.isbDisplayNotification()) return;
+    	if(!oConfigTrainer.isbDisplayNotification()) return null;
     	// In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(R.string.app_name_pro);
 
         // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(iIcon, text,
+        notification = new Notification(iIcon, text,
                 System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification Controller
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+        contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
 
         // Set the info for the views that show in the notification panel.
@@ -702,7 +700,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
                        text, contentIntent);
 
         // Send the notification.
-        if(mNM!=null) mNM.notify(NOTIFICATION, notification);
+        //if(mNM!=null) mNM.notify(NOTIFICATION, notification);
+        return notification;
     }             
 	
 	/**
@@ -754,7 +753,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	if(MotivatorTimer!=null) MotivatorTimer.cancel();
     	//Log.v(this.getClass().getCanonicalName(), "AUTO-Pause Exercise");
         //mClients.add(msg.replyTo);
-        showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
+        //showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
         ExerciseService.lPauseTime=ExerciseService.lCurrentWatchPoint;
     }
     /**
@@ -777,7 +776,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	}
 	   	startMotivatorTimer(oConfigTrainer.isbMotivator());
         //mClients.remove(msg.replyTo);
-    	showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
+    	//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
     	ExerciseService.lStartTime=System.currentTimeMillis();
     }
     
@@ -801,7 +800,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	if(MotivatorTimer!=null) MotivatorTimer.cancel();
     	//Log.v(this.getClass().getCanonicalName(), "Pause Exercise");
         //mClients.add(msg.replyTo);
-        showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
+        //showNotification(R.drawable.pause_trainer, getText(R.string.pauseexercise));    	
         ExerciseService.lPauseTime=ExerciseService.lCurrentWatchPoint;
     	oRunningThread.interrupt();
     	/**Arresto il listener del Conta Passi*/
@@ -829,7 +828,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	}
 	   	startMotivatorTimer(oConfigTrainer.isbMotivator());
         //mClients.remove(msg.replyTo);
-    	showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
+    	//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));    	
     	ExerciseService.lStartTime=System.currentTimeMillis();
  		oRunningThread = new Thread(new ThRunningTime());
  		oRunningThread.start();
@@ -854,8 +853,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	pre_longitude 	= 0.0;
     	dGoalHH=goalHH;
     	dGoalMM=goalMM;
-
-    	showNotification(R.drawable.start_trainer, getText(R.string.start_exercise));
 
     	if(goalDistance==0){
 
@@ -1038,7 +1035,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     }
     @Override
     public boolean onUnbind(Intent intent) {
-    	onDestroy();
+    	//onDestroy();
     	return super.onUnbind(intent);
     }
     @Override
@@ -1326,11 +1323,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	ExerciseService.sPace="";
     	
     	ExerciseService.sVm="";
+    	stopForeground(true);
 	}
 
 	@Override
 	public void onDestroy() {		
-		super.onDestroy();
+		return;
+		/*super.onDestroy();
 		try {
 			this.finalize();
 			Log.i(this.getClass().getCanonicalName(),"Destroy Services, remove GPS Fix");
@@ -1341,7 +1340,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override
