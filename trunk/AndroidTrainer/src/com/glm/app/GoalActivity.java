@@ -40,7 +40,7 @@ public class GoalActivity extends Activity implements OnClickListener {
 		Notification notification = new Notification(icon,text,when);						
 		notificationManager.notify(APP_NOTIFICATION_ID, notification);
 		*/
-        setContentView(R.layout.goal_run);
+        setContentView(R.layout.new_goal_run);
         
         oRunButton = (Button) findViewById(R.id.btnRun);
         

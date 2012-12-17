@@ -126,7 +126,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
     	} catch (NameNotFoundException e) {
     	   Log.e(this.getClass().getCanonicalName(),"Pacchetto non trovato");
     	}
-        setContentView(R.layout.changelog_full);
+        setContentView(R.layout.new_changelog_full);
         
         oShareButton  = (ImageButton) findViewById(R.id.btnShare);
         oStartButton = (Button) findViewById(R.id.btnStart);
@@ -177,7 +177,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
 		
 	}
 	/**
-	 * Controllo se è il primo boot
+	 * Controllo se e' il primo boot
 	 * */
 	private boolean isFirstBoot() {
 		
