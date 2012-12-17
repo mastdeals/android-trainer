@@ -150,7 +150,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	}
 	@Override
 	protected void onPause() {
-		//doUnbindService();
+		doUnbindService();
 		super.onPause();
 	}
 	private void addUser(boolean bTwitter) {

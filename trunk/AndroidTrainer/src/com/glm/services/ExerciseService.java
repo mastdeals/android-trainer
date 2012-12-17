@@ -1321,7 +1321,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	ExerciseService.sPace="";
     	
     	ExerciseService.sVm="";
-    	stopForeground(true);
+    	
 	}
 
 	@Override
@@ -1333,6 +1333,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 			isFixPosition=false;
 			if(LocationManager!=null) LocationManager.removeUpdates(this);
 			LocationManager=null;
+			stopForeground(true);
 			System.exit(0);
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
