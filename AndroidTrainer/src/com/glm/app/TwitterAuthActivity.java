@@ -162,7 +162,7 @@ public class TwitterAuthActivity extends Activity{
                     saveAccessToken(at);
 
                     // Set the content view back after we changed to a webview
-                    setContentView(R.layout.user_details);
+                    setContentView(R.layout.new_user_details);
                    
             } catch (TwitterException e) {
                 Log.e(this.getClass().getCanonicalName(),"Twitter auth error");

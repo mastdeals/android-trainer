@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="200dp"
     android:layout_height="110dp"
-    android:background="@drawable/gradient_linear1" >
+    android:background="@drawable/glm_popup" >
 
    <TextView
         android:id="@+id/lblTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_marginTop="20dp"
-		android:layout_marginLeft="80dp"
+		android:layout_marginLeft="70dp"
         android:text="@string/step"
-        android:textColor="#FFFFFF"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
+        android:textColor="#000000"/>
     
     <TextView
         android:id="@+id/txtSteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_marginTop="20dp"
-		android:layout_marginLeft="180dp"
+		android:layout_marginLeft="170dp"
         android:text="-"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18dip"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
         android:textStyle="bold"/>
     
     <TextView
@@ -30,10 +33,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/lblTime"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="70dp"
         android:layout_marginTop="10dp"
         android:text="@string/distance"
-        android:textColor="#FFFFFF" />    
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"/>    
 
     <TextView
         android:id="@+id/txtDistance"
@@ -41,10 +46,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtSteps"
 		android:layout_marginTop="5dp"
-		android:layout_marginLeft="180dp"
+		android:layout_marginLeft="170dp"
         android:text="-"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18dip"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
         android:textStyle="bold"/>
     
     
@@ -53,22 +59,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     	android:layout_below="@+id/lblDistance"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="70dp"
         android:layout_marginTop="10dp"
         android:text="@string/kalories"
-        android:textColor="#FFFFFF" />
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"/>
 
      <TextView
         android:id="@+id/txtKalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     	android:layout_below="@+id/txtDistance"
-        android:layout_marginLeft="180dp"
+        android:layout_marginLeft="170dp"
         android:layout_marginTop="5dp"
         android:gravity="right"
         android:text="-"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18dip"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
         android:textStyle="bold" />
 
     <ImageView
