@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="110dp"
-    android:background="@drawable/glm_popup" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/glm_popup" 
+    android:padding="5dp">
 
    <TextView
         android:id="@+id/lblTime"
@@ -20,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_marginTop="20dp"
-		android:layout_marginLeft="170dp"
+		android:layout_marginLeft="130dp"
         android:text="-"
         android:textColor="#000000" 
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -45,13 +46,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtSteps"
-		android:layout_marginTop="5dp"
-		android:layout_marginLeft="170dp"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="130dp"
         android:text="-"
         android:textColor="#000000" 
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="10dip"
-        android:textStyle="bold"/>
+        android:textSize="10sp"/>
     
     
     <TextView
@@ -64,21 +64,21 @@
         android:text="@string/kalories"
         android:textColor="#000000" 
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="10dip"/>
+        android:textSize="10sp"/>
 
      <TextView
         android:id="@+id/txtKalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     	android:layout_below="@+id/txtDistance"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="10dp"
         android:gravity="right"
         android:text="-"
         android:textColor="#000000" 
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="10dip"
-        android:textStyle="bold" />
+        android:textSize="10sp"
+        />
 
     <ImageView
         android:id="@+id/imgTrainer"
