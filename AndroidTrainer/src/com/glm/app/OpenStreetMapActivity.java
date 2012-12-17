@@ -84,7 +84,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 	@Override
 	public void onBackPressed() {		
 		updateMap.cancel();
-		//doUnbindService();
+		doUnbindService();
 		ActivityHelper.startOriginalActivityAndFinish(this);
 	}
 	@Override
@@ -122,7 +122,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 	public void onClick(View oObj) {
 		if(oObj.getId()==R.id.btnBack){
 			updateMap.cancel();
-			//doUnbindService();
+			doUnbindService();
 			ActivityHelper.startOriginalActivityAndFinish(this);			
 		}if(oObj.getId()==R.id.btnSkipTrack){
 			if(oConfigTrainer.isbPlayMusic()){
