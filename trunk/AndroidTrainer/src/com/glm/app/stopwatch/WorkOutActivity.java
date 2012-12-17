@@ -307,7 +307,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						StopwatchUtils.updateCurrentPaceVm(txtPace,"0");
 						StopwatchUtils.updateCurrentKalories(txtKalories,"0");
 						
-						//doUnbindService();
+						doUnbindService();
 						Intent intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);
 						ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this,intent);
 	                } catch (RemoteException e) {
@@ -824,7 +824,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					}
 					return;
 				}else{
-					//doUnbindService();
+					doUnbindService();
 					intent = ActivityHelper.createActivityIntent(WorkOutActivity.this,MainTrainerActivity.class);	
 					ActivityHelper.startNewActivityAndFinish(WorkOutActivity.this, intent);					
 				}

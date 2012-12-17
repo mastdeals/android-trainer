@@ -281,10 +281,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
 			oBTHelper = new BlueToothHelper();
 		}
-		
-		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
-		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
-			
+				
 		//super.onCreate();
 		/*oBackupManager.requestRestore(new RestoreObserver() {
             public void restoreFinished(int error) {
@@ -322,8 +319,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
     		oBTHelper = new BlueToothHelper();
     	} 		 		
     	
-    	startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
-		
+    	mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
+		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
+	
     	//Oggetto per la gestione delle notifiche
     	/*mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
     	if(!ExerciseService.isRunning){
@@ -1035,7 +1033,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     }
     @Override
     public boolean onUnbind(Intent intent) {
-    	//onDestroy();
+    	onDestroy();
     	return super.onUnbind(intent);
     }
     @Override
@@ -1328,8 +1326,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 	@Override
 	public void onDestroy() {		
-		return;
-		/*super.onDestroy();
+		super.onDestroy();
 		try {
 			this.finalize();
 			Log.i(this.getClass().getCanonicalName(),"Destroy Services, remove GPS Fix");
@@ -1340,7 +1337,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 	@Override
