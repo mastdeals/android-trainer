@@ -317,11 +317,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	//Cardio
     	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
     		oBTHelper = new BlueToothHelper();
-    	} 		 		
+    	} 		
     	
     	mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
 		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
-	
+		ExerciseService.dStartLatitude=0;
+		ExerciseService.dStartLongitude=0;
+		isFixPosition=false;
     	//Oggetto per la gestione delle notifiche
     	/*mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
     	if(!ExerciseService.isRunning){
@@ -478,7 +480,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-    	if(status==LocationProvider.AVAILABLE) isFixPosition=true;
+    	//if(status==LocationProvider.AVAILABLE) isFixPosition=true;
     }    
         
     private void startMotivatorTimer(final boolean bSpeech){   	
@@ -838,6 +840,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * @see IExerciseService.Stub
      * **/
     private void startExerciseAsService(int TypeExercise, int goalDistance, double goalHH, double goalMM){ 
+    	
+    	
+    	
     	isResumeAutoPause = false;
     	isAutoPause		= false;
     	isRunning 		= true;   
@@ -1321,7 +1326,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	ExerciseService.sPace="";
     	
     	ExerciseService.sVm="";
-    	
+    	stopForeground(true);
 	}
 
 	@Override

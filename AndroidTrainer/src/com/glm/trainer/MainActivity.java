@@ -57,7 +57,7 @@ public class MainActivity  extends Activity{
 	}
 	@Override
 	protected void onPause() {
-		doUnbindService();
+		//doUnbindService();
 		super.onPause();
 	}
 	
@@ -156,6 +156,7 @@ public class MainActivity  extends Activity{
             					intent.putExtra("Status", "service_under_user_pause");
             					ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);
             				}else{
+            					doUnbindService();
             					if(!ExerciseUtils.isUserExist(getApplicationContext())){
                     				Intent intent = ActivityHelper.createActivityIntent(MainActivity.this,UserDetailsActivity.class);            				
                     				ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);	
