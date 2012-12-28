@@ -461,6 +461,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		changeGUIStatus();		
 	}
 	
+	@Override
+	protected void onPause() {
+		// animateIn this activity
+		ActivitySwitcher.animationOut(oMainLayout, getWindowManager());
+		super.onPause();
+	}
 	/**
 	 * Controlla lo stato quando chiamato dalla main con servizio in pausa
 	 * */

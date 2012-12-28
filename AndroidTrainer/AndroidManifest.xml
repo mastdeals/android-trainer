@@ -102,10 +102,7 @@
 			android:launchMode="singleInstance"
 			android:theme="@android:style/Theme.NoTitleBar">							
 		</activity>
-		<activity android:name="com.glm.app.TwitterAuthActivity" android:launchMode="singleTop" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@style/DialogNoTitle"> 
-		     
-		</activity>
-		
+			
 		<activity android:name="com.glm.app.PrefActivity" android:screenOrientation="sensor" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar"> </activity>
 		<activity android:name="com.glm.app.UserDetailsActivity" android:configChanges="orientation|keyboardHidden" android:launchMode="singleTop" android:screenOrientation="portrait" android:clearTaskOnLaunch="true" android:theme="@android:style/Theme.NoTitleBar">
 				   
