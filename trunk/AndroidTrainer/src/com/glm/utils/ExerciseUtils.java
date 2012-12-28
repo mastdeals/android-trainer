@@ -976,7 +976,7 @@ public class ExerciseUtils {
 		   		}
 		   		oCursor.close();		   			 
 		   		
-		   		ExerciseManipulate.setsCurrentCalories(sKalories);
+		   		ExerciseManipulate.setsCurrentCalories(sKalories.substring(0, sKalories.indexOf(".")));
 		   		
 		   		ExerciseManipulate.setsTotalTime(sTotalTimeFormatted);		   		
 				try{

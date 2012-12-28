@@ -6,8 +6,8 @@ import com.glm.trainer.R;
 import com.glm.app.graph.WebGraphExerciseActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
-import com.glm.chart.LineChart;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.animation.ActivitySwitcher;
 import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.quickaction.ActionItem;
 import com.glm.utils.quickaction.QuickAction;
@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ExerciseDetails extends Activity implements OnClickListener{
+	
+	private boolean isEditNote=false;
 	/**pulsante torna alla lista esercizi*/
 	private Button oBtn_SaveShare;
 	
@@ -72,10 +74,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	
 	private ImageButton oBtnShareFB;
 	
-	private Button oBtnGraph;	
-	
-	private Button oBtnGMap;
-	
+		
 	private RelativeLayout oMaxBpm;
 	
 	private RelativeLayout oAvgBpm;
@@ -97,46 +96,52 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	private Animation a;
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.new_exercise_details);
-        
-        a = AnimationUtils.loadAnimation(this, R.animator.fadein);
-        a.reset();
-        
-       
-        
-        oBtn_SaveShare = (Button) findViewById(R.id.btnSaveShareNote);
-       
-        //oBtn_Graph= (Button) findViewById(R.id.btn_graph);
-        oTxt_Time	  = (TextView) findViewById(R.id.textTime);
-        oTxt_Distance = (TextView) findViewById(R.id.textDistance);
-        oTxt_Kalories = (TextView) findViewById(R.id.textKalories);
-        oTxt_AVGSpeed = (TextView) findViewById(R.id.textAVGSpeed);
-        oTxt_AVGPace  = (TextView) findViewById(R.id.textPace);
-        oTxt_MAXSpeed = (TextView) findViewById(R.id.textMAXSpeed);
-        oTxt_MAXPace  = (TextView) findViewById(R.id.textMAXPace);
-        oTxt_Step	  = (TextView) findViewById(R.id.textStep);
-        oTxt_MaxBpm	  = (TextView) findViewById(R.id.textMaxBpm);
-        oTxt_AvgBpm	  = (TextView) findViewById(R.id.textAvgBpm);
-        
-        oMaxBpm	  		= (RelativeLayout) findViewById(R.id.RLMaxBpm);
-        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);   
-        oInfo			= (RelativeLayout) findViewById(R.id.btnInfo);   
-        oGraph			= (LinearLayout) findViewById(R.id.llGraph);
-        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
-        
-        oNote		  = (EditText) findViewById(R.id.txtNote);
-       /* oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
-        oBtnExportGPX = (Button) findViewById(R.id.btnExportGPX);
-        oBtnExportTCX = (Button) findViewById(R.id.btnExportTCX);
-      */  
-        oBtnGraph     = (Button) findViewById(R.id.btnGraph);
-        oBtnGMap	  = (Button) findViewById(R.id.btnGmap);
-        
-        oNote.setEnabled(false);
-        oBarWaiting.setVisibility(View.VISIBLE);
-        
-        
+        Bundle extras = getIntent().getExtras();
+		if(extras !=null){
+			isEditNote = extras.getBoolean("note");
+		}
+		
+		if(!isEditNote){
+	        setContentView(R.layout.new_exercise_details);
+	        
+	        a = AnimationUtils.loadAnimation(this, R.animator.fadein);
+	        a.reset();
+	        
+	       
+	        
+	        
+	       
+	        //oBtn_Graph= (Button) findViewById(R.id.btn_graph);
+	        oTxt_Time	  = (TextView) findViewById(R.id.textTime);
+	        oTxt_Distance = (TextView) findViewById(R.id.textDistance);
+	        oTxt_Kalories = (TextView) findViewById(R.id.textKalories);
+	        oTxt_AVGSpeed = (TextView) findViewById(R.id.textAVGSpeed);
+	        oTxt_AVGPace  = (TextView) findViewById(R.id.textPace);
+	        oTxt_MAXSpeed = (TextView) findViewById(R.id.textMAXSpeed);
+	        oTxt_MAXPace  = (TextView) findViewById(R.id.textMAXPace);
+	        oTxt_Step	  = (TextView) findViewById(R.id.textStep);
+	        oTxt_MaxBpm	  = (TextView) findViewById(R.id.textMaxBpm);
+	        oTxt_AvgBpm	  = (TextView) findViewById(R.id.textAvgBpm);
+	        
+	        oMaxBpm	  		= (RelativeLayout) findViewById(R.id.RLMaxBpm);
+	        oAvgBpm	  		= (RelativeLayout) findViewById(R.id.RLAvgBpm);   
+	        oInfo			= (RelativeLayout) findViewById(R.id.btnInfo);   
+	        oGraph			= (LinearLayout) findViewById(R.id.llGraph);
+	        oBarWaiting		= (ProgressBar) findViewById(R.id.pBarWaiting);
+	        oLLDectails 	= (LinearLayout) findViewById(R.id.LLDett);  
+	        oInfo.setOnClickListener(this);
+		}else{   
+			setContentView(R.layout.new_exercise_details_note);
+	        oNote		  = (EditText) findViewById(R.id.txtNote);
+	        oBtn_SaveShare = (Button) findViewById(R.id.btnSaveShareNote);
+	       /* oBtnExportKML = (Button) findViewById(R.id.btnExportKML);
+	        oBtnExportGPX = (Button) findViewById(R.id.btnExportGPX);
+	        oBtnExportTCX = (Button) findViewById(R.id.btnExportTCX);
+	      */  
+	        oNote.setEnabled(true);
+	        oBtn_SaveShare.setText(R.string.save_note);
+	        oBtn_SaveShare.setOnClickListener(this);
+		}  
        /* JsHandler jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
         try {	           
             // Load the local file into the webview\
@@ -155,34 +160,44 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         
         
         oMainLinearLayout = (LinearLayout) findViewById(R.id.mainlinearLayout);   
-        oLLDectails 	  = (LinearLayout) findViewById(R.id.LLDett);  
         
         /**Associo i listener all'activity*/
         oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
-        oBtn_SaveShare.setText(R.string.edit_note);
-              
+               
        /* oBtn_SaveShare.setOnClickListener(this);
         oBtnExportKML.setOnClickListener(this);
         oBtnExportGPX.setOnClickListener(this);
         oBtnExportTCX.setOnClickListener(this);
         oBtnShareFB.setOnClickListener(this);*/
-        oBtnGraph.setOnClickListener(this);
-        oBtnGMap.setOnClickListener(this);
-        oInfo.setOnClickListener(this);
+        
         oMainLinearLayout.clearAnimation();
         oMainLinearLayout.setAnimation(a);        
 	}
 	@Override
 	protected void onResume() {
+		
+		
+		if(isEditNote){
+			ActivitySwitcher.animationIn(oMainLinearLayout, getWindowManager());
+		}else{
+			oMainLinearLayout.clearAnimation();
+			oMainLinearLayout.setAnimation(a);
+		}
+		
 		super.onResume();
-		oMainLinearLayout.clearAnimation();
-		oMainLinearLayout.setAnimation(a);
+		
 		       
 		ExeriseTask task = new ExeriseTask();
 		task.execute(null);
 		
 	}
-	
+	@Override
+	protected void onPause() {
+		if(isEditNote){
+			ActivitySwitcher.animationOut(oMainLinearLayout, getWindowManager());
+		}
+		super.onPause();
+	}
 	@Override
 	public void onClick(View oObj) {
 		if(oObj.getId()==R.id.btnSaveShareNote){			
@@ -226,7 +241,12 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 						ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intentMap);	
 						break;
 					case 4:	
-						if(oNote.isEnabled()){				
+						Intent intentNote = ActivityHelper.createActivityIntent(ExerciseDetails.this,ExerciseDetails.class);
+						intentNote.putExtra("exercise", ExerciseManipulate.getiIDExercise());
+						intentNote.putExtra("note", true);
+						ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intentNote);
+						
+						/*if(oNote.isEnabled()){				
 							oBtn_SaveShare.setText(R.string.edit_note);
 							ExerciseUtils.saveNote(getApplicationContext(), ExerciseManipulate.getiIDExercise(), oNote.getText().toString());
 							ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, ExerciseManipulate.getiIDExercise());			
@@ -234,7 +254,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 							oNote.requestFocus();
 							oBtn_SaveShare.setText(R.string.save_note);			
 						}
-						oNote.setEnabled(!oNote.isEnabled());
+						oNote.setEnabled(!oNote.isEnabled());*/
 						break;
 					case 5:
 						//Erase						
@@ -304,16 +324,6 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	            }
 	        });			
 			oBar.getQuickAction().show(oObj);
-		}else if(oObj.getId()==R.id.btnGraph){
-			//Intent intent = ActivityHelper.createActivityIntent(HistoryActivity.this,GraphExerciseActivity.class);
-			Intent intent = ActivityHelper.createActivityIntent(ExerciseDetails.this,WebGraphExerciseActivity.class);
-			intent.putExtra("graph", "0");		
-			ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intent);	
-		
-		}else if (oObj.getId()==R.id.btnGmap){
-			Intent intent = ActivityHelper.createActivityIntent(ExerciseDetails.this,GMapActivity.class);
-			intent.putExtra("exercise", ExerciseManipulate.getiIDExercise());
-			ActivityHelper.startNewActivityAndFinish(ExerciseDetails.this, intent);	
 		}		
 	}	
 	@Override
@@ -358,38 +368,38 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		
 		@Override
 		protected void onPostExecute(Void result) {			
-			oTxt_Time.setText(ExerciseManipulate.getsTotalTime());
-		    oTxt_Distance.setText(ExerciseManipulate.getsTotalDistance());
-		    oTxt_AVGSpeed.setText(ExerciseManipulate.getsAVGSpeed());
-		    oTxt_AVGPace.setText(ExerciseManipulate.getsMinutePerDistance());
-		    oTxt_MAXSpeed.setText(ExerciseManipulate.getsMAXSpeed());
-		    oTxt_MAXPace.setText(ExerciseManipulate.getsMAXMinutePerDistance());
-		    oTxt_Step.setText(ExerciseManipulate.getsStepCount());
-		    oTxt_Kalories.setText(ExerciseManipulate.getsCurrentCalories());
-		    if(oConfigTrainer!=null){
-		    	if(oConfigTrainer.isbCardioPolarBuyed()){
-		    		if(ExerciseManipulate.getiMAXBpm()==0){
-		    			oTxt_MaxBpm.setText("n.d.");
-		    		}else{
-		    			Log.i(this.getClass().getCanonicalName(),"MaxBPM"+ExerciseManipulate.getiMAXBpm());
-		    			oTxt_MaxBpm.setText(String.valueOf(ExerciseManipulate.getiMAXBpm()));	
-		    		}
-		    		if(ExerciseManipulate.getiAVGBpm()==0){
-		    			oTxt_AvgBpm.setText("n.d.");
-		    		}else{
-		    			oTxt_AvgBpm.setText(String.valueOf(ExerciseManipulate.getiAVGBpm()));
-		    		}	    	    	    		
-		    	}else{
-		    		oLLDectails.removeView(oMaxBpm);
-		    		oLLDectails.removeView(oAvgBpm); 	    		
-		    	}
-		    }    
-		    oNote.setText(ExerciseManipulate.getsNote());
-		    oBtn_SaveShare.requestFocus();	
-		    LineChart oChart = new LineChart(getApplicationContext(),0);			
-	        oGraph.removeAllViews();
-	        oGraph.addView(oChart);
-		    if(oBarWaiting!=null) oBarWaiting.setVisibility(View.INVISIBLE);
+			
+			if(!isEditNote){			
+				oTxt_Time.setText(ExerciseManipulate.getsTotalTime());
+			    oTxt_Distance.setText(ExerciseManipulate.getsTotalDistance());
+			    oTxt_AVGSpeed.setText(ExerciseManipulate.getsAVGSpeed());
+			    oTxt_AVGPace.setText(ExerciseManipulate.getsMinutePerDistance());
+			    oTxt_MAXSpeed.setText(ExerciseManipulate.getsMAXSpeed());
+			    oTxt_MAXPace.setText(ExerciseManipulate.getsMAXMinutePerDistance());
+			    oTxt_Step.setText(ExerciseManipulate.getsStepCount());
+			    oTxt_Kalories.setText(ExerciseManipulate.getsCurrentCalories());
+			    if(oConfigTrainer!=null){
+			    	if(oConfigTrainer.isbCardioPolarBuyed()){
+			    		if(ExerciseManipulate.getiMAXBpm()==0){
+			    			oTxt_MaxBpm.setText("n.d.");
+			    		}else{
+			    			Log.i(this.getClass().getCanonicalName(),"MaxBPM"+ExerciseManipulate.getiMAXBpm());
+			    			oTxt_MaxBpm.setText(String.valueOf(ExerciseManipulate.getiMAXBpm()));	
+			    		}
+			    		if(ExerciseManipulate.getiAVGBpm()==0){
+			    			oTxt_AvgBpm.setText("n.d.");
+			    		}else{
+			    			oTxt_AvgBpm.setText(String.valueOf(ExerciseManipulate.getiAVGBpm()));
+			    		}	    	    	    		
+			    	}else{
+			    		oLLDectails.removeView(oMaxBpm);
+			    		oLLDectails.removeView(oAvgBpm); 	    		
+			    	}
+			    }
+			}else{
+				oNote.setText(ExerciseManipulate.getsNote());
+				oBtn_SaveShare.requestFocus();	
+			}
 	        
 	        //Log.v(this.getClass().getCanonicalName(), "LoadURL:"+"file:///android_asset/jflot/graphtrainerexercisealt.html");
 	        //wv.loadUrl("file:///android_asset/jflot/smallgraphtrainerexercisealt.html");

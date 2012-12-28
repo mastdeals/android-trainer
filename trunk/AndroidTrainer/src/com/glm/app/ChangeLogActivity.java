@@ -1,6 +1,5 @@
 package com.glm.app;
 
-import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.vending.BillingService;
@@ -42,7 +41,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
     private String mSku;
     private String mPayloadContents = null;
     
-	/**identifica se l'utente ha già usato il programma*/
+	/**identifica se l'utente ha giï¿½ usato il programma*/
 	private boolean asExercise=false;
 	
 	/**
@@ -151,7 +150,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
 			}
         }
         
-        if(!asExercise &&
+        if(asExercise &&
         		sPackageName.compareToIgnoreCase("com.glm.trainerlite")==0){
         		//Metto il Donate solo sulla LITE
         		oStartButton.setText(getString(R.string.donate));     

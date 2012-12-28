@@ -1,6 +1,7 @@
 package com.glm.utils;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Random;
 
@@ -251,10 +252,10 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 			
 		//TODO OBIETTIVO RAGGIUNTO
 			
-		if(iHourToGoal!=0){
-			sSpeech+=iHourToGoal+oContext.getString(R.string.hours)+iMinutesToGoal+oContext.getString(R.string.minutes)+oContext.getString(R.string.distancetogoal);
-		}else{
-			sSpeech+=iMinutesToGoal+oContext.getString(R.string.minutes)+oContext.getString(R.string.distancetogoal);			
+		if(iHourToGoal!=0){			
+			sSpeech+=(int)((iHourToGoal/60)+iMinutesToGoal)+oContext.getString(R.string.minutes)+oContext.getString(R.string.distancetogoal);
+		}else{			
+			sSpeech+=(int) iMinutesToGoal+oContext.getString(R.string.minutes)+oContext.getString(R.string.distancetogoal);			
 		}
 
 		mTts.speak(sSpeech,

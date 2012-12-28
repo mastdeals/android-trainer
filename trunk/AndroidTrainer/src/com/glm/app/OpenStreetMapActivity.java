@@ -92,6 +92,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		
 		// animateIn this activity
 		ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
+		
 		super.onResume();
 		jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 		try {	           
@@ -117,6 +118,12 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		
 	}
 
+	@Override
+	protected void onPause() {
+		// animateIn this activity
+		ActivitySwitcher.animationOut(oMainLayout, getWindowManager());
+		super.onPause();
+	}
 
 	@Override
 	public void onClick(View oObj) {
