@@ -122,8 +122,13 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       
 	       
 	       
-	       ExerciseUtils.removeFirstBoot(getApplicationContext());
-	       
+	       if(ExerciseUtils.isFirstBoot(getApplicationContext(),oConfigTrainer, sVersionPackage)){
+	    	   ExerciseUtils.removeFirstBoot(getApplicationContext());
+		       Intent intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,ChangeLogActivity.class);
+				//startActivity(intent);
+		       ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);	
+		    }
+	      
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
 	       

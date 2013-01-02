@@ -343,7 +343,7 @@ public class Database {
     				" 	version_desc   VARCHAR( 255 )  NOT NULL, " + 
     				" 	licence        VARCHAR( 1 )    NOT NULL DEFAULT 'N')");
 
-    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '3.0', 'Ver. 3.0', 'N')");
+    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '3.0.3', 'Ver. 3.0.3', 'N')");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_users (" +
@@ -560,6 +560,14 @@ public class Database {
     			if(sVersionNumber.compareToIgnoreCase("2.9")==0){
 					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 3.0");
 					upgradeDB2_9To3_0();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("3.0")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 3.0.1");
+					upgradeDB3_0To3_0_1();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("3.0.1")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 3.0.3");
+					upgradeDB3_0To3_0_3();
 				}
     			//manualDB();
     		}
@@ -1034,7 +1042,50 @@ public class Database {
     	oDB.close();   
     	oDB=null;
     }
-    
+    /**
+     * Aggiorna la strittura del DB alla release 2.0 con in app store e tabella allenamenti programmati.
+     * 
+     * 
+     * */
+    private void upgradeDB3_0To3_0_1(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='3.0.1',version_desc='Ver. 3.0.1'");
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 3.0.1");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
+    /**
+     * Aggiorna la strittura del DB alla release 2.0 con in app store e tabella allenamenti programmati.
+     * 
+     * 
+     * */
+    private void upgradeDB3_0To3_0_3(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='3.0.3',version_desc='Ver. 3.0.3'");
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 3.0.3");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
     /**
      * Ony for DEVELOPMENT
      * 
