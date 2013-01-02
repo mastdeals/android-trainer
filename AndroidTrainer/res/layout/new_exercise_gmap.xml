@@ -71,9 +71,12 @@
 		            android:id="@+id/gmap"
 		            android:layout_width="match_parent"
 		            android:layout_height="match_parent"
-		            android:apiKey="0UBi7KMm1jzJnpyMmIW79S1sUtmH3W-3DYzhxYg"
+		            android:apiKey="0UBi7KMm1jzIpyMkZw9AJz3ydnAujLC8XPw2ahA"
 		            android:clickable="true"
 		            android:enabled="true" >
+		            <!-- Android Trainer Key   0UBi7KMm1jzIpyMkZw9AJz3ydnAujLC8XPw2ahA -->
+		            <!-- Android Trainer Lite  0UBi7KMm1jzKhmG3jHc-BvhLJQpeJ1VRgOf0Dew -->
+		            <!-- Android Trainer DEBUG 0UBi7KMm1jzJnpyMmIW79S1sUtmH3W-3DYzhxYg -->
 		        </com.google.android.maps.MapView>
 		    </LinearLayout>
 		</LinearLayout>

@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 public class AboutActivity extends Activity implements OnClickListener {
 	private TextView txtVersion;
+	private WebView owvChangeLog;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class AboutActivity extends Activity implements OnClickListener {
         setContentView(R.layout.new_info);
         
         Button oMailButton = (Button) findViewById(R.id.btn_mail_segnalazione);
+        owvChangeLog  = (WebView) findViewById(R.id.wvChangeLog);
         
         txtVersion = (TextView) findViewById(R.id.txtVersion);
         Database oDBDatabase = new Database(getApplicationContext());
@@ -45,9 +48,16 @@ public class AboutActivity extends Activity implements OnClickListener {
    		   //Log.i("oBTHelper","Cont: "+oBTHelper.getaDeviceAddress().get(0));
    		   //Abilitale la connessione al cardio.
    		//oBTHelper.connect(device)   
-               
+        loadChangeLog();            
     }
-
+	/**
+	 * Finestra di changelog
+	 * 
+	 * */
+	private void loadChangeLog() {
+	    owvChangeLog.loadUrl("file:///android_asset/changelog/us_US.html");
+	        
+	}
     @Override
     public void onClick(View v) {
 		if (v.getId() == R.id.btn_mail_segnalazione) {		

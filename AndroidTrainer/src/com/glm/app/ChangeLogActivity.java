@@ -165,8 +165,8 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
         loadChangeLog();   
     }
 	
-	@Override
-	public void onResume() {
+	//@Override
+	/*public void onResume() {
 		super.onResume();
 		if(!isFirstBoot()){
 			ActivityHelper.startOriginalActivityAndFinish(this);
@@ -174,7 +174,7 @@ public class ChangeLogActivity extends Activity implements OnClickListener {
 			loadChangeLog();
 		}
 		
-	}
+	}*/
 	/**
 	 * Controllo se e' il primo boot
 	 * */

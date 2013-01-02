@@ -11,8 +11,24 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="match_parent"
 	    android:background="@drawable/glm_main_popup"
-	    android:gravity="top" android:padding="0dp"
+	    android:gravity="top" android:padding="1dp"
 	    android:orientation="vertical" >
+
+		<LinearLayout
+		    android:id="@+id/linearLayout2"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_above="@+id/text_about2"
+		    android:layout_alignParentRight="true"
+		    android:layout_below="@+id/imageView2"
+		    android:background="@drawable/web_container"
+		    android:orientation="vertical" >
+
+		    <WebView
+		        android:id="@+id/wvChangeLog"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent" />
+		</LinearLayout>
 
 	    <RelativeLayout 
 	        android:id="@+id/TopLinear"
@@ -102,54 +118,6 @@
 	        android:text="@string/version"
 	        android:textColor="#FFFFFF"
 	        android:textSize="15dip"
-	        android:textStyle="normal" />
-
-	    <TextView android:padding="5dp"
-	        android:id="@+id/text_about7"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/TopLinear"
-	        android:layout_marginTop="129dp"
-	        android:text="@string/about_4"
-	        android:textColor="#FFFFFF"
-	        android:textSize="14dip"
-	        android:textStyle="normal" />
-
-	    <TextView android:padding="5dp"
-	        android:id="@+id/text_about8"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/text_about7"
-	        android:paddingBottom="9dip"
-	        android:text="@string/about_5"
-	        android:textColor="#FFFFFF"
-	        android:textSize="14dip"
-	        android:textStyle="normal" />
-
-	    <TextView android:padding="5dp"
-	        android:id="@+id/text_about4"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@+id/text_about7"
-	        android:layout_alignParentLeft="true"
-	        android:layout_marginBottom="47dp"
-	        android:text="@string/about_1"
-	        android:textColor="#FFFFFF"
-	        android:textSize="14dip"
-	        android:textStyle="normal" />
-
-	    <TextView android:padding="5dp"
-	        android:id="@+id/text_about10"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_above="@+id/text_about4"
-	        android:layout_alignParentLeft="true"
-	        android:layout_marginBottom="19dp"
-	        android:text="@string/about_7"
-	        android:textColor="#FFFFFF"
-	        android:textSize="14dip"
 	        android:textStyle="normal" />
 
 	    <ImageView

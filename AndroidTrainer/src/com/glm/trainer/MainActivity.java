@@ -197,11 +197,11 @@ public class MainActivity  extends Activity{
 			    	   Log.e(this.getClass().getCanonicalName(),"Pacchetto non trovato");
 			    	}
 			    	
-				    if(ExerciseUtils.isFirstBoot(getApplicationContext(),oConfigTrainer, sVersionPackage)){
+				    /*if(ExerciseUtils.isFirstBoot(getApplicationContext(),oConfigTrainer, sVersionPackage)){
 				    	Intent intent = ActivityHelper.createActivityIntent(MainActivity.this,ChangeLogActivity.class);
 						//startActivity(intent);
 				    	ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);	
-				    }
+				    }*/
 				    
 			    	doBindService();			    	
 				}catch (Exception e) {
