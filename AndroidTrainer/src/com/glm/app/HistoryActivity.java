@@ -73,7 +73,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	private int iMax_Bar_Height=0;
 	private int iMax_Bar_Width=0;
 	/***oggetto condivisione FB*/
-	private FacebookConnector oFB = null; 
+	//private FacebookConnector oFB = null; 
 	
 	public void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
