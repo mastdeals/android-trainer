@@ -41,6 +41,7 @@ public class MediaTrainer {
    				Music oMusic=(Music) vListOfMusic.get(iMusicIndex);
    				sCurrentSong=oMusic.getsTITLE();
 				oMediaPlayer.setDataSource(oMusic.getsFileDATA());
+				
 				//Log.v(this.getClass().getCanonicalName(),"Now Play "+iMusicIndex+": "+oMusic.getsFileDATA()+" - Dur: "+oMusic.getiDURATION());
 				oMusic=null;
 				oMediaPlayer.setOnCompletionListener(new OnCompletionListener() {

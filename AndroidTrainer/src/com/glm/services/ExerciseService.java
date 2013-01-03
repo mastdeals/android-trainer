@@ -879,6 +879,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	if(oConfigTrainer.isbPlayMusic()){
     		//AVVIO DEL PLAYER ESTERNO	
     		oMediaPlayer = new MediaTrainer(mContext);
+    		
     		oMediaPlayer.play(false);
     		listenForIncomingCall();
     	}
@@ -1422,6 +1423,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					);
 			dialogIntent.putExtra("isFaceBookShareActive", isFaceBookShareActive);
 			dialogIntent.putExtra("isTwitterShareActive", isTwitterShareActive);
+			dialogIntent.putExtra("song", oMediaPlayer.getCurrentSong());
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			getApplication().startActivity(dialogIntent);	
 		}catch (ActivityNotFoundException e) {
