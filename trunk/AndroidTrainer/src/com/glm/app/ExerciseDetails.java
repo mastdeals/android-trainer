@@ -41,7 +41,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	private Button oBtn_SaveShare;
 	
 	/***oggetto condivisione FB*/
-	private FacebookConnector oFB = null; 
+	//private FacebookConnector oFB = null; 
 	
 	/**pulsante graph*/
 	//private Button oBtn_Graph;
