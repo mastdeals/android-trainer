@@ -1,5 +1,13 @@
 package com.glm.app;
 
+import java.util.List;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.Session.StatusCallback;
+import com.facebook.model.GraphUser;
 import com.glm.app.AboutActivity;
 import com.glm.app.ActivityHelper;
 import com.glm.app.GoalActivity;
@@ -12,6 +20,8 @@ import com.glm.app.db.Database;
 import com.glm.app.graph.WebGraphWeightActivity;
 import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
+import com.glm.bean.ExerciseManipulate;
+import com.glm.bean.NewExercise;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
@@ -519,6 +529,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				    }
 					if(oConfigTrainer.isShareFB()){
 						oFB = new FacebookConnector(getApplicationContext(),MainTrainerActivity.this);
+						//Session.openActiveSession(MainTrainerActivity.this, true, mStatusCallBabk);
+						
 					}
 		       }
 		       
@@ -625,27 +637,48 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			Log.e("MEEERR: ",e.getMessage());
 		}
 	}
+	private final BroadcastReceiver mHandleMessageReceiver =
+	         new BroadcastReceiver() {
+		     @Override
+		     public void onReceive(Context context, Intent intent) {
+		         Log.v(this.getClass().getCanonicalName(),"onReceive");
+		     }
+	};
 	
-	private void animatedStartActivity() {
-		// we only animateOut this activity here.
-		// The new activity will animateIn from its onResume() - be sure to implement it.
-		final Intent intent = new Intent(getApplicationContext(), WorkOutActivity.class);
-		// disable default animation for new intent
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		ActivitySwitcher.animationOut(oStartRunningExercise, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener() {
-			@Override
-			public void onAnimationFinished() {
-				startActivity(intent);
-				finish();
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+        Log.v(this.getClass().getCanonicalName(),"onActivityResult To Facebook: "+resultCode);
+    }
+	/*private StatusCallback mStatusCallBabk = new StatusCallback() {
+		
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			if(state==SessionState.CREATED){
+					
+			}else if(state==SessionState.CREATED_TOKEN_LOADED){
+				Log.v(this.getClass().getCanonicalName(),"Token Facebook: "+session.getAccessToken());
+			}else if(state==SessionState.OPENED){
+				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Open To Facebook");
+				Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+					
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						if(user!=null){
+							Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook "+user.getFirstName());
+						}
+						Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook null "
+										+response.getError().getErrorCode()+" - "
+										+response.getError().getErrorMessage());							
+					}
+				});
+			}else if(state==SessionState.OPENING){
+				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Opening To Facebook");
+			}else if(state==SessionState.CLOSED){
+				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Closed To Facebook");
 			}
-		});
-	}
-	 private final BroadcastReceiver mHandleMessageReceiver =
-         new BroadcastReceiver() {
-	     @Override
-	     public void onReceive(Context context, Intent intent) {
-	         Log.v(this.getClass().getCanonicalName(),"onReceive");
-	     }
-	 };
+		}
+	};*/
+	
 }
 
