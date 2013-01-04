@@ -1,7 +1,7 @@
 package com.glm.utils.fb;
 
 
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -13,18 +13,18 @@ import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
 import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
 
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
+import com.facebook.model.GraphUser;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -34,22 +34,79 @@ public class FacebookConnector {
 	//private static AsyncFacebookRunner oAsyncRunner;
 	private static Context oContext;	
 	private static Activity oActivity;
-	private static List<String> FACEBOOK_PERMISSION;
+	private static List<String> FACEBOOK_PERMISSION = new ArrayList<String>();
 	private static final String sAppID="145289522214142";
 	private static String sToken=null;
 	private static boolean pendingPublishReauthorization=true;
 	private static Session activeSession;
 	
+	private StatusCallback mStatusCallBabk = new StatusCallback() {
+		
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			if(session.isOpened()){
+				Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+					
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						if(user!=null){
+							Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook "+user.getFirstName());
+						}
+						if(response.getError()!=null){
+							Log.e(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook null "
+											+response.getError().getErrorCode()+" - "
+											+response.getError().getErrorMessage());
+						}
+					}
+				});
+			}
+			if(state==SessionState.CREATED){
+					
+			}else if(state==SessionState.CREATED_TOKEN_LOADED){
+				sToken=session.getAccessToken();
+			}else if(state==SessionState.OPENED){
+				Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Open To Facebook");
+				
+			}else if(state==SessionState.OPENING){
+				Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Opening To Facebook");
+			}else if(state==SessionState.CLOSED){
+				Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Closed To Facebook");
+			}
+			
+		}
+	};
 	public FacebookConnector(Context context, Activity activity){
 		oActivity=activity;
 		oContext=context;
+		
 		FACEBOOK_PERMISSION.add("publish_stream");
 		FACEBOOK_PERMISSION.add("read_stream");
 		
 		activeSession = Session.getActiveSession();
-		if (activeSession == null || activeSession.getState().isClosed()) {
-	         activeSession = new Session.Builder(oActivity).setApplicationId(sAppID).build();
-	         Session.setActiveSession(activeSession);
+		if (activeSession == null) {
+			Log.v(this.getClass().getCanonicalName(),"Login To Facebook");
+			
+	        activeSession = new Session.Builder(oActivity).setApplicationId(sAppID).build();
+	        	           
+ 	       Session.openActiveSession(oActivity, true, mStatusCallBabk);
+ 	       Session.setActiveSession(activeSession);
+	        /*activeSession.open(sToken, new StatusCallback() {
+				
+				@Override
+				public void call(Session session, SessionState state, Exception exception) {
+					Log.v(this.getClass().getCanonicalName(),"Session Open");
+				}
+			});
+	        Session.NewPermissionsRequest newPermissionsRequest = new Session
+	                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
+	            activeSession.requestNewPublishPermissions(newPermissionsRequest);*/
+	      Log.v(this.getClass().getCanonicalName(),"Session null To Facebook");
+	    }else{
+	    	 if(activeSession.getState().isClosed()) {
+	    		 Log.v(this.getClass().getCanonicalName(),"Session Close To Facebook");
+	    	 }else{
+	    		 Session.openActiveSession(oActivity, true, mStatusCallBabk);
+	    	 }
 	    }
 		
 		
@@ -79,14 +136,14 @@ public class FacebookConnector {
 	
 	public void postMessageOnWall(Bundle params) {
 		
-		List<String> permissions = activeSession.getPermissions();
+		/*List<String> permissions = activeSession.getPermissions();
         if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
             pendingPublishReauthorization = true;
             Session.NewPermissionsRequest newPermissionsRequest = new Session
                     .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
             activeSession.requestNewPublishPermissions(newPermissionsRequest);
             return;
-        }
+        }*/
 		
 		/*if(sToken!=null) oFacebook.setAccessToken(sToken);	
 		
@@ -255,7 +312,10 @@ public class FacebookConnector {
 		}
     	
     }
-    
+    public void logout(){
+    	activeSession.close();
+    	activeSession.closeAndClearTokenInformation();
+    }
     private final class LoginDialogListener implements DialogListener {
         public void onComplete(Bundle values) {
         	Log.v(this.getClass().getCanonicalName(),"Token: "+oFacebook.getAccessToken());

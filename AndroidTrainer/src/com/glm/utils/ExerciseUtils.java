@@ -1747,6 +1747,7 @@ public class ExerciseUtils {
 			String sSQL_DELETE_USER = "DELETE FROM trainer_users";
 			String sSQL_INSERT_USER = "INSERT INTO trainer_users (nick,name,weight,age,height,facebook,buzz,twitter,gender) VALUES ('"+
 				txtNick+"','"+txtName+"',"+txtWeight+","+txtAge+","+txtHeight+","+iFB+","+iBuzz+","+iTwitter+",'"+sGender+"')";
+			Log.v(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_USER);
 			
 			oDB.open();
 			//Svuoto la tabella

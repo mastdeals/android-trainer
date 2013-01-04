@@ -1,12 +1,15 @@
 package com.glm.app;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 
 
+import com.facebook.FacebookAuthorizationException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 import com.glm.app.UserDetailsActivity;
 import com.glm.app.db.Database;
 import com.glm.bean.ConfigTrainer;
@@ -16,6 +19,7 @@ import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.tw.Const;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,7 +65,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	private RadioButton RBMale;
 	private RadioButton RBFemale;
 	
-	private CheckBox oCkFB;
+	private CheckBox oCkFB;	
 	private CheckBox oCkGooglePlus;
 	private CheckBox oCkTwitter;
 	
@@ -74,6 +78,14 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	
 	private Animation a;
 	private LinearLayout oMainLayout;
+	
+	private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
+    
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
@@ -103,7 +115,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         RBMale		= (RadioButton) findViewById(R.id.radioGenderM);
         RBFemale	= (RadioButton) findViewById(R.id.radioGenderF);
     	
-        oCkFB		= (CheckBox) findViewById(R.id.ckFB);
+        oCkFB		= (CheckBox) findViewById(R.id.ckFB);       
     	oCkGooglePlus		= (CheckBox) findViewById(R.id.ckGoogle);
     	oCkTwitter	= (CheckBox) findViewById(R.id.ckTwitter);
     	
@@ -139,6 +151,15 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		});
         oMainLayout.clearAnimation();
         oMainLayout.setAnimation(a);  
+        
+        /*oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);	
+        Bundle params = new Bundle();
+		
+		params.putString("message", "test");
+		params.putString("name", getString(R.string.app_name_pro));
+		params.putString("description", getString(R.string.app_description));
+		params.putString("picture", "https://lh6.googleusercontent.com/-hud-Azph6-Q/Th7YxoTZGqI/AAAAAAAAGBs/a-wG1jNYeY8/s640/personal-trainer.png");
+		oFB.postMessageOnWall(params);*/
     }
 
 	/**
@@ -149,8 +170,9 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	private void getUserFromDB() {
 		try{
 			Database oDB = new Database(this);		   	
-			oDB.open();  		   	
-		   	Cursor oCursor = oDB.fetchAll("trainer_users", null,null);
+			oDB.open();  	
+			
+		   	Cursor oCursor = oDB.rawQuery("SELECT * FROM trainer_users",null);
 		   	if(oCursor!=null){        		
 		   		int iKey 	 = oCursor.getColumnIndex("id_users");   			
 	   			int iNick 	 = oCursor.getColumnIndex("nick");
@@ -279,10 +301,8 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				
 				try {
 					oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);
-					oFB.getFacebookClient().logout(getApplicationContext());
-				} catch (MalformedURLException e) {
-					 Log.e(this.getClass().getCanonicalName(), "MalformedURLException FB");
-				} catch (IOException e) {
+					oFB.logout();
+				} catch (Exception e) {
 					 Log.e(this.getClass().getCanonicalName(), "IOException FB");
 				}
 				obtn_Save.setEnabled(true);
@@ -347,6 +367,21 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        if (exception instanceof FacebookOperationCanceledException ||
+                exception instanceof FacebookAuthorizationException) {
+                new AlertDialog.Builder(UserDetailsActivity.this)
+                    .setTitle(R.string.cancel_user)
+                    .setMessage(R.string.no)
+                    .setPositiveButton(R.string.yes, null)
+                    .show();
+          
+        } else if (state == SessionState.OPENED_TOKEN_UPDATED) {
+           Log.v(this.getClass().getCanonicalName(),"Pendinng");
+        }
+        
+    }
+	
 	@Override
 	protected void onResume() {		
 		super.onResume();
