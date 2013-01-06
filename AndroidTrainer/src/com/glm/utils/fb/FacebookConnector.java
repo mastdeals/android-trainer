@@ -2,6 +2,7 @@ package com.glm.utils.fb;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONException;
@@ -15,6 +16,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
 
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -29,6 +31,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+
 public class FacebookConnector {
 	private static Facebook oFacebook;
 	//private static AsyncFacebookRunner oAsyncRunner;
@@ -37,8 +40,10 @@ public class FacebookConnector {
 	private static List<String> FACEBOOK_PERMISSION = new ArrayList<String>();
 	private static final String sAppID="145289522214142";
 	private static String sToken=null;
-	private static boolean pendingPublishReauthorization=true;
+	private boolean pendingPublishReauthorization = false;
 	private static Session activeSession;
+	private static GraphUser mUser;
+	
 	
 	private StatusCallback mStatusCallBabk = new StatusCallback() {
 		
@@ -50,6 +55,7 @@ public class FacebookConnector {
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
 						if(user!=null){
+							mUser=user;
 							Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook "+user.getFirstName());
 						}
 						if(response.getError()!=null){
@@ -81,6 +87,7 @@ public class FacebookConnector {
 		
 		FACEBOOK_PERMISSION.add("publish_stream");
 		FACEBOOK_PERMISSION.add("read_stream");
+		FACEBOOK_PERMISSION.add("publish_actions");
 		
 		activeSession = Session.getActiveSession();
 		if (activeSession == null) {
@@ -88,8 +95,8 @@ public class FacebookConnector {
 			
 	        activeSession = new Session.Builder(oActivity).setApplicationId(sAppID).build();
 	        	           
- 	       Session.openActiveSession(oActivity, true, mStatusCallBabk);
- 	       Session.setActiveSession(activeSession);
+ 	        Session.openActiveSession(oActivity, true, mStatusCallBabk);
+ 	        Session.setActiveSession(activeSession);
 	        /*activeSession.open(sToken, new StatusCallback() {
 				
 				@Override
@@ -100,10 +107,10 @@ public class FacebookConnector {
 	        Session.NewPermissionsRequest newPermissionsRequest = new Session
 	                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
 	            activeSession.requestNewPublishPermissions(newPermissionsRequest);*/
-	      Log.v(this.getClass().getCanonicalName(),"Session null To Facebook");
+	      Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session null To Facebook");
 	    }else{
 	    	 if(activeSession.getState().isClosed()) {
-	    		 Log.v(this.getClass().getCanonicalName(),"Session Close To Facebook");
+	    		 Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Close To Facebook");
 	    	 }else{
 	    		 Session.openActiveSession(oActivity, true, mStatusCallBabk);
 	    	 }
@@ -135,6 +142,62 @@ public class FacebookConnector {
 	}
 	
 	public void postMessageOnWall(Bundle params) {
+		Log.v(this.getClass().getCanonicalName(),"FacebookConnector->postMessageOnWall ");
+		
+		activeSession = Session.getActiveSession();
+		if(activeSession.isClosed()){
+			Session.openActiveSession(oActivity, true, mStatusCallBabk);
+ 	        Session.setActiveSession(activeSession);
+		}
+		
+		List<String> permissions = activeSession.getPermissions();
+        if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
+            pendingPublishReauthorization = true;
+            Session.NewPermissionsRequest newPermissionsRequest = new Session
+                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
+            activeSession.requestNewPublishPermissions(newPermissionsRequest);
+            return;
+        }
+        
+		Request postToWall = Request.newRestRequest(activeSession, 
+				"me/feed", params, HttpMethod.POST);
+		
+		postToWall.setCallback( new Request.Callback() 
+		{
+		
+			@Override
+			public void onCompleted(Response response){
+				if(response.getGraphObject()!=null){
+					JSONObject graphResponse = response.getGraphObject()
+	                        .getInnerJSONObject();
+					String postId = null;
+					try {
+					 postId = graphResponse.getString("id");
+					} catch (JSONException e) {
+					 Log.e(this.getClass().getCanonicalName(),
+					     "JSON error "+ e.getMessage());
+					}
+					FacebookRequestError error = response.getError();
+					if (error != null) {
+					 Toast.makeText(oActivity
+					      .getApplicationContext(),
+					      error.getErrorMessage(),
+					      Toast.LENGTH_SHORT).show();
+					 } else {
+					     Toast.makeText(oActivity
+					          .getApplicationContext(), 
+					          postId,
+					          Toast.LENGTH_LONG).show();
+					}
+				}else{
+					Log.e(this.getClass().getCanonicalName(),
+						     "Graph Object Null ");					
+				}
+			}
+		});
+		RequestAsyncTask task = new RequestAsyncTask(postToWall);
+		task.execute();
+		//Request.executeBatchAsync(postToWall);
 		
 		/*List<String> permissions = activeSession.getPermissions();
         if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
@@ -153,7 +216,7 @@ public class FacebookConnector {
 			        new TrainerUploadListnerFB(), null);
 		} else {
 			Log.d(this.getClass().getCanonicalName(), "Not Valid Session FB.");
-		}*/
+		}
 		
 		
 		Request.Callback callback= new Request.Callback() {
@@ -185,31 +248,21 @@ public class FacebookConnector {
 		
 		
 		Request request = new Request(activeSession, "me/feed", params, 
-                 HttpMethod.POST, callback);
+                 HttpMethod.POST, callback);*/
 
-		RequestAsyncTask task = new RequestAsyncTask(request);
-		task.execute();
+		
 	}
 	/**
 	 * Controlla se ho autorizzato tutto
 	 * */
 	
-	private boolean isSubsetOf(List<String> oFacebook_Permissions,
-			List<String> permissions) {
-		int iIndexPermission=permissions.size();
-		int iIndexFBPermissions=permissions.size();
-		boolean bCheck=false;
-		for(int i=0;i<iIndexPermission;i++){
-			for(int j=0;j<iIndexFBPermissions;j++){
-				if(permissions.get(i).compareToIgnoreCase(oFacebook_Permissions.get(j))==0){
-					bCheck=true;
-					continue;
-				}
-				bCheck=false;
-			}
-		}
-		
-		return bCheck;
+	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	    for (String string : subset) {
+	        if (!superset.contains(string)) {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 	/**
 	 * TODO da CONTROLLARE
@@ -313,6 +366,7 @@ public class FacebookConnector {
     	
     }
     public void logout(){
+    	Log.v(this.getClass().getCanonicalName(), "Logout to Facebook ");	
     	activeSession.close();
     	activeSession.closeAndClearTokenInformation();
     }
@@ -335,4 +389,5 @@ public class FacebookConnector {
             SessionEvents.onLoginError("Action Canceled");
         }
     }
+  
 }

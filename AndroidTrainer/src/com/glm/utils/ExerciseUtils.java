@@ -480,9 +480,10 @@ public class ExerciseUtils {
 		ConfigTrainer oConfigTrainer = new ConfigTrainer();
 		
 		SharedPreferences oPrefs = oContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
-		if(oPrefs.getInt("user_id",-2)!=-2){
+		
+		/*if(oPrefs.getInt("user_id",-2)!=-2){
 			return loadConfigurationFromPrefs(oPrefs);
-		}
+		}*/
 		
 		SharedPreferences.Editor editPrefs = oPrefs.edit();
 		
@@ -603,6 +604,7 @@ public class ExerciseUtils {
 	            int iBuzz 	= oCursor.getColumnIndex("buzz");
 	            int iTwitter = oCursor.getColumnIndex("twitter");
 	            int iGender  = oCursor.getColumnIndex("gender");
+	            int iHeight  = oCursor.getColumnIndex("height");
 	            
 	    		while(oCursor.moveToNext()){        			
 	    			oConfigTrainer.setiUserID(oCursor.getInt(iKey));
@@ -619,6 +621,9 @@ public class ExerciseUtils {
 	    			
 	    			oConfigTrainer.setiAge(oCursor.getInt(iAge));
 	    			editPrefs.putInt("age", oCursor.getInt(iAge));
+	    			
+	    			oConfigTrainer.setiHeight(oCursor.getInt(iHeight));
+	    			editPrefs.putInt("height", oCursor.getInt(iHeight));
 	    			
 	    			oConfigTrainer.setsGender(oCursor.getString(iGender));  
 	    			editPrefs.putString("gender", oCursor.getString(iGender));
@@ -743,6 +748,8 @@ public class ExerciseUtils {
 			oConfigTrainer.setsNick(oPrefs.getString("nick", ""));
 
 			oConfigTrainer.setiWeight(oPrefs.getInt("weight", 0));
+			
+			oConfigTrainer.setiHeight(oPrefs.getInt("height", 0));
 
 			oConfigTrainer.setiAge(oPrefs.getInt("age", 0));
 
@@ -1739,14 +1746,15 @@ public class ExerciseUtils {
 		Database oDB=null;
 		try{
 			oDB = new Database(oContext);
+			//Log.v(ExerciseUtils.class.getCanonicalName(), "TwitterShare:"+TwitterShare+" - FBShare:"+FBShare);
 			
 			if(FBShare) 	 iFB=1;
 			if(BuzzShare) 	 iBuzz=1;
 			if(TwitterShare) iTwitter=1;
 			
 			String sSQL_DELETE_USER = "DELETE FROM trainer_users";
-			String sSQL_INSERT_USER = "INSERT INTO trainer_users (nick,name,weight,age,height,facebook,buzz,twitter,gender) VALUES ('"+
-				txtNick+"','"+txtName+"',"+txtWeight+","+txtAge+","+txtHeight+","+iFB+","+iBuzz+","+iTwitter+",'"+sGender+"')";
+			String sSQL_INSERT_USER = "INSERT INTO trainer_users (nick,name,weight,age,height,facebook,twitter,buzz,gender) VALUES ('"+
+				txtNick+"','"+txtName+"',"+txtWeight+","+txtAge+","+txtHeight+","+iFB+","+iTwitter+","+iBuzz+",'"+sGender+"')";
 			Log.v(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_USER);
 			
 			oDB.open();

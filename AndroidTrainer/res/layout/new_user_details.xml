@@ -246,11 +246,9 @@
 		                                	android:id="@+id/radioGenderF" 
 		                                	android:text="@string/female"
 		                                	android:textColor="#FFFFEE" ></RadioButton>
-		                              </RadioGroup>
-		                            <CheckBox android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckFB" android:text="@string/fb" android:layout_marginLeft="20dip"></CheckBox>
-		                            
+		                              </RadioGroup>	                            
 		                            <CheckBox android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckTwitter" android:text="@string/tw" android:layout_marginLeft="20dip"></CheckBox>
-		                            <CheckBox android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckGoogle" android:text="@string/gbuzz" android:layout_marginLeft="20dip"></CheckBox>
+		                            <CheckBox android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckFB" android:text="@string/fb" android:layout_marginLeft="20dip"></CheckBox>
 		                            
 		                        </LinearLayout>
 		                    </LinearLayout>

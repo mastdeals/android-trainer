@@ -12,8 +12,6 @@ import org.afree.chart.axis.DateAxis;
 import org.afree.chart.axis.NumberAxis;
 import org.afree.chart.plot.PlotOrientation;
 import org.afree.chart.plot.XYPlot;
-import org.afree.chart.renderer.xy.XYItemRenderer;
-import org.afree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.afree.data.general.SeriesException;
 import org.afree.data.time.Day;
 import org.afree.data.time.TimeSeries;
@@ -105,20 +103,28 @@ public class LineChart extends Chart{
 					oExercise.get(i).getdDateExercise().get(Calendar.MONTH)+"/"+
 					(oExercise.get(i).getdDateExercise().get(Calendar.YEAR))+" - Weight: "+oExercise.get(i).getdWeight());
 			try{
-				oSerie.add(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
-						oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));	
+				if(oExercise.get(i).getdDateExercise().get(Calendar.MONTH)<=12 && oExercise.get(i).getdDateExercise().get(Calendar.MONTH)>=1){
+					oSerie.add(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
+							oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));	
+				}			
 			}catch (SeriesException e) {
-				oSerie.addOrUpdate(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
-						oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));
+				if(oExercise.get(i).getdDateExercise().get(Calendar.MONTH)<=12 && oExercise.get(i).getdDateExercise().get(Calendar.MONTH)>=1){
+					oSerie.addOrUpdate(new Day(oExercise.get(i).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(i).getdDateExercise().get(Calendar.MONTH), 
+							oExercise.get(i).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(i).getdWeight())));
+				}			
 			}
 			Log.v(this.getClass().getCanonicalName(), "Value to evauate:"+i);										
 		}
 		try{
-			oSerie.add(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
+			if(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH)<=12 && oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH)>=1){
+				oSerie.add(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
 					oExercise.get(iExSize-1).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(iExSize-1).getdWeight())));
+			}
 		}catch (SeriesException e) {
-			oSerie.addOrUpdate(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
+			if(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH)<=12 && oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH)>=1){
+				oSerie.addOrUpdate(new Day(oExercise.get(iExSize-1).getdDateExercise().get(Calendar.DAY_OF_MONTH),oExercise.get(iExSize-1).getdDateExercise().get(Calendar.MONTH), 
 					oExercise.get(iExSize-1).getdDateExercise().get(Calendar.YEAR)), Double.valueOf(twoDForm.format(oExercise.get(iExSize-1).getdWeight())));
+			}
 		}	
 		
 		

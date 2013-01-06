@@ -162,7 +162,7 @@ public class MainActivity  extends Activity{
                     				ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);	
             			    	}else{
             			    		Intent intent=ActivityHelper.createActivityIntent(MainActivity.this,MainTrainerActivity.class);            				
-            			    		ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);
+            			    		ActivityHelper.startNewActivityAndFinish(MainActivity.this, intent);           			    		
             			    	}
             				}
             				   				
