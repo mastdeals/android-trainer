@@ -28,6 +28,7 @@ public class ConfigTrainer {
 	
 	private int iAge=0;
 	private int iWeight=0;
+	private int iHeight=0;
 	private int iUserID;
 	private String sNick;
 	private String sName;
@@ -302,6 +303,17 @@ public class ConfigTrainer {
 	public synchronized void setbCardioPolarBuyed(boolean bCardioPolarBuyed) {
 		this.bCardioPolarBuyed = bCardioPolarBuyed;
 	}
-	
+	/**
+	 * @return the iHeight
+	 */
+	public synchronized int getiHeight() {
+		return iHeight;
+	}
+	/**
+	 * @param iHeight the iHeight to set
+	 */
+	public synchronized void setiHeight(int iHeight) {
+		this.iHeight = iHeight;
+	}
 	
 }

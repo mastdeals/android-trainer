@@ -1,13 +1,5 @@
 package com.glm.app;
 
-import java.util.List;
-
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.Session.StatusCallback;
-import com.facebook.model.GraphUser;
 import com.glm.app.AboutActivity;
 import com.glm.app.ActivityHelper;
 import com.glm.app.GoalActivity;
@@ -20,14 +12,11 @@ import com.glm.app.db.Database;
 import com.glm.app.graph.WebGraphWeightActivity;
 import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
-import com.glm.bean.ExerciseManipulate;
-import com.glm.bean.NewExercise;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
 
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.animation.ActivitySwitcher;
 import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.tw.Const;
@@ -141,22 +130,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	      
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
-	       
-		   //Log.d(this.getClass().getCanonicalName(),"DISTANCE: "+ExerciseUtils.getPartialDistanceUnFormattated(12.44158874,41.87999108,12.44162542,41.88017333));
-	       //TODO AGGIUNGERE IL CONTROLLO SUGLI ESERCIZI INCOMPLETI E RECUPERARLI A RICHIESTA DELL'UTENTE.
-		   
-		   //Esercizio presente il dettaglio ma non il sommario
-		   //1) select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)
-		   //2) select sum(distance), id_exercise from trainer_exercise_dett where id_exercise in 
-		   //    (select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)) 
-		   //    group by id_exercise
-		   
-		   //select id_exercise from TRAINER_EXERCISE where (end_date is null) or (distance=0)
-		   
-		   
-	       //Intent i = new Intent(Intent.ACTION_VIEW);
-	       //i.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("Test Twitter")));
-	       //startActivity(i);
+	     		 
 	}
 	
 	public void onResume(Bundle savedInstanceState) {
@@ -348,69 +322,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	        { 
 	                try{
 	                	mIService= IExerciseService.Stub.asInterface(service);
-	                	
-	            		
-            			/*if(mIService.isServiceAlive() && 
-            					mIService.isRunning()){
-            				//Toast.makeText(MainTrainerActivity.this, "First type: "+mIService.getiTypeExercise(),
-        	    	        //        Toast.LENGTH_LONG).show();
-            				Intent intent=null;
-            				if(mIService.getiTypeExercise()==0){
-            					//RUN
-                				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);	
-            				}else if (mIService.getiTypeExercise()==100){
-            					//WALK
-                				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-            				}else if (mIService.getiTypeExercise()==1){
-            					//BIKE 
-                				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-            				}     				
-            				//startActivity(intent);
-            				ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);
-            			}else if(mIService.isServiceAlive() && 
-            						!mIService.isRunning()){  
-            				//Toast.makeText(MainTrainerActivity.this, "Second type: "+mIService.getiTypeExercise(),
-        	    	        //        Toast.LENGTH_LONG).show();
-            				if(mIService.isAutoPause()){
-            					Intent intent=null; 
-            					if(mIService.getiTypeExercise()==0){
-                					//RUN            						
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);	
-                    				intent.putExtra("type", 0);
-                				}else if (mIService.getiTypeExercise()==100){
-                					//WALK
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-                    				intent.putExtra("type", 100);
-                				}else if (mIService.getiTypeExercise()==1){
-                					//BIKE 
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-                    				intent.putExtra("type", 1);
-                				}
-            					ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);
-            				}else if (mIService.isPause()){
-            					Intent intent=null; 
-            					if(mIService.getiTypeExercise()==0){
-                					//RUN
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);	
-                    				intent.putExtra("type", 0);
-                				}else if (mIService.getiTypeExercise()==100){
-                					//WALK
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-                    				intent.putExtra("type", 100);
-                				}else if (mIService.getiTypeExercise()==1){
-                					//BIKE 
-                    				intent = ActivityHelper.createActivityIntent(MainTrainerActivity.this,WorkOutActivity.class);
-                    				intent.putExtra("type", 1);
-                				}
-            					intent.putExtra("Status", "service_under_user_pause");
-            					ActivityHelper.startNewActivityAndFinish(MainTrainerActivity.this, intent);
-            				}
-            				   				
-            			}else{
-            				//Log.v(this.getClass().getCanonicalName(), "SERVICE NOT IS RUNNING");
-            				
-            			}*/
-	            		
+
 	                }catch (Exception e) {
 	                	Log.e(this.getClass().getCanonicalName(), "onServiceConnected->Remote Exception"+e.getMessage());
 	                	e.printStackTrace();
@@ -645,40 +557,11 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		     }
 	};
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
         Log.v(this.getClass().getCanonicalName(),"onActivityResult To Facebook: "+resultCode);
     }
-	/*private StatusCallback mStatusCallBabk = new StatusCallback() {
-		
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			if(state==SessionState.CREATED){
-					
-			}else if(state==SessionState.CREATED_TOKEN_LOADED){
-				Log.v(this.getClass().getCanonicalName(),"Token Facebook: "+session.getAccessToken());
-			}else if(state==SessionState.OPENED){
-				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Open To Facebook");
-				Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-					
-					@Override
-					public void onCompleted(GraphUser user, Response response) {
-						if(user!=null){
-							Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook "+user.getFirstName());
-						}
-						Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook null "
-										+response.getError().getErrorCode()+" - "
-										+response.getError().getErrorMessage());							
-					}
-				});
-			}else if(state==SessionState.OPENING){
-				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Opening To Facebook");
-			}else if(state==SessionState.CLOSED){
-				Log.v(this.getClass().getCanonicalName(),"MainTrainerActivity->Session Closed To Facebook");
-			}
-		}
-	};*/
+	
 	
 }
 

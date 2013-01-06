@@ -8,8 +8,6 @@ import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 import com.glm.app.UserDetailsActivity;
 import com.glm.app.db.Database;
 import com.glm.bean.ConfigTrainer;
@@ -66,7 +64,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	private RadioButton RBFemale;
 	
 	private CheckBox oCkFB;	
-	private CheckBox oCkGooglePlus;
+	//private CheckBox oCkGooglePlus;
 	private CheckBox oCkTwitter;
 	
 	/**FaceBook Integration*/
@@ -115,9 +113,9 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         RBMale		= (RadioButton) findViewById(R.id.radioGenderM);
         RBFemale	= (RadioButton) findViewById(R.id.radioGenderF);
     	
-        oCkFB		= (CheckBox) findViewById(R.id.ckFB);       
-    	oCkGooglePlus		= (CheckBox) findViewById(R.id.ckGoogle);
-    	oCkTwitter	= (CheckBox) findViewById(R.id.ckTwitter);
+        oCkFB				= (CheckBox) findViewById(R.id.ckFB);       
+    	//oCkGooglePlus		= (CheckBox) findViewById(R.id.ckGoogle);
+    	oCkTwitter			= (CheckBox) findViewById(R.id.ckTwitter);
     	
     	
         //obtn_back.setOnClickListener(this);
@@ -125,7 +123,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
         obtn_Cancel.setOnClickListener(this);
         obtn_Back.setOnClickListener(this);
         oCkFB.setOnClickListener(this);
-    	oCkGooglePlus.setOnClickListener(this);
+    	//oCkGooglePlus.setOnClickListener(this);
     	oCkTwitter.setOnClickListener(this);
     	RBMale.setOnClickListener(this);
     	RBFemale.setOnClickListener(this);
@@ -149,6 +147,28 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				return false;
 			}
 		});
+    	
+    	oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
+    	oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
+		oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));  
+		
+		oEdtNick.setText(oConfigTrainer.getsNick());
+		oEdtName.setText(oConfigTrainer.getsName());
+			
+		if(oConfigTrainer.getsGender().compareToIgnoreCase("M")==0){
+			RBMale.setChecked(true);
+		}else{
+			RBFemale.setChecked(true);
+		}
+			
+		if(oConfigTrainer.isShareFB()){
+			oCkFB.setChecked(true);
+			Log.v(this.getClass().getCanonicalName(), "oCkFB.setChecked(true)");
+		}
+			
+		if(oConfigTrainer.isShareTwitter()){
+			oCkTwitter.setChecked(true);				
+		}
         oMainLayout.clearAnimation();
         oMainLayout.setAnimation(a);  
         
@@ -162,66 +182,6 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		oFB.postMessageOnWall(params);*/
     }
 
-	/**
-	 * Popolo i widget con i valori che leggo nel DB
-	 * 
-	 * TODO Da sostituire!!!
-	 * */
-	private void getUserFromDB() {
-		try{
-			Database oDB = new Database(this);		   	
-			oDB.open();  	
-			
-		   	Cursor oCursor = oDB.rawQuery("SELECT * FROM trainer_users",null);
-		   	if(oCursor!=null){        		
-		   		int iKey 	 = oCursor.getColumnIndex("id_users");   			
-	   			int iNick 	 = oCursor.getColumnIndex("nick");
-	   			int iName 	 = oCursor.getColumnIndex("name");
-	   			int iGender  = oCursor.getColumnIndex("gender");
-	   			int iAge  	 = oCursor.getColumnIndex("age");
-	   			int iWeight  = oCursor.getColumnIndex("weight");
-	   			int iFB 	 = oCursor.getColumnIndex("facebook");
-	   			int iBuzz 	 = oCursor.getColumnIndex("buzz");
-	   			int iTwitter = oCursor.getColumnIndex("twitter");   			   			   			
-	   			int iHeight  = oCursor.getColumnIndex("height");
- 	   			
-	   			while(oCursor.moveToNext()){ 
-	   				oTxtWeight.setText(oCursor.getString(iWeight));
-	   				oTxtAge.setText(oCursor.getString(iAge));  
-	   				oTxtHeight.setText(oCursor.getString(iHeight));  
-	   				
-	   				oEdtNick.setText(oCursor.getString(iNick));
-	   				oEdtName.setText(oCursor.getString(iName));
-	   				
-	   				if(oCursor.getString(iGender).compareToIgnoreCase("M")==0){
-	   					RBMale.setChecked(true);
-	   				}else{
-	   					RBFemale.setChecked(true);
-	   				}
-	   				
-	   				if(oCursor.getInt(iFB)==1){
-	   					oCkFB.setChecked(true);
-	   			    	
-	   				}
-	   				if(oCursor.getInt(iBuzz)==1){
-	   					oCkGooglePlus.setChecked(true);	   			    		
-	   				}
-	   				if(oCursor.getInt(iTwitter)==1){
-	   					oCkTwitter.setChecked(true);
-	   				}
-	   			}
-	   			
-	   			////Log.v(this.getClass().getCanonicalName(), "Exercise Max: "+fMaxDistance);	
-	   			////Log.v(this.getClass().getCanonicalName(), "Max Width: "+dm.widthPixels);	  			
-	   			oCursor.close();
-	   		   	oDB.close();
-	   		   	oCursor=null;
-	   		   	oDB=null;
-		   	}
-		}catch (RuntimeException e) {
-			Log.e(this.getClass().getCanonicalName()," Error RUNTIME");
-		}
-	}
 
 	@Override
 	public void onClick(View oView) {
@@ -256,13 +216,13 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				ActivityHelper.startNewActivityAndFinish(this, intent);	
 				Log.e(this.getClass().getCanonicalName(),"Error back");
 			}
-		}else if((oView.getId()==R.id.ckGoogle)){
+		}/*else if((oView.getId()==R.id.ckGoogle)){
 			Toast.makeText(getBaseContext(), 
                     getString(R.string.coming_soon), 
                     Toast.LENGTH_SHORT).show();
 			oCkGooglePlus.setChecked(false);
 			             
-		}else if(oView.getId()==R.id.ckTwitter){
+		}*/else if(oView.getId()==R.id.ckTwitter){
 			
 			if(oCkTwitter.isChecked()){
 				saveUser();		
@@ -273,7 +233,8 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 					//startActivity(intent);
 					ActivityHelper.startNewActivityAndFinish(this, intent);			 										
 				}
-			}else{				
+			}else{		
+				saveUser();
 				ExerciseUtils.shareTwitter(getApplicationContext(), oCkTwitter.isChecked());
 				SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 				SharedPreferences.Editor editPrefs = oPrefs.edit();
@@ -293,15 +254,15 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
          			//ActivityHelper.startNewActivityAndFinish(UserDetailsActivity.this, intentMain);	
 				}
 			}else{			
-				ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked());
-				SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
-				SharedPreferences.Editor editPrefs = oPrefs.edit();
-				editPrefs.putBoolean("share_fb", false); 
-				editPrefs.commit();
-				
 				try {
+					saveUser();
 					oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);
 					oFB.logout();
+					ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked());
+					SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
+					SharedPreferences.Editor editPrefs = oPrefs.edit();
+					editPrefs.putBoolean("share_fb", false); 
+					editPrefs.commit();
 				} catch (Exception e) {
 					 Log.e(this.getClass().getCanonicalName(), "IOException FB");
 				}
@@ -329,10 +290,10 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		                    Toast.LENGTH_SHORT).show();
 				 return;
 			}
-			
+			Log.v(this.getClass().getCanonicalName(),"oCkTwitter.isChecked():"+oCkTwitter.isChecked()+" - oCkFB.isChecked():"+oCkFB.isChecked());
 			if(ExerciseUtils.saveUserData(getApplicationContext(), oEdtNick.getText().toString(), oEdtName.getText().toString(),
 			        oTxtWeight.getText().toString(), oTxtAge.getText().toString(), oTxtHeight.getText().toString(), oCkFB.isChecked(), 
-			    	oCkGooglePlus.isChecked(), oCkTwitter.isChecked(),"M")){
+			    	false, oCkTwitter.isChecked(),"M")){
 				  Toast.makeText(getBaseContext(), 
 		                    getString(R.string.usersaved), 
 		                    Toast.LENGTH_SHORT).show();
@@ -356,9 +317,10 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		                    Toast.LENGTH_SHORT).show();
 				 return;
 			}
+			Log.v(this.getClass().getCanonicalName(),"oCkTwitter.isChecked():"+oCkTwitter.isChecked()+" - oCkFB.isChecked():"+oCkFB.isChecked());
 			if(ExerciseUtils.saveUserData(getApplicationContext(), oEdtNick.getText().toString(), oEdtName.getText().toString(),
 			        oTxtWeight.getText().toString(), oTxtAge.getText().toString(), oTxtHeight.getText().toString(), oCkFB.isChecked(), 
-			    	oCkGooglePlus.isChecked(), oCkTwitter.isChecked(),"F")){
+			    	false, oCkTwitter.isChecked(),"F")){
 				  Toast.makeText(getBaseContext(), 
 		                    getString(R.string.usersaved), 
 		                    Toast.LENGTH_SHORT).show();
@@ -386,7 +348,29 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	protected void onResume() {		
 		super.onResume();
 		obtn_Save.setEnabled(true);
-		getUserFromDB();
+		//getUserFromDB();
+		oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+		oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
+    	oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
+		oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));  
+		
+		oEdtNick.setText(oConfigTrainer.getsNick());
+		oEdtName.setText(oConfigTrainer.getsName());
+			
+		if(oConfigTrainer.getsGender().compareToIgnoreCase("M")==0){
+			RBMale.setChecked(true);
+		}else{
+			RBFemale.setChecked(true);
+		}
+			
+		if(oConfigTrainer.isShareFB()){
+			oCkFB.setChecked(true);
+			Log.v(this.getClass().getCanonicalName(), "oCkFB.setChecked(true)");
+		}
+			
+		if(oConfigTrainer.isShareTwitter()){
+			oCkTwitter.setChecked(true);				
+		}
 	}
 	 @Override
     public void onBackPressed() {
