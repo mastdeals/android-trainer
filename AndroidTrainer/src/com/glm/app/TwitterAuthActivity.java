@@ -189,7 +189,7 @@ public class TwitterAuthActivity extends Activity{
 			
 		@Override
 		protected Boolean doInBackground(Void... mDB) {
-			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
 			mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, MODE_PRIVATE);
 		    oTwitter = new TwitterFactory().getInstance();
 			oTwitter.setOAuthConsumer(Const.CONSUMER_KEY, Const.CONSUMER_SECRET);

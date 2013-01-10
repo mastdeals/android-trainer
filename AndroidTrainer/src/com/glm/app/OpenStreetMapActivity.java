@@ -60,7 +60,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		oBtnBack 		= (Button) findViewById(R.id.btnBack); 
 		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
         
-		oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+		oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);	
 
 		jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 		try {	           

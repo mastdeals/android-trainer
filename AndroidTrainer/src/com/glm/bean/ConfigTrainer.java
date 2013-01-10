@@ -25,6 +25,7 @@ public class ConfigTrainer {
 	private boolean isSayKalories=false;
 	private boolean isSayPace=false;
 	private boolean isSayInclination=false;
+	private boolean isVirtualRaceSupport=false;
 	
 	private int iAge=0;
 	private int iWeight=0;
@@ -45,6 +46,8 @@ public class ConfigTrainer {
 	 * 1= Amarica Lb/Miles/h
 	 * */
 	private int iUnits=0;
+	/**GCM Id*/
+	private String sGCMId="";
 	public synchronized boolean isbDisplayMap() {
 		return bDisplayMap;
 	}
@@ -314,6 +317,30 @@ public class ConfigTrainer {
 	 */
 	public synchronized void setiHeight(int iHeight) {
 		this.iHeight = iHeight;
+	}
+	/**
+	 * @return the sGCMId
+	 */
+	public synchronized String getsGCMId() {
+		return sGCMId;
+	}
+	/**
+	 * @param sGCMId the sGCMId to set
+	 */
+	public synchronized void setsGCMId(String sGCMId) {
+		this.sGCMId = sGCMId;
+	}
+	/**
+	 * @return the isVirtualRaceSupport
+	 */
+	public synchronized boolean isVirtualRaceSupport() {
+		return isVirtualRaceSupport;
+	}
+	/**
+	 * @param isVirtualRaceSupport the isVirtualRaceSupport to set
+	 */
+	public synchronized void setVirtualRaceSupport(boolean isVirtualRaceSupport) {
+		this.isVirtualRaceSupport = isVirtualRaceSupport;
 	}
 	
 }

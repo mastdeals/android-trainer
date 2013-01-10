@@ -19,6 +19,7 @@ import com.glm.utils.AccelerometerUtils;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.MediaTrainer;
 import com.glm.utils.VoiceToSpeechTrainer;
+import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.sensor.BlueToothHelper;
 
 import android.app.Notification;
@@ -166,6 +167,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
     /**Timer per la condivisione interattiva*/
     private Timer InteractiveTimer=null;
     
+    /**Timer per le Virtual Race*/
+    private Timer VirtualRaceTimer=null;
+    
     /**Timer per la condivisione interattiva*/
     private Timer AutoPauseTimer=null;
     /**Avvio ms del Timer per per l'autopausa*/
@@ -261,7 +265,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
         Log.i("Start Service ExerciseSevice", "OK");
         //Carico la configurazione
         try{
-        	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
+        	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext,true);
         }catch (NullPointerException e) {
 			Log.e(this.getClass().getCanonicalName(),"Error load Config");
 			return;
@@ -298,7 +302,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	Log.i("Start Service ExerciseSevice", "OK");
     	//Carico la configurazione
     	try{
-    		oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
+    		oConfigTrainer=ExerciseUtils.loadConfiguration(mContext,true);
     	}catch (NullPointerException e) {
     		Log.e(this.getClass().getCanonicalName(),"Error load Config");
 
@@ -873,7 +877,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	}
     	//Imposto 
     	//Carico la configurazione
-    	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
+    	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext,true);
     	//Forzo il reset dell'esercizio
     	//NewExercise.reset();
     	if(oConfigTrainer.isbPlayMusic()){
@@ -934,6 +938,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
     		if(oConfigTrainer.isShareFB() || oConfigTrainer.isShareTwitter()){
     			addInteractiveTimer(oConfigTrainer.isShareFB(),oConfigTrainer.isShareTwitter());
     		}
+    	}
+    	
+    	/**Aggiungo il timer per le Virtual race*/
+    	if(oConfigTrainer.isVirtualRaceSupport()){
+    		addVirtualRaceTimer();
     	}
 
     	//AutoPause
@@ -1263,7 +1272,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    if(monitoringTimer!=null) monitoringTimer.cancel();
 	    if(InteractiveTimer!=null) InteractiveTimer.cancel(); 
 	    if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
-	     /**Arresto il listener del Conta Passi*/
+	    if(VirtualRaceTimer!=null) VirtualRaceTimer.cancel();
+	    
+	    /**Arresto il listener del Conta Passi*/
 	    if (AccelerometerUtils.isListening()) {
     		AccelerometerUtils.stopListening();
     		iStep=0;
@@ -1272,6 +1283,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    monitoringTimer=null;
 	    InteractiveTimer=null; 
 	    AutoPauseTimer=null;
+	    VirtualRaceTimer=null;
 	    bStopListener=true;
     	isRunning = false;
     	
@@ -1451,6 +1463,31 @@ public class ExerciseService extends Service implements LocationListener, Accele
     			iRepeatMotivator);
 	}
 	
+	/**
+	 * Lancia il TimerTask per l'interactive exercise
+	 * @param c 
+	 * @param isFaceBookShareActive 
+	 * */
+	private void addVirtualRaceTimer() {
+		VirtualRaceTimer = new Timer();
+		VirtualRaceTimer.scheduleAtFixedRate(
+    			new TimerTask()
+    			{
+    				@Override
+    				public void run()
+    				{    					
+    					//Send data to server
+    					HttpClientHelper oHttpHelper = new HttpClientHelper();
+    					oHttpHelper.sendDataForVirtualRace(oConfigTrainer, 0, 
+    							ExerciseService.dCurrentLatitude, ExerciseService.dCurrentLongitude, 
+    							ExerciseService.lCurrentAltidute, ExerciseService.dPace, 
+    							ExerciseService.dCurrentDistance, ExerciseService.lCurrentTime);
+    					oHttpHelper=null;
+    				}					
+    			}, 
+    			SHORT_START_MOTIVATOR_TIMER_DELAY,
+    			SHORT_START_MOTIVATOR_TIMER_DELAY);
+	}
 	/**
 	 * Rimuove il timer per l'auto pausa
 	 * */

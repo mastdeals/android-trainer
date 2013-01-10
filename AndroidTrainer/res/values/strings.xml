@@ -193,16 +193,7 @@
     <string name="full">Get Full Version</string>    
     <string name="gpsfix">Waiting for GPS data</string>  
 	<string name="app_id">145289522214142</string>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-<string name="erase">Remove</string>
+    <string name="virtualrace">Virtual Race</string>
+    <string name="virtualrace_desc">Enable Virtual Race Support</string>   
+    <string name="erase">Remove</string>
 </resources>

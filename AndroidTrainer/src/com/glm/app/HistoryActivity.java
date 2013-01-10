@@ -78,7 +78,7 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        oContext=this;
-       oConfigTrainer = ExerciseUtils.loadConfiguration(this);
+       oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);
        setContentView(R.layout.new_new_history);
        
        

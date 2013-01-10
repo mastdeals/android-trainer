@@ -54,7 +54,7 @@ public class GMapActivity extends MapActivity implements OnClickListener{
 		    
 		    mapOverlays = oMapView.getOverlays();        
 		   
-		    oConfigTrainer = ExerciseUtils.loadConfiguration(this);				
+		    oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);				
 		   
 		    if(extras !=null){
 		    	ExerciseUtils.populateExerciseDetails(this, oConfigTrainer,  extras.getInt("exercise"));	    	

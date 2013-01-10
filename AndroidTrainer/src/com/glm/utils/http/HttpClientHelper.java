@@ -20,15 +20,26 @@ import com.glm.bean.ConfigTrainer;
 public class HttpClientHelper {
 	private HttpClient httpclient = null;
 	private HttpPost httppost = null;
+	/**URL Per registrare il Devices*/
 	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/register";
+	/**URL Per registrare le informazioni durente la Virtual Race*/
+	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/virtualrace";
+	
 	/**costruttore*/
 	public HttpClientHelper(){
 		httpclient = new DefaultHttpClient();
-		httppost = new HttpPost(sURI_Register);
+		
 	}
-	
+	/**
+	 * Registra l'utenza sul server Trainer pre le gare virtuali
+	 * 
+	 * @param String sGCMId identificativo GCM
+	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
+	 * 
+	 * */
 	public void registerToAndroidTrainerServer(String sGCMId, ConfigTrainer oConfigTrainer) {	   
 	    try {
+	    	httppost = new HttpPost(sURI_Register);
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 	        nameValuePairs.add(new BasicNameValuePair("gcmid", sGCMId));
@@ -51,4 +62,43 @@ public class HttpClientHelper {
 	        Log.e(this.getClass().getCanonicalName(),"Error IOException Register to Android Trainer Server");
 	    }
 	} 
+	
+	
+	/**
+	 * Spedisce i dettagli durante la Virtual Race server Trainer pre le gare virtuali
+	 * 
+	 * @param String sGCMId identificativo GCM
+	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
+	 * 
+	 * */
+	public void sendDataForVirtualRace(ConfigTrainer oConfigTrainer, int iVirtualRace, 
+			double Latitude, double Longitude, long Alt, float Speed, double Distance,long Time) {	   
+	    try {
+	    	httppost = new HttpPost(sURI_VirtualRace);
+	        // Add your data
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("gcmid", oConfigTrainer.getsGCMId()));
+	        //Add Others value
+	        nameValuePairs.add(new BasicNameValuePair("virtualrace", String.valueOf(iVirtualRace)));
+	        nameValuePairs.add(new BasicNameValuePair("latidute", String.valueOf(Latitude)));
+	        nameValuePairs.add(new BasicNameValuePair("logitude", String.valueOf(Longitude)));
+	        nameValuePairs.add(new BasicNameValuePair("alt",  String.valueOf(Alt)));
+	        nameValuePairs.add(new BasicNameValuePair("speed", String.valueOf(Speed)));
+	        nameValuePairs.add(new BasicNameValuePair("distance", String.valueOf(Distance)));
+	        nameValuePairs.add(new BasicNameValuePair("time", String.valueOf(Time)));
+		    
+	        
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        // Execute HTTP Post Request
+	        HttpResponse response = httpclient.execute(httppost);
+	        Log.v(this.getClass().getCanonicalName(),"Send Virtual Race Watch Point to Android Trainer Server");
+	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+response.getStatusLine().getStatusCode());
+	    } catch (ClientProtocolException e) {
+	    	Log.e(this.getClass().getCanonicalName(),"Error ClientProtocolException Send Virtual Race to Android Trainer Server");
+	    } catch (IOException e) {
+	        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
+	    }
+	} 
+	
 }

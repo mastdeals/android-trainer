@@ -1,5 +1,6 @@
 package com.glm.app;
 
+import com.facebook.Session;
 import com.glm.app.AboutActivity;
 import com.glm.app.ActivityHelper;
 import com.glm.app.GoalActivity;
@@ -114,7 +115,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       
 	       if (sGCMId.equals("")) {
 	         GCMRegistrar.register(this, SENDER_ID);
-	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);	         
+	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);
+	         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
 	       } else {
 	         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);
 	       }
@@ -424,7 +426,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		       oStore.setOnClickListener(MainTrainerActivity.this);
 		       oBMI.setOnClickListener(MainTrainerActivity.this);	
 		       
-		       oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+		       oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),false);
 		       //TEST TWITTER
 		       if(ExerciseUtils.isUserExist(getApplicationContext())){
 		    	   mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -557,10 +559,12 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		     }
 	};
 	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.v(this.getClass().getCanonicalName(),"onActivityResult To Facebook: "+resultCode);
-    }
+	    super.onActivityResult(requestCode, resultCode, data);
+	    Session.getActiveSession()
+	        .onActivityResult(this, requestCode, resultCode, data);
+	}
 	
 	
 }
