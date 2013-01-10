@@ -343,7 +343,7 @@ public class Database {
     				" 	version_desc   VARCHAR( 255 )  NOT NULL, " + 
     				" 	licence        VARCHAR( 1 )    NOT NULL DEFAULT 'N')");
 
-    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '3.0.3', 'Ver. 3.0.3', 'N')");
+    		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '3.1', 'Ver. 3.1', 'N')");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_users (" +
@@ -430,6 +430,7 @@ public class Database {
     		oDatabase.execSQL("INSERT INTO trainer_pref (id_pref, type, name, DESC, value, ORDER_ID, VISIBLE) VALUES (17, 'B', '"+oContext.getString(R.string.inclination).replaceAll("'", "''")+"', '"+oContext.getString(R.string.say_inclination).replaceAll("'", "''")+"', 1, 11, 1)");
     		oDatabase.execSQL("INSERT INTO trainer_pref (id_pref, type, name, DESC, value, ORDER_ID, VISIBLE) VALUES (18, 'B', '"+oContext.getString(R.string.target).replaceAll("'", "''")+"', '"+oContext.getString(R.string.target_desc).replaceAll("'", "''")+"', 1, 17, 1)");
     		oDatabase.execSQL("INSERT INTO trainer_pref (id_pref, type, name, DESC, value, ORDER_ID, VISIBLE) VALUES (19, 'B', '"+oContext.getString(R.string.cardio).replaceAll("'", "''")+"', '"+oContext.getString(R.string.cardio_desc).replaceAll("'", "''")+"', 1, 18, 1)");
+    		oDatabase.execSQL("INSERT INTO trainer_pref (id_pref, type, name, DESC, value, ORDER_ID, VISIBLE) VALUES (20, 'B', '"+oContext.getString(R.string.virtualrace).replaceAll("'", "''")+"', '"+oContext.getString(R.string.virtualrace_desc).replaceAll("'", "''")+"', 1, 19, 1)");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_social_account (" +
@@ -568,6 +569,10 @@ public class Database {
     			if(sVersionNumber.compareToIgnoreCase("3.0.1")==0){
 					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 3.0.3");
 					upgradeDB3_0To3_0_3();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("3.0.3")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 3.1");
+					upgradeDB3_0_3To3_1();
 				}
     			//manualDB();
     		}
@@ -1086,6 +1091,28 @@ public class Database {
     	oDB.close();   
     	oDB=null;
     }
+    
+    private void upgradeDB3_0_3To3_1(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='3.1',version_desc='Ver. 3.1'");
+        	
+        	oDB.execSQL("INSERT INTO trainer_pref (id_pref, type, name, DESC, value, ORDER_ID, VISIBLE) VALUES (20, 'B', '"+oContext.getString(R.string.virtualrace).replaceAll("'", "''")+"', '"+oContext.getString(R.string.virtualrace_desc).replaceAll("'", "''")+"', 1, 19, 1)");
+
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 3.0.3");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
+    
     /**
      * Ony for DEVELOPMENT
      * 

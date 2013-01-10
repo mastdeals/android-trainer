@@ -162,7 +162,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
         oMainLinearLayout = (LinearLayout) findViewById(R.id.mainlinearLayout);   
         
         /**Associo i listener all'activity*/
-        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);	
                
        /* oBtn_SaveShare.setOnClickListener(this);
         oBtnExportKML.setOnClickListener(this);
@@ -356,7 +356,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext());		
+			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext(),true);		
 			//Chiamo il tackAsink
 			ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, ExerciseManipulate.getiIDExercise());
 		    //Log.v(this.getClass().getCanonicalName(),"IDExercide: " +ExerciseManipulate.getiIDExercise()+" - "+ExerciseManipulate.getsTotalDistance());

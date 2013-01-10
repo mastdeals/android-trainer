@@ -476,14 +476,14 @@ public class ExerciseUtils {
 	 * 
 	 * @return ConfigTrainer
 	 * */
-	public synchronized static ConfigTrainer loadConfiguration(Context oContext){
+	public synchronized static ConfigTrainer loadConfiguration(Context oContext, boolean bUsePrefs){
 		ConfigTrainer oConfigTrainer = new ConfigTrainer();
 		
 		SharedPreferences oPrefs = oContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 		
-		/*if(oPrefs.getInt("user_id",-2)!=-2){
+		if(bUsePrefs){
 			return loadConfigurationFromPrefs(oPrefs);
-		}*/
+		}
 		
 		SharedPreferences.Editor editPrefs = oPrefs.edit();
 		
@@ -585,6 +585,11 @@ public class ExerciseUtils {
 	    					//19
 	    					oConfigTrainer.setbUseCardio(bCheck);
 	    					editPrefs.putBoolean("use_cardio", bCheck); 
+	    					//Log.v(ExerciseUtils.class.getCanonicalName(),"setbRunGoal: "+bCheck);
+	    				}else if(oCursor.getInt(iID_PREF)==20){
+	    					//19
+	    					oConfigTrainer.setVirtualRaceSupport(bCheck);
+	    					editPrefs.putBoolean("virtualrace", bCheck); 
 	    					//Log.v(ExerciseUtils.class.getCanonicalName(),"setbRunGoal: "+bCheck);
 	    				}
 	    				    				
@@ -738,6 +743,8 @@ public class ExerciseUtils {
 			 
 			oConfigTrainer.setbUseCardio(oPrefs.getBoolean("use_cardio", false));
 			
+			oConfigTrainer.setVirtualRaceSupport(oPrefs.getBoolean("virtualrace", false));
+			
 
 			oConfigTrainer.setiUserID(oPrefs.getInt("user_id", -2));
 			
@@ -773,6 +780,7 @@ public class ExerciseUtils {
 
 			oConfigTrainer.setbCardioPolarBuyed(oPrefs.getBoolean("cardio_polar_buyed", false));
 
+			oConfigTrainer.setsGCMId(oPrefs.getString("GCMId", ""));
 		    		
 			return oConfigTrainer;
 			
@@ -2865,7 +2873,7 @@ public class ExerciseUtils {
 
 	
 	public synchronized static Summary getTotalSummary(Context oContext) {
-		ConfigTrainer oConfig = ExerciseUtils.loadConfiguration(oContext);
+		ConfigTrainer oConfig = ExerciseUtils.loadConfiguration(oContext,true);
 				
 		Summary oSummary = new Summary();
 		NumberFormat oNF = NumberFormat.getNumberInstance();
@@ -3093,5 +3101,17 @@ public class ExerciseUtils {
         	oDB=null;
         	return -2;
 		}
+	}
+
+	/**
+	 * Salve il GCM Id nelle shared preference per poi essere utilizzata dall'oggetto ConfigTrainer
+	 * 
+	 * 
+	 * */
+	public static void saveGCMId(Context oContext, String sGCMId) {
+		SharedPreferences oPrefs = oContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
+		SharedPreferences.Editor editPrefs = oPrefs.edit();
+		editPrefs.putString("GCMId", sGCMId);
+		editPrefs.commit();
 	}
 }

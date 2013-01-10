@@ -42,7 +42,7 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
         super.onCreate(savedInstanceState);
         oContext=this;
         //Carico la configurazione
-        oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+        oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
         
         
         a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
@@ -180,7 +180,7 @@ public class PrefActivity extends Activity implements OnItemClickListener, OnCli
 	protected void onResume() {		
 		super.onResume();
 		//Carico la configurazione
-        oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+        oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
 		Oscrol.clearAnimation();
         Oscrol.setAnimation(a);
 	}

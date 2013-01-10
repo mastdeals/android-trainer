@@ -404,7 +404,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         //imgMode.setOnTouchListener(this);
     
         
-        oConfigTrainer = ExerciseUtils.loadConfiguration(this);
+        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);
        
         try{
         	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
@@ -504,7 +504,6 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	
 	@Override
 	public void onClick(View oObj) {
-		oConfigTrainer=ExerciseUtils.loadConfiguration(this);
 		if(oObj.getId()==R.id.btnStart){
 			LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 	    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        

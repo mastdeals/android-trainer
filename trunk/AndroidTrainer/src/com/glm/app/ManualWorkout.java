@@ -88,7 +88,7 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
         obtn_Back.setOnClickListener(this);
         oTxt_Distance.setOnFocusChangeListener(this);
         
-        oConfigTrainer = ExerciseUtils.loadConfiguration(this);
+        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);
         ExerciseUtils.loadUserDectails(this);
         oTxt_Weight.setText(String.valueOf(User.getiWeight()));
         oMainLinearLayout.clearAnimation();

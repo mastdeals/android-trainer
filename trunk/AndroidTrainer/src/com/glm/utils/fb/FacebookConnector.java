@@ -48,7 +48,7 @@ public class FacebookConnector {
 	private StatusCallback mStatusCallBabk = new StatusCallback() {
 		
 		@Override
-		public void call(Session session, SessionState state, Exception exception) {
+		public void call(Session session, SessionState state, Exception exception) {			
 			if(session.isOpened()){
 				Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 					
@@ -66,6 +66,7 @@ public class FacebookConnector {
 					}
 				});
 			}
+			
 			if(state==SessionState.CREATED){
 					
 			}else if(state==SessionState.CREATED_TOKEN_LOADED){
@@ -75,10 +76,10 @@ public class FacebookConnector {
 				
 			}else if(state==SessionState.OPENING){
 				Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Opening To Facebook");
+				
 			}else if(state==SessionState.CLOSED){
 				Log.v(this.getClass().getCanonicalName(),"FacebookConnector->Session Closed To Facebook");
 			}
-			
 		}
 	};
 	public FacebookConnector(Context context, Activity activity){
@@ -94,9 +95,10 @@ public class FacebookConnector {
 			Log.v(this.getClass().getCanonicalName(),"Login To Facebook");
 			
 	        activeSession = new Session.Builder(oActivity).setApplicationId(sAppID).build();
-	        	           
+	        
+	        Session.setActiveSession(activeSession);	           
  	        Session.openActiveSession(oActivity, true, mStatusCallBabk);
- 	        Session.setActiveSession(activeSession);
+ 	        
 	        /*activeSession.open(sToken, new StatusCallback() {
 				
 				@Override

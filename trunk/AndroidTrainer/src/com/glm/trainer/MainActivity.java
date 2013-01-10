@@ -186,7 +186,7 @@ public class MainActivity  extends Activity{
 	private class DBTask extends AsyncTask<Database, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {					       
-		       oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());		       		        							       
+		       oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),false);		       		        							       
 				try{					   				    		       			     	
 			    	try {
 			    		

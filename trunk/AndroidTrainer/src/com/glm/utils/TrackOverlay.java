@@ -141,7 +141,7 @@ public class TrackOverlay extends Overlay {
                 	int rad = 10;
                 	Bitmap bmp = BitmapFactory.decodeResource(oContext.getResources(), R.drawable.workout);                       	
                 	canvas.drawBitmap(bmp, oldx, oldy-bmp.getHeight(), null);              	
-                	ConfigTrainer oConfigTrainer=ExerciseUtils.loadConfiguration(oContext);            	       
+                	ConfigTrainer oConfigTrainer=ExerciseUtils.loadConfiguration(oContext,true);            	       
                     canvas.drawText(ExerciseUtils.getTotalDistanceFormattated((float)aWatchPoint.get(i).getdDistance()/1000, oConfigTrainer, true) , oldx+rad, oldy-(bmp.getHeight()+rad), paint);	
                 }
                 

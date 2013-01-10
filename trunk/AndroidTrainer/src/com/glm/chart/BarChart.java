@@ -60,7 +60,7 @@ public class BarChart extends Chart{
 		TimeSeries oSerie = new TimeSeries(oContext.getString(R.string.distance));
 		
 
-		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth( ExerciseUtils.loadConfiguration(oContext), 
+		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth( ExerciseUtils.loadConfiguration(oContext,true), 
 				oContext);
 			
 		for(int i=0;i<11;i++){

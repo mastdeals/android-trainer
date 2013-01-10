@@ -176,5 +176,7 @@
     <string name="vote">Vota</string>  
     <string name="full">Full</string>  
     <string name="gpsfix">In attesa di segnale GPS</string>
-<string name="erase">Rimuovi</string>
+    <string name="virtualrace">Gare Virtuali</string>
+    <string name="virtualrace_desc">Abilita il supporto alle gare Virtuali</string>  
+	<string name="erase">Rimuovi</string>
 </resources>

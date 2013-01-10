@@ -184,7 +184,7 @@ public class JsHandler {
 	
 	private String getRawDataMonthExercise() {
 		
-		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth( ExerciseUtils.loadConfiguration(oContext), 
+		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth( ExerciseUtils.loadConfiguration(oContext,true), 
 				oContext);
 		String sData = "[ { data: ["; 		
 		

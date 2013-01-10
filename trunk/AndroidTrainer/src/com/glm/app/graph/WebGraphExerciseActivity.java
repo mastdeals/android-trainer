@@ -32,7 +32,7 @@ public class WebGraphExerciseActivity extends Activity{
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.flow_exercise_graph);        
 	        
-	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+	        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);	
 	        ExerciseUtils.populateExerciseDetails(this, oConfigTrainer, ExerciseManipulate.getiIDExercise());	        	       	      
 	        
 	        viewFlow 	  = (ViewFlow) findViewById(R.id.viewflow);

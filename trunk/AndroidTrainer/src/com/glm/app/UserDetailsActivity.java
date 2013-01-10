@@ -128,7 +128,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
     	RBMale.setOnClickListener(this);
     	RBFemale.setOnClickListener(this);
     	
-    	oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+    	oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
     	if(oConfigTrainer!=null){
     		if(oConfigTrainer.getiUnits()==0){
         		olblWeight.setText(olblWeight.getText()+" (Kg)");
@@ -349,7 +349,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		super.onResume();
 		obtn_Save.setEnabled(true);
 		//getUserFromDB();
-		oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+		oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
 		oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
     	oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
 		oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));  
@@ -384,4 +384,10 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 			//Log.e(this.getClass().getCanonicalName(),"Error back");
 		}
     }  
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    Session.getActiveSession()
+	        .onActivityResult(this, requestCode, resultCode, data);
+	} 
 }

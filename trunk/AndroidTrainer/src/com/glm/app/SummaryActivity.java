@@ -70,7 +70,7 @@ public class SummaryActivity extends Activity implements OnClickListener{
 	    	oTxtKalWalk	= (TextView) findViewById(R.id.textKal_walk); 
 	    	oTxtKalBike	= (TextView) findViewById(R.id.textKal_bike);
 	        
-	        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+	        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);	
 	        /**controllo e salvo esercizi non salvati*/
 	    	ExerciseUtils.checkIncompleteWorkout(getApplicationContext(), oConfigTrainer);
 	        if(oConfigTrainer.getiUnits()!=0){	        	

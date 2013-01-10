@@ -110,7 +110,7 @@ public class StoreActivity extends Activity implements OnClickListener {
         mBillingService = new BillingService();
         mBillingService.setContext(this);
 
-        oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+        oConfigTrainer = ExerciseUtils.loadConfiguration(this,true);	
 
         // Check if billing is supported.
         ResponseHandler.register(mTrainerPurchaseObserver);
