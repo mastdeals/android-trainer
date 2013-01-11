@@ -1,0 +1,382 @@
+/* Website template by freewebsitetemplates.com */
+@font-face {
+	font-family: 'VarelaRound-Regular';
+	src: url('../fonts/VarelaRound-Regular.eot');
+	src: local('☺'), url('../fonts/VarelaRound-Regular.woff') format('woff'), url('../fonts/VarelaRound-Regular.ttf') format('truetype'), url('../fonts/VarelaRound-Regular.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'PTSerifCaption-Italic';
+	src: url('../fonts/PT_Serif-Caption-Web-Italic.eot');
+	src: local('☺'), url('../fonts/PT_Serif-Caption-Web-Italic.woff') format('woff'), url('../fonts/PT_Serif-Caption-Web-Italic.ttf') format('truetype'), url('../fonts/PT_Serif-Caption-Web-Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+body {
+	background-color: #000000;
+	color: #626365;
+	font-family: Helvetica, Arial, sans-serif;
+	margin: 0;
+}
+img {
+	border: 0;
+}
+/*------------------------------ HEADER ------------------------------*/
+#header {
+	height: 108px;
+	width: 960px;
+	margin: 0 auto;
+}
+/** Logo **/
+#logo {
+	float: left;
+	background: url(../images/bg-logo.jpg) no-repeat;
+	height: 108px;
+	width: 427px;
+	margin-right: 23px;
+}
+#logo a {
+	outline: 0;
+}
+#logo img {
+	padding-top: 34px;
+}
+/** Navigation **/
+#navigation {
+	float: right;
+	line-height: 108px;
+	height: 108px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#navigation li {
+	float: left;
+	font-size: 14pt;
+	height: 108px;
+	text-align: center;
+}
+#navigation a {
+	color: #383838;
+	padding: 29px 13px;
+	outline: 0;
+	text-decoration: none;
+}
+#navigation a:hover, #navigation li.active a {
+	background: url(../images/bg-navigation-hover.png) repeat-x center;
+	color: #d2d2d2;
+}
+#adbox {
+	background: url(../images/bg-featured.jpg) no-repeat center;
+	height: 438px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+#adbox div {
+	width: 960px;
+	margin: 0 auto;
+}
+#adbox div div {
+	float: right;
+	line-height: 24px;
+	width: 410px;
+}
+#adbox div div h1 {
+	background: url(../images/bg-separator.jpg) no-repeat left bottom;
+	color: #f7f7f1;
+	font: 28px/30px 'VarelaRound-Regular';
+	margin: 0 0 24px;
+	padding: 0 0 24px;
+}
+#adbox div div p {
+	color: #fff;
+	font: 14px/24px 'VarelaRound-Regular';
+	margin: 0;
+	padding: 0 0 24px;
+}
+#adbox div div p a {
+	color: #fff;
+}
+#adbox div div p a:hover {
+	color: #9b9b9b;
+}
+#adbox div div a.more {
+	background: url(../images/btn-readmore.png) no-repeat;
+	background-position: 0 bottom;
+	color: #f1f2ea;
+	display: block;
+	line-height: 48px;
+	height: 48px;
+	width: 264px;
+	margin: 18px 0;
+	outline: 0;
+	text-align: center;
+	text-decoration: none;
+}
+#adbox div div a.more:hover {
+	background-position: 0 top;
+}
+/*------------------------------ CONTENTS ------------------------------*/
+#body {
+	background-color: #181818;
+}
+/** MAIN **/
+#main {
+	background: url(../images/middle-bar.gif) repeat-x center top;
+}
+#main h2 {
+	background: url(../images/middle-bar2.jpg) no-repeat center top;
+	color: #000;
+	font: normal 22px/60px 'PTSerifCaption-Italic';
+	height: 83px;
+	width: 100%;
+	margin: 0;
+	text-align: center;
+	text-shadow: 1px 1px #3b3b3b;
+	position: absolute;
+	left: 0;
+}
+#main h2 span {
+	display: block;
+	width: 960px;
+	margin: 0 auto;
+}
+#main h2 span a {
+	color: #000;
+	outline: 0;
+	text-decoration: none;
+}
+#main h2 span a:hover {
+	color: #101010;
+}
+#main p {
+	color: #4b4a4a;
+	font: 14px/24px 'VarelaRound-Regular';
+	width: 960px;
+	margin: 0 auto;
+	padding: 100px 0 24px;
+	text-align: justify;
+}
+#main p a {
+	color: #4b4a4a;
+	outline: 0;
+}
+#main p a:hover {
+	color: #8a8989;
+}
+/*------------------------------ Inner pages styles ------------------------------*/
+#contents {
+	background: url(../images/border-dashed.gif) repeat-x left bottom;
+	width: 960px;
+	margin: 0 auto 24px;
+	padding: 0 0 30px;
+}
+#contents h1 {
+	color: #f7f7f1;
+	font: 28px/30px 'VarelaRound-Regular';
+	display: inline-block;
+	width: 530px;
+	margin: 0 0 21px;
+	padding-top: 21px;
+}
+#contents img {
+	float: right;
+	margin-top: 21px;
+}
+#contents p {
+	color: #4b4a4a;
+	font: 15px/20px 'VarelaRound-Regular';
+	margin: 0;
+	padding: 0 0 24px;
+}
+#contents p em {
+	display: block;
+}
+#contents p a {
+	color: #4b4a4a;
+	outline: 0;
+}
+#contents p a:hover {
+	color: #8a8989;
+}
+/** Blog Page **/
+#blogs ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#blogs ul li {
+	height: 216px;
+	padding: 0 0 24px;
+}
+#blogs ul li img {
+	float: left;
+	margin: 0 30px 0 0;
+}
+#blogs ul li span {
+	float: right;
+	color: #875f07;
+	font-size: 11px;
+	font-style: italic;
+	line-height: 12px;
+	padding-top: 6px;
+}
+#blogs ul li h3 {
+	color: #875f07;
+	line-height: 24px;
+	margin: 0;
+}
+#blogs ul li p {
+	line-height: 24px;
+	text-align: justify;
+}
+#blogs ul li a.more {
+	color: #d2d2d2;
+	font-size: 15px;
+	outline: 0;
+	text-decoration: none;
+}
+#blogs div {
+	text-align: center;
+}
+#blogs div span {
+	display: inline-block;
+	margin: 0 auto;
+	padding: 6px 0;
+}
+#blogs div span a {
+	color: #d2d2d2;
+	font-size: 14px;
+	padding: 0 4px;
+	outline: 0;
+	text-decoration: none;
+}
+#blogs ul li a.more:hover, #blogs div span a:hover {
+	color: #fb9d24;
+}
+/** Journey Page **/
+#journey {
+	display: inline-block;
+}
+#journey img {
+	margin: 21px 0 0 110px;
+}
+#journey h1 {
+	display: inline-block;
+}
+#journey p {
+	text-align: justify;
+}
+/*------------------------------ End of inner pages styles ------------------------------*/
+
+/** ARTICLES **/
+#articles {
+	width: 960px;
+	margin: 0 auto;
+}
+#articles ul {
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 16px 0 0;
+}
+#articles ul li {
+	float: left;
+	width: 300px;
+	padding-bottom: 24px;
+	padding-left: 30px;
+}
+#articles ul li:first-child {
+	padding-left: 0;
+}
+#articles p {
+	color: #4b4a4a;
+	font: 14px/24px 'VarelaRound-Regular';
+}
+#articles p a {
+	color: #4b4a4a;
+	outline: 0;
+}
+#articles p a:hover {
+	color: #8a8989;
+}
+#articles ul li p {
+	font-size: 12px;
+}
+#articles ul li a.more {
+	float: right;
+	color: #da9f05;
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 13px;
+	font-style: italic;
+	outline: 0;
+	text-decoration: none;
+}
+#articles ul li a.more:hover {
+	color: #fef8ea;
+}
+/*------------------------------ FOOTER ------------------------------*/
+#footer {
+	font-size: 12px;
+	line-height: 18px;
+	width: 960px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+#connect {
+	float: right;
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#connect li {
+	float: left;
+	margin: 0 10px;
+}
+#connect li a {
+	background: url(../images/icons.png) no-repeat;
+	display: block;
+	height: 25px;
+	width: 35px;
+	outline: 0;
+}
+#connect li a.facebook {
+	background-position: 0 0;
+}
+#connect li a.twitter {
+	background-position: 0 -35px;
+}
+#connect li a.vimeo {
+	background-position: 0 -70px;
+}
+#connect li a.googleplus {
+	background-position: 0 -105px;
+}
+#footnote ul {
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#footnote ul li {
+	float: left;
+	padding-right: 5px;
+}
+#footnote ul li a {
+	color: #626365;
+	border-left: 1px solid #626365;
+	padding-left: 5px;
+	text-decoration: none;
+}
+#footnote ul li a:hover, #footnote ul li.active a {
+	color: #d2d2d2;
+}
+#footnote ul li:first-child a {
+	border: 0;
+	padding-left: 0;
+}
+#footnote span {
+	display: block;
+}
