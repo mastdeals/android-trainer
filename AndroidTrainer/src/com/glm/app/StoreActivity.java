@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ public class StoreActivity extends Activity implements OnClickListener {
     
 	private LinearLayout obtnDonate;
 	private LinearLayout obtnPolarCardio;
+	private LinearLayout oInternal;
 	
 	private ConfigTrainer oConfigTrainer;
 	
@@ -97,6 +99,11 @@ public class StoreActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
                 
         setContentView(R.layout.new_trainer_store);
+        oInternal = (LinearLayout) findViewById(R.id.internal);
+        
+        LinearLayout oLinearUser = new LinearLayout(this);
+		oLinearUser = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.new_virtual_race, null);
+		oInternal.addView(oLinearUser);
         
         obtnDonate = (LinearLayout) findViewById(R.id.btnDonate);
         obtnDonate.setOnClickListener(this);

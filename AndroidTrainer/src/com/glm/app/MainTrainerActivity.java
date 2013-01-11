@@ -107,19 +107,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	       
 	       oMainLayout = (LinearLayout) findViewById(R.id.objMainLayout);
 	       
-	       GCMRegistrar.checkDevice(this);
-	       GCMRegistrar.checkManifest(this);
-	       sGCMId = GCMRegistrar.getRegistrationId(this);
-	       registerReceiver(mHandleMessageReceiver,
-	                new IntentFilter("com.glm.app.DISPLAY_MESSAGE"));	       
 	       
-	       if (sGCMId.equals("")) {
-	         GCMRegistrar.register(this, SENDER_ID);
-	         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);
-	         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
-	       } else {
-	         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);
-	       }
 	       
 	       
 	       
@@ -146,7 +134,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	}
 	private void addUser(boolean bTwitter) {
 		Intent intent = ActivityHelper.createActivityIntent(this,UserDetailsActivity.class);
-		if(bTwitter) intent.putExtra("twitter", "1");
+		//if(bTwitter) intent.putExtra("twitter", "1");
 		//startActivity(intent);
 		ActivityHelper.startNewActivityAndFinish(this, intent);	
 	}
@@ -448,9 +436,13 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 					}
 		       }
 		       
-		       //Send Id to Android Trainer WEB Server via POST METHOD
-		       HttpClientHelper oHttpHelper = new HttpClientHelper();
-		       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);
+		       if(sGCMId!=null){
+		    	   if(sGCMId.length()>0){
+		    		   //Send Id to Android Trainer WEB Server via POST METHOD
+				       HttpClientHelper oHttpHelper = new HttpClientHelper();
+				       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
+		    	   }
+		       }
 			       
 				try{
 					   
@@ -514,6 +506,21 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				oDB.init();
 				
 			}
+			   
+			   GCMRegistrar.checkDevice(getApplicationContext());
+		       GCMRegistrar.checkManifest(getApplicationContext());
+		       sGCMId = GCMRegistrar.getRegistrationId(getApplicationContext());
+		       registerReceiver(mHandleMessageReceiver,
+		                new IntentFilter("com.glm.app.DISPLAY_MESSAGE"));	       
+		       
+		       if (sGCMId.equals("")) {
+		         GCMRegistrar.register(getApplicationContext(), SENDER_ID);
+		         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);
+		         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
+		       } else {
+		         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);		         
+		       }
+		       
 			return true;
 		}
 	}
