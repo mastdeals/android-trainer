@@ -190,5 +190,6 @@
     <string name="heart_rate">"Herzschlag"</string>
     <string name="vote">"Abstimmung"</string>      
     <string name="gpsfix">Warten auf GPS-Daten</string>  
+    <string name="listening">Het Luisteren</string>
 <string name="erase">Entfernen</string>
 </resources>
