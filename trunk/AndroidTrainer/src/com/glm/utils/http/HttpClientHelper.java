@@ -21,9 +21,9 @@ public class HttpClientHelper {
 	private HttpClient httpclient = null;
 	private HttpPost httppost = null;
 	/**URL Per registrare il Devices*/
-	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/register";
+	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/Register";
 	/**URL Per registrare le informazioni durente la Virtual Race*/
-	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/virtualrace";
+	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRace";
 	
 	/**costruttore*/
 	public HttpClientHelper(){

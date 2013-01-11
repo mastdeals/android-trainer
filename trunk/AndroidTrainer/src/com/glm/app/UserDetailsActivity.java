@@ -9,7 +9,6 @@ import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.glm.app.UserDetailsActivity;
-import com.glm.app.db.Database;
 import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
@@ -21,7 +20,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -225,44 +223,48 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		}*/else if(oView.getId()==R.id.ckTwitter){
 			
 			if(oCkTwitter.isChecked()){
-				saveUser();		
-				//Implementare il salvataggio dei Check
-				if(ExerciseUtils.shareTwitter(getApplicationContext(), oCkTwitter.isChecked())){
-					//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-					Intent intent = ActivityHelper.createActivityIntent(this,TwitterAuthActivity.class);
-					//startActivity(intent);
-					ActivityHelper.startNewActivityAndFinish(this, intent);			 										
+				if(saveUser()){		
+					//Implementare il salvataggio dei Check
+					if(ExerciseUtils.shareTwitter(getApplicationContext(), oCkTwitter.isChecked())){
+						//ActivityHelper.startOriginalActivityAndFinish(getParent());		
+						Intent intent = ActivityHelper.createActivityIntent(this,TwitterAuthActivity.class);
+						//startActivity(intent);
+						ActivityHelper.startNewActivityAndFinish(this, intent);			 										
+					}
 				}
 			}else{		
-				saveUser();
-				ExerciseUtils.shareTwitter(getApplicationContext(), oCkTwitter.isChecked());
-				SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
-				SharedPreferences.Editor editPrefs = oPrefs.edit();
-				editPrefs.putBoolean("share_twitter", false); 
-				editPrefs.commit();
-				obtn_Save.setEnabled(true);
+				if(saveUser()){
+					ExerciseUtils.shareTwitter(getApplicationContext(), oCkTwitter.isChecked());
+					SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
+					SharedPreferences.Editor editPrefs = oPrefs.edit();
+					editPrefs.putBoolean("share_twitter", false); 
+					editPrefs.commit();
+					obtn_Save.setEnabled(true);
+				}
 			}						
 		}else if(oView.getId()==R.id.ckFB){
 			
 			if(oCkFB.isChecked()){
-				saveUser();
-				//Implementare il salvataggio dei Check
-				if(ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked())){			
-			        oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);	
-					//Intent intentMain = ActivityHelper.createActivityIntent(UserDetailsActivity.this,FacebookConnect.class);
-         			//startActivity(intent);
-         			//ActivityHelper.startNewActivityAndFinish(UserDetailsActivity.this, intentMain);	
+				if(saveUser()){
+					//Implementare il salvataggio dei Check
+					if(ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked())){			
+				        oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);	
+						//Intent intentMain = ActivityHelper.createActivityIntent(UserDetailsActivity.this,FacebookConnect.class);
+	         			//startActivity(intent);
+	         			//ActivityHelper.startNewActivityAndFinish(UserDetailsActivity.this, intentMain);	
+					}
 				}
 			}else{			
 				try {
-					saveUser();
-					oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);
-					oFB.logout();
-					ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked());
-					SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
-					SharedPreferences.Editor editPrefs = oPrefs.edit();
-					editPrefs.putBoolean("share_fb", false); 
-					editPrefs.commit();
+					if(saveUser()){
+						oFB = new FacebookConnector(getApplicationContext(),UserDetailsActivity.this);
+						oFB.logout();
+						ExerciseUtils.shareFaceBook(getApplicationContext(), oCkFB.isChecked());
+						SharedPreferences oPrefs = getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
+						SharedPreferences.Editor editPrefs = oPrefs.edit();
+						editPrefs.putBoolean("share_fb", false); 
+						editPrefs.commit();
+					}
 				} catch (Exception e) {
 					 Log.e(this.getClass().getCanonicalName(), "IOException FB");
 				}
@@ -272,7 +274,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 			obtn_Save.setEnabled(true);
 		}
 	}
-	private void saveUser() {
+	private boolean saveUser() {
 		if(RBMale.isChecked()){
 			try{
 				Integer.parseInt(oTxtAge.getText().toString());
@@ -280,7 +282,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				 Toast.makeText(getBaseContext(), 
 		                    getString(R.string.age_error), 
 		                    Toast.LENGTH_SHORT).show();
-				 return;
+				 return false;
 			}
 			try{
 				Float.parseFloat(oTxtWeight.getText().toString());
@@ -288,7 +290,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				 Toast.makeText(getBaseContext(), 
 		                    getString(R.string.weight_error), 
 		                    Toast.LENGTH_SHORT).show();
-				 return;
+				 return false;
 			}
 			Log.v(this.getClass().getCanonicalName(),"oCkTwitter.isChecked():"+oCkTwitter.isChecked()+" - oCkFB.isChecked():"+oCkFB.isChecked());
 			if(ExerciseUtils.saveUserData(getApplicationContext(), oEdtNick.getText().toString(), oEdtName.getText().toString(),
@@ -298,6 +300,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		                    getString(R.string.usersaved), 
 		                    Toast.LENGTH_SHORT).show();
 				  obtn_Save.setEnabled(false);
+				  return true;
 			}
 			
 		}else{
@@ -307,7 +310,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				 Toast.makeText(getBaseContext(), 
 		                    getString(R.string.age_error), 
 		                    Toast.LENGTH_SHORT).show();
-				 return;
+				 return false;
 			}
 			try{
 				Integer.parseInt(oTxtWeight.getText().toString());
@@ -315,7 +318,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 				 Toast.makeText(getBaseContext(), 
 		                    getString(R.string.weight_error), 
 		                    Toast.LENGTH_SHORT).show();
-				 return;
+				 return false;
 			}
 			Log.v(this.getClass().getCanonicalName(),"oCkTwitter.isChecked():"+oCkTwitter.isChecked()+" - oCkFB.isChecked():"+oCkFB.isChecked());
 			if(ExerciseUtils.saveUserData(getApplicationContext(), oEdtNick.getText().toString(), oEdtName.getText().toString(),
@@ -325,8 +328,10 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		                    getString(R.string.usersaved), 
 		                    Toast.LENGTH_SHORT).show();
 				  obtn_Save.setEnabled(false);
-			}
+				  return true;
+			}			
 		}
+		return false;
 	}
 
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
@@ -365,7 +370,6 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 			
 		if(oConfigTrainer.isShareFB()){
 			oCkFB.setChecked(true);
-			Log.v(this.getClass().getCanonicalName(), "oCkFB.setChecked(true)");
 		}
 			
 		if(oConfigTrainer.isShareTwitter()){
@@ -387,7 +391,31 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    Session.getActiveSession()
-	        .onActivityResult(this, requestCode, resultCode, data);
+	    
+		Log.v(this.getClass().getCanonicalName(),"OnResult User");
+	    
+	    oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),false);
+		oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
+    	oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
+		oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));  
+		
+		oEdtNick.setText(oConfigTrainer.getsNick());
+		oEdtName.setText(oConfigTrainer.getsName());
+			
+		if(oConfigTrainer.getsGender().compareToIgnoreCase("M")==0){
+			RBMale.setChecked(true);
+		}else{
+			RBFemale.setChecked(true);
+		}
+			
+		if(oConfigTrainer.isShareFB()){
+			oCkFB.setChecked(true);
+		}
+			
+		if(oConfigTrainer.isShareTwitter()){
+			oCkTwitter.setChecked(true);				
+		}
+		Session.getActiveSession()
+        .onActivityResult(this, requestCode, resultCode, data);
 	} 
 }

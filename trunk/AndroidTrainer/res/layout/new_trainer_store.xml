@@ -51,7 +51,7 @@
 				<LinearLayout 
 					android:id="@+id/internal" 
 					android:orientation="vertical" 
-					android:layout_height="match_parent" 
+					android:layout_height="wrap_content" 
 					android:layout_width="match_parent" 
 					
 					android:padding="5dip">
@@ -167,144 +167,7 @@
 					    </LinearLayout>
 					</LinearLayout>
 	
-					<LinearLayout
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content"
-					    android:layout_marginTop="10dip"
-					    android:background="@drawable/lista_gradient"
-					    android:orientation="vertical"
-					    android:padding="10dip"
-					    android:visibility="invisible" >
-	
-					    <LinearLayout
-					        android:id="@+id/LinearLayout01"
-					        android:layout_width="match_parent"
-					        android:layout_height="match_parent"
-					        android:layout_marginTop="0dip"
-					        android:background="@drawable/lista_gradient"
-					        android:clickable="true"
-					        android:orientation="horizontal"
-					        android:padding="10dip" >
-	
-					        <LinearLayout
-					            android:layout_width="match_parent"
-					            android:layout_height="match_parent"
-					            android:layout_marginTop="0dip"
-					            android:orientation="vertical"
-					            android:padding="0dip" >
-	
-					            <TextView
-					                android:id="@+id/TextView07"
-					                android:layout_width="match_parent"
-					                android:layout_height="wrap_content"
-					                android:layout_marginBottom="10dip"
-					                android:layout_marginLeft="20dip"
-					                android:gravity="top|left"
-					                android:text="Maratona 21Km"
-					                android:textColor="#FFFFFF"
-					                android:textSize="10sp" />
-	
-					            <TextView
-					                android:id="@+id/TextView01"
-					                android:layout_width="match_parent"
-					                android:layout_height="wrap_content"
-					                android:layout_marginLeft="0dip"
-					                android:gravity="bottom|right"
-					                android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-					                android:textColor="#FFFFFF"
-					                android:textSize="10sp" />
-	
-					            <TextView
-					                android:id="@+id/TextView06"
-					                android:layout_width="match_parent"
-					                android:layout_height="wrap_content"
-					                android:layout_marginLeft="0dip"
-					                android:gravity="bottom|right"
-					                android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-					                android:textColor="#FFFFFF"
-					                android:textSize="10sp" />
-	
-					            <TextView
-					                android:id="@+id/TextView05"
-					                android:layout_width="match_parent"
-					                android:layout_height="wrap_content"
-					                android:layout_marginLeft="0dip"
-					                android:gravity="bottom|right"
-					                android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-					                android:textColor="#FFFFFF"
-					                android:textSize="10sp" />
-					        </LinearLayout>
-					    </LinearLayout>
-					</LinearLayout>
-	
-					<LinearLayout 
-							android:layout_height="wrap_content" 
-							android:layout_width="match_parent" 
-							android:background="@drawable/lista_gradient"
-							android:padding="10dip"
-							android:layout_marginTop="10dip" 
-							android:orientation="vertical"
-							android:visibility="invisible">
-							<LinearLayout 
-								android:layout_height="match_parent" 
-								android:layout_width="match_parent" 
-								android:background="@drawable/lista_gradient"
-								android:padding="10dip"
-								android:layout_marginTop="0dip" 
-								android:orientation="horizontal" 
-								android:clickable="true"
-							    android:id="@+id/btn_start_running">
-								<LinearLayout 
-									android:layout_height="match_parent" 
-									android:layout_width="match_parent" 
-									android:padding="0dip"
-									android:layout_marginTop="0dip" 
-									android:orientation="vertical">
-	
-									<TextView
-									    android:id="@+id/textNote"
-									    android:layout_width="match_parent"
-									    android:layout_height="wrap_content"
-									    android:layout_marginLeft="20dip"
-									    android:layout_marginBottom="10dip"
-									    android:gravity="top|left"
-									    android:text="Maratona 42Km"
-									    android:textColor="#FFFFFF"
-									    android:textSize="10sp" />
-	
-									<TextView
-									    android:id="@+id/TextView02"
-									    android:layout_width="match_parent"
-									    android:layout_height="wrap_content"
-									    android:layout_marginLeft="0dip"
-									    android:gravity="bottom|right"
-									    android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-									    android:textColor="#FFFFFF"
-									    android:textSize="10sp" />
-	
-									<TextView
-									    android:id="@+id/TextView03"
-									    android:layout_width="match_parent"
-									    android:layout_height="wrap_content"
-									    android:layout_marginLeft="0dip"
-									    android:gravity="bottom|right"
-									    android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-									    android:textColor="#FFFFFF"
-									    android:textSize="10sp" />
-	
-									<TextView
-									    android:id="@+id/TextView04"
-									    android:layout_width="match_parent"
-									    android:layout_height="wrap_content"
-									    android:layout_marginLeft="0dip"
-									    android:gravity="bottom|right"
-									    android:text="dskfdskfkdskfdskjhfjkdshjkfhjkdsh"
-									    android:textColor="#FFFFFF"
-									    android:textSize="10sp" />
-	
-									</LinearLayout>
-							</LinearLayout>
-					</LinearLayout>
+					
 					<!-- Run Workout -->
 					
 					<!-- Walk Workout -->
@@ -314,20 +177,7 @@
 					<!-- Bike Workout -->
 					
 					<!-- Function Trainer -->
-					<!-- Function Trainer -->	
-					
-					<View 
-						android:layout_weight="1" 
-						android:layout_marginRight="0dip" 
-						android:layout_width="fill_parent" 
-						
-						android:id="@+id/view3" 
-						android:layout_marginBottom="0dip" 
-						android:layout_height="1dip" 
-						android:layout_marginTop="2dip" 
-						android:layout_marginLeft="0dip"
-						android:background="@drawable/lista_gradient">
-					</View>				
+					<!-- Function Trainer -->				
 				</LinearLayout>		
 			</ScrollView>
 			<ImageView
