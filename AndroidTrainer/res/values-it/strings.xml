@@ -178,5 +178,6 @@
     <string name="gpsfix">In attesa di segnale GPS</string>
     <string name="virtualrace">Gare Virtuali</string>
     <string name="virtualrace_desc">Abilita il supporto alle gare Virtuali</string>  
+    <string name="listening">Ascoltando</string>
 	<string name="erase">Rimuovi</string>
 </resources>

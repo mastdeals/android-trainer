@@ -1,6 +1,7 @@
 package com.glm.trainer;
 
 import com.glm.app.MainTrainerActivity;
+import com.glm.utils.VoiceToSpeechTrainer;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -32,6 +33,11 @@ public class GCMIntentService extends GCMBaseIntentService{
 		// TODO Auto-generated method stub
 		Log.i(this.getClass().getCanonicalName(), "Device onMessage: = " + arg1);
 		generateNotification(context, arg1.getStringExtra("message"));
+		if(arg1.getStringExtra("speech")!=null){
+			VoiceToSpeechTrainer oVoice = new VoiceToSpeechTrainer(getApplicationContext());
+			oVoice.say(arg1.getStringExtra("speech"));
+			oVoice = null;
+		}
 	}
 
 	private void generateNotification(Context context, String stringExtra) {

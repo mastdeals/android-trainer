@@ -90,7 +90,7 @@ public class ShareFromService extends Activity {
 	 * Condivisione interattiva via twitter
 	 * */
 	private void twitterShare() {
-		String sMessage=getString(R.string.distance)+": "+sDistance+" "+getString(R.string.pace)+": "+sPace+" "+sSong+"\n "+getString(R.string.app_name_pro);
+		String sMessage=getString(R.string.distance)+": "+sDistance+" "+getString(R.string.pace)+": "+sPace+" "+getString(R.string.listening)+" "+sSong+"\n "+getString(R.string.app_name_pro);
 		String oauthAccessToken = mSharedPreferences.getString(Const.PREF_KEY_TOKEN, "");
 		String oAuthAccessTokenSecret = mSharedPreferences.getString(Const.PREF_KEY_SECRET, "");
 		Log.v(this.getClass().getCanonicalName(),"auth twitter: "+oauthAccessToken+" "+oAuthAccessTokenSecret);
@@ -116,7 +116,7 @@ public class ShareFromService extends Activity {
 			Bundle params = new Bundle();
 			
 			params.putString("message", 
-					getString(R.string.distance)+": "+sDistance+" "+getString(R.string.pace)+": "+sPace+" "+sSong);
+					getString(R.string.distance)+": "+sDistance+" "+getString(R.string.pace)+": "+sPace+" "+getString(R.string.listening)+" "+sSong);
 			params.putString("name", getString(R.string.app_name_pro));
 			params.putString("description", getString(R.string.app_description));
 			params.putString("picture", "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash3/528739_265227286907418_241853235911490_524034_434724615_n.jpg");

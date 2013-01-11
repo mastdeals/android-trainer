@@ -188,5 +188,8 @@
     <string name="heart_rate">"fréquence cardiaque"</string>
     <string name="vote">"Voter"</string>      
     <string name="gpsfix">En attente de données GPS</string>
+    <string name="virtualrace">Virtual Race</string>
+    <string name="virtualrace_desc">Activer le support Virtual Race</string>
+    <string name="listening">écoute</string>
 <string name="erase">Supprimer</string>
 </resources>

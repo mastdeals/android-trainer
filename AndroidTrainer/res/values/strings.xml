@@ -195,5 +195,6 @@
 	<string name="app_id">145289522214142</string>
     <string name="virtualrace">Virtual Race</string>
     <string name="virtualrace_desc">Enable Virtual Race Support</string>   
+    <string name="listening">Listening</string>
     <string name="erase">Remove</string>
 </resources>

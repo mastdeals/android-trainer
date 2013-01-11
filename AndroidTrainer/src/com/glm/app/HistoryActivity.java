@@ -1,7 +1,6 @@
 package com.glm.app;
 
 
-import java.io.File;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -10,18 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +31,6 @@ import com.glm.bean.Exercise;
 import com.glm.bean.ExerciseManipulate;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.fb.FacebookConnector;
 
 
 public class HistoryActivity extends Activity implements OnClickListener {
