@@ -189,7 +189,7 @@ public class ExerciseUtils {
 				  	distance(pre_latitude, pre_longitude, latitude, longitude, "K")+", '"+name+"',(select watch_point_date from trainer_exercise_dett where id_watch_point IN (select max(id_watch_point) from TRAINER_EXERCISE_DETT WHERE id_exercise IN (SELECT MAX(id_exercise) FROM trainer_exercise)))," +
 				  	"'"+sSong.replaceAll("'", "''")+"',"+fSpeed+","+fAccurancy+","+lTime+","+iHeartRate+")";			 
 				
-				Log.i(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_DETT_EXERCISE);				  	
+				//Log.i(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_DETT_EXERCISE);				  	
 				oDB.open();
 				oDB.getOpenedDatabase().execSQL(sSQL_INSERT_DETT_EXERCISE);
 				oDB.close();

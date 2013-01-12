@@ -60,7 +60,7 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 
 	@Override
 	public void onInit(int status) {
-		
+		if(mTts==null) return;
 		if (status == TextToSpeech.SUCCESS) {
             // Set preferred language to US english.
             // Note that a language may not be available, and the result will indicate this.
