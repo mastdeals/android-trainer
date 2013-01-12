@@ -24,7 +24,8 @@ public class HttpClientHelper {
 	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/Register";
 	/**URL Per registrare le informazioni durente la Virtual Race*/
 	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRace";
-	
+	/**salva tutte le richieste post andate in errore*/
+	private ArrayList<HttpPost> aRequestPending = new ArrayList<HttpPost>();
 	/**costruttore*/
 	public HttpClientHelper(){
 		httpclient = new DefaultHttpClient();
@@ -72,7 +73,7 @@ public class HttpClientHelper {
 	 * 
 	 * */
 	public void sendDataForVirtualRace(ConfigTrainer oConfigTrainer, int iVirtualRace, 
-			double Latitude, double Longitude, long Alt, float Speed, double Distance,long Time) {	   
+			double Latitude, double Longitude, long Alt, float Speed, double Distance,long Time, String sLocale) {	   
 	    try {
 	    	httppost = new HttpPost(sURI_VirtualRace);
 	        // Add your data
@@ -86,7 +87,7 @@ public class HttpClientHelper {
 	        nameValuePairs.add(new BasicNameValuePair("speed", String.valueOf(Speed)));
 	        nameValuePairs.add(new BasicNameValuePair("distance", String.valueOf(Distance)));
 	        nameValuePairs.add(new BasicNameValuePair("time", String.valueOf(Time)));
-		    
+	        nameValuePairs.add(new BasicNameValuePair("locale", sLocale));
 	        
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -100,5 +101,25 @@ public class HttpClientHelper {
 	        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
 	    }
 	} 
-	
+	/**
+	 * invia le richieste andate in errore
+	 * 
+	 * */
+	public void sendHttpPostPending(){
+		int iIndex=aRequestPending.size();
+		
+		for(int i=0;i<iIndex;i++){	
+			try {
+				HttpPost oPost = aRequestPending.get(i);
+				HttpResponse response = httpclient.execute(oPost);
+				Log.v(this.getClass().getCanonicalName(),"Response from Server: "+response.getStatusLine().getStatusCode());
+			} catch (ClientProtocolException e) {
+		    	Log.e(this.getClass().getCanonicalName(),"Error ClientProtocolException Send Virtual Race to Android Trainer Server");
+		    	aRequestPending.add(httppost);
+		    } catch (IOException e) {
+		        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
+		        aRequestPending.add(httppost);
+		    }
+		}
+	}
 }

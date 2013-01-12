@@ -16,10 +16,10 @@ import android.util.Log;
 public class GCMIntentService extends GCMBaseIntentService{
 	private static final String SENDER_ID = "558307532040";
 	private NotificationManager mNM;
-	
+	private VoiceToSpeechTrainer oVoice;
 	public GCMIntentService() {
         super(SENDER_ID);
-        Log.i(this.getClass().getCanonicalName(), "Device registered: SENDER_ID = " + SENDER_ID);       
+        Log.i(this.getClass().getCanonicalName(), "Device registered: SENDER_ID = " + SENDER_ID);           
     }
 	
 	@Override
@@ -30,14 +30,14 @@ public class GCMIntentService extends GCMBaseIntentService{
 
 	@Override
 	protected void onMessage(Context context, Intent arg1) {
-		// TODO Auto-generated method stub
+		String Message="";
 		Log.i(this.getClass().getCanonicalName(), "Device onMessage: = " + arg1);
-		generateNotification(context, arg1.getStringExtra("message"));
-		if(arg1.getStringExtra("speech")!=null){
-			VoiceToSpeechTrainer oVoice = new VoiceToSpeechTrainer(getApplicationContext());
-			oVoice.say(arg1.getStringExtra("speech"));
-			oVoice = null;
+		
+		if(arg1.getStringExtra("speech")!=null){			
+			Message=arg1.getStringExtra("speech");			
 		}
+		Message+=arg1.getStringExtra("message");
+		generateNotification(context, Message);
 	}
 
 	private void generateNotification(Context context, String stringExtra) {
