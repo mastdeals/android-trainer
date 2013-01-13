@@ -1,8 +1,15 @@
 package com.glm.app;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
+import org.apache.http.client.HttpClient;
+
 import com.glm.bean.ConfigTrainer;
+import com.glm.bean.VirtualRace;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.vending.BillingService;
 import com.glm.utils.vending.BillingService.RequestPurchase;
 import com.glm.utils.vending.BillingService.RestoreTransactions;
@@ -20,10 +27,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 public class StoreActivity extends Activity implements OnClickListener {
-	
+	private HttpClientHelper oHttpClient = new HttpClientHelper();
 	private BillingService mBillingService;
 	
 	private TrainerPurchaseObserver mTrainerPurchaseObserver;
@@ -35,7 +45,7 @@ public class StoreActivity extends Activity implements OnClickListener {
 	private LinearLayout obtnDonate;
 	private LinearLayout obtnPolarCardio;
 	private LinearLayout oInternal;
-	
+	private ImageButton oBtnBack;
 	private ConfigTrainer oConfigTrainer;
 	
 	/**
@@ -97,13 +107,12 @@ public class StoreActivity extends Activity implements OnClickListener {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                
+        
+        
         setContentView(R.layout.new_trainer_store);
         oInternal = (LinearLayout) findViewById(R.id.internal);
-        
-        LinearLayout oLinearUser = new LinearLayout(this);
-		oLinearUser = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.new_virtual_race, null);
-		oInternal.addView(oLinearUser);
+        oBtnBack  = (ImageButton) findViewById(R.id.btn_back);
+        oBtnBack.setOnClickListener(this);
         
         obtnDonate = (LinearLayout) findViewById(R.id.btnDonate);
         obtnDonate.setOnClickListener(this);
@@ -126,8 +135,68 @@ public class StoreActivity extends Activity implements OnClickListener {
         }
                 
     }
-
-    @Override
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		ArrayList<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());		
+		int iIndex=aVirtualRace.size();
+		for(int i=0;i<iIndex;i++){
+			VirtualRace oVirtualRace = aVirtualRace.get(i);
+			populareRow(oVirtualRace);
+		}
+		
+	}
+	/**inserisco i pulsanti per le gare virtuali*/
+    private void populareRow(VirtualRace oVirtualRace) {
+		LinearLayout oLinearVirtualRaceStore = new LinearLayout(this);
+		oLinearVirtualRaceStore = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.new_virtual_race, null);
+		
+		int iChild=oLinearVirtualRaceStore.getChildCount();
+    	for(int i=0;i<iChild;i++){
+    		final String sMsKu=oVirtualRace.getsMsKu();
+    		Log.v(this.getClass().getCanonicalName(),"oLinearVirtualRaceStore "+i+": "+ oLinearVirtualRaceStore.getChildAt(i).getClass().getCanonicalName());
+    		RelativeLayout oInternal = ((RelativeLayout) oLinearVirtualRaceStore.getChildAt(i));
+   	    	int jjChild=oInternal.getChildCount();
+   	    	for(int jj=0;jj<jjChild;jj++){
+   	    		Log.v(this.getClass().getCanonicalName(),"oInternal "+jj+": "+ oInternal.getChildAt(i).getClass().getCanonicalName());
+   	    		if(jj==0){
+   	    			//name
+   	    			TextView oText = (TextView) oInternal.getChildAt(jj);
+   	    			oText.setText(oVirtualRace.getsName());
+   	    			oText = null;
+   	    		}else if (jj==1){
+   	    			//Price
+   	    			TextView oText = (TextView) oInternal.getChildAt(jj);
+   	    			oText.setText(String.valueOf(oVirtualRace.getfPrice()));
+   	    			oText = null;
+   	    		}else if (jj==2){
+   	    			//Desc
+   	    			TextView oText = (TextView) oInternal.getChildAt(jj);
+   	    			oText.setText(oVirtualRace.getsDesc());
+   	    			oText = null;
+   	    		}else if (jj==3){
+   	    			//Desc1
+   	    			TextView oText = (TextView) oInternal.getChildAt(jj);
+   	    			oText.setText(oVirtualRace.getsDesc1());
+   	    			oText = null;
+   	    		}
+   	    	}
+   	    	oInternal.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Log.v(this.getClass().getCanonicalName(),"mSku for billing:"+sMsKu);
+					mBillingService.requestPurchase(sMsKu, mPayloadContents);
+				}
+			});
+    		
+    	}
+		oInternal.addView(oLinearVirtualRaceStore);
+		oLinearVirtualRaceStore=null;
+	}
+	@Override
     public void onClick(View v) {
 		if (v.getId() == R.id.btnDonate) {
 			mSku="donate2.0";
@@ -148,6 +217,8 @@ public class StoreActivity extends Activity implements OnClickListener {
 				}
 			}
 			
+		}if(v.getId() == R.id.btn_back){
+			onBackPressed();
 		}
     }
     @Override
