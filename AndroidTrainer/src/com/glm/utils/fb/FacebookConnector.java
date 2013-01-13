@@ -4,32 +4,23 @@ package com.glm.utils.fb;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.facebook.FacebookRequestError;
-import com.facebook.HttpMethod;
 import com.facebook.Request;
-import com.facebook.RequestAsyncTask;
+
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-
-import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Util;
-import com.facebook.android.Facebook.DialogListener;
 import com.facebook.model.GraphUser;
+import com.glm.trainer.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+
 
 
 public class FacebookConnector {
@@ -57,6 +48,7 @@ public class FacebookConnector {
 						if(user!=null){
 							mUser=user;
 							Log.v(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook "+user.getFirstName());
+							
 						}
 						if(response.getError()!=null){
 							Log.e(this.getClass().getCanonicalName(),"FacebookConnector->user Facebook null "
@@ -86,8 +78,6 @@ public class FacebookConnector {
 		oActivity=activity;
 		oContext=context;
 		
-		FACEBOOK_PERMISSION.add("publish_stream");
-		FACEBOOK_PERMISSION.add("read_stream");
 		FACEBOOK_PERMISSION.add("publish_actions");
 		
 		activeSession = Session.getActiveSession();
@@ -117,19 +107,6 @@ public class FacebookConnector {
 	    		 Session.openActiveSession(oActivity, true, mStatusCallBabk);
 	    	 }
 	    }
-		
-		
-		/*oFacebook = new Facebook(sAppID);
-		
-		
-		oAsyncRunner = new AsyncFacebookRunner(oFacebook);
-		if(FacebookConnector.sToken==null){
-			
-			oFacebook.authorize(oActivity, FACEBOOK_PERMISSION,
-	                new LoginDialogListener());
-		}else{
-			oFacebook.setAccessToken(sToken);
-		}*/				
         SessionEvents.addAuthListener(new FacebookAuthListener());
         SessionEvents.addLogoutListener(new FacebookLogoutListener());     
 	}
@@ -144,115 +121,36 @@ public class FacebookConnector {
 	}
 	
 	public void postMessageOnWall(Bundle params) {
-		Log.v(this.getClass().getCanonicalName(),"FacebookConnector->postMessageOnWall ");
+		String sMessage="";
 		
 		activeSession = Session.getActiveSession();
-		if(activeSession.isClosed()){
-			Session.openActiveSession(oActivity, true, mStatusCallBabk);
- 	        Session.setActiveSession(activeSession);
-		}
-		
-		List<String> permissions = activeSession.getPermissions();
-        if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
-            pendingPublishReauthorization = true;
-            Session.NewPermissionsRequest newPermissionsRequest = new Session
-                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
-            activeSession.requestNewPublishPermissions(newPermissionsRequest);
-            return;
-        }
-        
-		Request postToWall = Request.newRestRequest(activeSession, 
-				"me/feed", params, HttpMethod.POST);
-		
-		postToWall.setCallback( new Request.Callback() 
-		{
-		
-			@Override
-			public void onCompleted(Response response){
-				if(response.getGraphObject()!=null){
-					JSONObject graphResponse = response.getGraphObject()
-	                        .getInnerJSONObject();
-					String postId = null;
-					try {
-					 postId = graphResponse.getString("id");
-					} catch (JSONException e) {
-					 Log.e(this.getClass().getCanonicalName(),
-					     "JSON error "+ e.getMessage());
-					}
-					FacebookRequestError error = response.getError();
-					if (error != null) {
-					 Toast.makeText(oActivity
-					      .getApplicationContext(),
-					      error.getErrorMessage(),
-					      Toast.LENGTH_SHORT).show();
-					 } else {
-					     Toast.makeText(oActivity
-					          .getApplicationContext(), 
-					          postId,
-					          Toast.LENGTH_LONG).show();
-					}
-				}else{
-					Log.e(this.getClass().getCanonicalName(),
-						     "Graph Object Null ");					
-				}
+		if(activeSession!=null){
+			Log.v(this.getClass().getCanonicalName(),"FacebookConnector->postMessageOnWall ");
+			if(activeSession.isClosed()){
+				Session.openActiveSession(oActivity, true, mStatusCallBabk);
+	 	        Session.setActiveSession(activeSession);
 			}
-		});
-		RequestAsyncTask task = new RequestAsyncTask(postToWall);
-		task.execute();
-		//Request.executeBatchAsync(postToWall);
-		
-		/*List<String> permissions = activeSession.getPermissions();
-        if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
-            pendingPublishReauthorization = true;
-            Session.NewPermissionsRequest newPermissionsRequest = new Session
-                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
-            activeSession.requestNewPublishPermissions(newPermissionsRequest);
-            return;
-        }*/
-		
-		/*if(sToken!=null) oFacebook.setAccessToken(sToken);	
-		
-		if (oFacebook.isSessionValid()) {			
-			oAsyncRunner.request("me", new TrainerRequestListener());               
-			oAsyncRunner.request("me/feed", params, "POST",
-			        new TrainerUploadListnerFB(), null);
-		} else {
-			Log.d(this.getClass().getCanonicalName(), "Not Valid Session FB.");
+			
+			List<String> permissions = activeSession.getPermissions();
+	        if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
+	            pendingPublishReauthorization = true;
+	            Session.NewPermissionsRequest newPermissionsRequest = new Session
+	                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
+	            activeSession.requestNewPublishPermissions(newPermissionsRequest);
+	            return;
+	        }
+	        sMessage=params.getString("message")+" "+params.getString("name")+" "+params.getString("description"); 
+	        Request request = Request
+                    .newStatusUpdateRequest(Session.getActiveSession(), sMessage, new Request.Callback() {
+                        @Override
+                        public void onCompleted(Response response) {
+                            //TODO
+                        	Log.v(this.getClass().getCanonicalName(),"Share workout:" + response.getError());
+                        }
+                    });
+            request.executeAsync();
+            
 		}
-		
-		
-		Request.Callback callback= new Request.Callback() {
-            public void onCompleted(Response response) {
-                JSONObject graphResponse = response
-                                           .getGraphObject()
-                                           .getInnerJSONObject();
-                String postId = null;
-                try {
-                    postId = graphResponse.getString("id");
-                } catch (JSONException e) {
-                    Log.i(this.getClass().getCanonicalName(),
-                        "JSON error "+ e.getMessage());
-                }
-                FacebookRequestError error = response.getError();
-                if (error != null) {
-                    Toast.makeText(oActivity
-                         .getApplicationContext(),
-                         error.getErrorMessage(),
-                         Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(oActivity
-                             .getApplicationContext(), 
-                             postId,
-                             Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-		
-		
-		Request request = new Request(activeSession, "me/feed", params, 
-                 HttpMethod.POST, callback);*/
-
-		
 	}
 	/**
 	 * Controlla se ho autorizzato tutto
@@ -267,29 +165,25 @@ public class FacebookConnector {
 	    return true;
 	}
 	/**
-	 * TODO da CONTROLLARE
 	 * 
 	 * Creo il grafico con JFreeChart e lo pubblico come post dopo il save
 	 * */
 	public void postPhotoOnWall(){
-		/*byte[] data = null;
-
-		Bitmap bi = BitmapFactory.decodeFile("");
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bi.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-		data = baos.toByteArray();
-
-		Bundle params = new Bundle();
-		params.putString("method", "photos.upload");
-		params.putByteArray("picture", data);
-		if(sToken!=null) oFacebook.setAccessToken(sToken);	
-		
-		if (oFacebook.isSessionValid()) {	
-			oAsyncRunner.request(null, params, "POST", new TrainerUploadListnerFB(), null);
-		}		*/		
+		Bitmap image = BitmapFactory.decodeResource(oContext.getResources(), R.drawable.icon_buy);
+        Request request1 = Request.newUploadPhotoRequest(Session.getActiveSession(), image, new Request.Callback() {
+            @Override
+            public void onCompleted(Response response) {
+            	Log.v(this.getClass().getCanonicalName(),"Share Photo workout:" + response.getError());
+            }
+        });
+        request1.executeAsync();
 	}
-	/********LISTENER*********/
-	public class FacebookAuthListener implements com.glm.utils.fb.SessionEvents.AuthListener {
+    public void logout(){
+    	Log.v(this.getClass().getCanonicalName(), "Logout to Facebook ");	
+    	activeSession.close();
+    	activeSession.closeAndClearTokenInformation();
+    }
+    public class FacebookAuthListener implements com.glm.utils.fb.SessionEvents.AuthListener {
 
         public void onAuthSucceed() {
         	Log.i(this.getClass().getCanonicalName(),"You have logged in! ");
@@ -311,85 +205,4 @@ public class FacebookConnector {
         	Log.i(this.getClass().getCanonicalName(),"You have logged out! ");            
         }
     }
-    private class LogoutRequestListener extends com.glm.utils.fb.BaseRequestListener {
-    	@Override
-    	public void onComplete(String response, final Object state) {
-    		Log.i(this.getClass().getCanonicalName(),"You have logged out! ");         
-    		SessionEvents.onLogoutFinish();
-        }
-
-		@Override
-		public void onFacebookError(FacebookError e, Object state) {
-			// TODO Auto-generated method stub
-			
-		}
-    }
-    public class TrainerRequestListener extends com.glm.utils.fb.BaseRequestListener {
-
-		@Override
-		public void onComplete(String response, Object state) {
-			Log.d(this.getClass().getCanonicalName(), "TrainerRequestListener->Response: " + response.toString());
-		}
-		
-    }
-
-    public class TrainerUploadListnerFB extends com.glm.utils.fb.BaseRequestListener {
-
-        public void onComplete(final String response, final Object state) {
-            try {
-                // process the response here: (executed in background thread)
-                Log.d(this.getClass().getCanonicalName(), "Response: " + response.toString());
-                JSONObject json = Util.parseJson(response);
-                final String src = json.getString("src");
-
-                Log.v(this.getClass().getCanonicalName(),"Response Upload: "+src);
-            } catch (JSONException e) {
-                Log.w(this.getClass().getCanonicalName(), "JSON Error in response");
-            } catch (FacebookError e) {
-                Log.w(this.getClass().getCanonicalName(), "Facebook Error: " + e.getMessage());
-            }
-        }		
-    }
-    public class WallPostRequestListener extends com.glm.utils.fb.BaseRequestListener {
-
-		@Override
-		public void onComplete(String response, Object state) {
-			Log.d(this.getClass().getCanonicalName(), "WallPostRequestListener->Response: " + response.toString());			
-		}
-    	
-    }
-
-    public class WallPostDeleteListener extends com.glm.utils.fb.BaseRequestListener {
-
-		@Override
-		public void onComplete(String response, Object state) {
-			Log.d(this.getClass().getCanonicalName(), "WallPostDeleteListener->Response: " + response.toString());			
-		}
-    	
-    }
-    public void logout(){
-    	Log.v(this.getClass().getCanonicalName(), "Logout to Facebook ");	
-    	activeSession.close();
-    	activeSession.closeAndClearTokenInformation();
-    }
-    private final class LoginDialogListener implements DialogListener {
-        public void onComplete(Bundle values) {
-        	Log.v(this.getClass().getCanonicalName(),"Token: "+oFacebook.getAccessToken());
-        	
-            SessionEvents.onLoginSuccess();
-        }
-
-        public void onFacebookError(FacebookError error) {
-            SessionEvents.onLoginError(error.getMessage());
-        }
-        
-        public void onError(DialogError error) {
-            SessionEvents.onLoginError(error.getMessage());
-        }
-
-        public void onCancel() {
-            SessionEvents.onLoginError("Action Canceled");
-        }
-    }
-  
 }
