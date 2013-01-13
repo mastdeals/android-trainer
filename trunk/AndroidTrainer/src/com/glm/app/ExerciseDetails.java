@@ -41,7 +41,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 	private Button oBtn_SaveShare;
 	
 	/***oggetto condivisione FB*/
-	//private FacebookConnector oFB = null; 
+	private FacebookConnector oFB = null; 
 	
 	/**pulsante graph*/
 	//private Button oBtn_Graph;
@@ -257,8 +257,20 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 						oNote.setEnabled(!oNote.isEnabled());*/
 						break;
 					case 5:
-						//Erase						
-						//deleteExercise(ExerciseManipulate.getiIDExercise());  
+						//Facebook						
+						//deleteExercise(ExerciseManipulate.getiIDExercise());  																    
+						oFB = new FacebookConnector(getApplicationContext(),ExerciseDetails.this);
+						Bundle params = new Bundle();
+						
+						params.putString("message", 
+								getString(R.string.time)+": "+ExerciseManipulate.getsTotalTime()+"\n "+getString(R.string.distance)+": "+ExerciseManipulate.getsTotalDistance()+
+								"\n "+getString(R.string.pace)+" "+ExerciseManipulate.getsMinutePerDistance()+"\n "+
+									  getString(R.string.kalories)+" "+ExerciseManipulate.getsCurrentCalories()+" Kcal\n\n");
+						params.putString("name", getString(R.string.app_name_buy));
+						params.putString("description", getString(R.string.app_description));
+						if(oFB!=null) oFB.postMessageOnWall(params);
+						Toast.makeText(getBaseContext(), getString(R.string.share_ok), Toast.LENGTH_SHORT)
+						.show();	
 						break;
 					case 6:
 						if(ExerciseUtils.writeKML(-1,getApplicationContext(),oConfigTrainer)){

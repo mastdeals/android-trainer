@@ -1,17 +1,15 @@
 package com.glm.utils.quickaction;
 
-import com.glm.bean.ExerciseManipulate;
 import com.glm.trainer.R;
 
 import android.content.Context;
-import android.widget.Toast;
 
 public class QuickBar{
 	private ActionItem mShareItem;	
 	private ActionItem mGraphItem;
 	private ActionItem mMapItem;
 	private ActionItem mEditItem;	
-	//private ActionItem mEraseItem;
+	private ActionItem mFacebookItem;
 	private ActionItem mKMLItem;
 	private ActionItem mGPXItem;
 	private ActionItem mTCXItem;
@@ -20,14 +18,14 @@ public class QuickBar{
 	public QuickBar(Context context) {				
 		mContext=context;
 				
-		mShareItem  = new ActionItem(1, mContext.getString(R.string.share_long), mContext.getResources().getDrawable(R.drawable.share));
-		mGraphItem  = new ActionItem(2, mContext.getString(R.string.exercise_graph), mContext.getResources().getDrawable(R.drawable.graph));
-	    mMapItem    = new ActionItem(3, mContext.getString(R.string.maps), mContext.getResources().getDrawable(R.drawable.map));
-	    mEditItem   = new ActionItem(4, mContext.getString(R.string.edit_note), mContext.getResources().getDrawable(R.drawable.edit));
-        //mEraseItem  = new ActionItem(5, mContext.getString(R.string.erase), mContext.getResources().getDrawable(R.drawable.erase));
-        mKMLItem    = new ActionItem(6, "KML", mContext.getResources().getDrawable(R.drawable.export));
-        mGPXItem    = new ActionItem(7, "GPX", mContext.getResources().getDrawable(R.drawable.export));
-        mTCXItem    = new ActionItem(8, "TCX", mContext.getResources().getDrawable(R.drawable.export));
+		mShareItem     = new ActionItem(1, mContext.getString(R.string.share_long), mContext.getResources().getDrawable(R.drawable.share));
+		mGraphItem     = new ActionItem(2, mContext.getString(R.string.exercise_graph), mContext.getResources().getDrawable(R.drawable.graph));
+	    mMapItem       = new ActionItem(3, mContext.getString(R.string.maps), mContext.getResources().getDrawable(R.drawable.map));
+	    mEditItem      = new ActionItem(4, mContext.getString(R.string.edit_note), mContext.getResources().getDrawable(R.drawable.edit));
+        mFacebookItem  = new ActionItem(5, mContext.getString(R.string.fb), mContext.getResources().getDrawable(R.drawable.share));
+        mKMLItem       = new ActionItem(6, "KML", mContext.getResources().getDrawable(R.drawable.export));
+        mGPXItem       = new ActionItem(7, "GPX", mContext.getResources().getDrawable(R.drawable.export));
+        mTCXItem       = new ActionItem(8, "TCX", mContext.getResources().getDrawable(R.drawable.export));
         
         quickAction = new QuickAction(mContext, QuickAction.VERTICAL);
         
@@ -39,7 +37,7 @@ public class QuickBar{
         quickAction.addActionItem(mGPXItem);
         quickAction.addActionItem(mTCXItem);
         quickAction.addActionItem(mEditItem);
-        //quickAction.addActionItem(mEraseItem);
+        quickAction.addActionItem(mFacebookItem);
         /*quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
