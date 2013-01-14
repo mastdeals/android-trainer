@@ -214,7 +214,7 @@ public class ExerciseDetails extends Activity implements OnClickListener{
 		}else if(oObj.getId()==R.id.btnInfo){
 			//Manual Sharing
 			//manualShare();
-			final QuickBar oBar = new QuickBar(getApplicationContext());
+			final QuickBar oBar = new QuickBar(getApplicationContext(),oConfigTrainer);
 			
 			oBar.getQuickAction().setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
