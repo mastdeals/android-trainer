@@ -1,5 +1,6 @@
 package com.glm.utils.quickaction;
 
+import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ public class QuickBar{
 	private ActionItem mTCXItem;
 	private Context mContext;
 	final QuickAction quickAction;
-	public QuickBar(Context context) {				
+	public QuickBar(Context context,ConfigTrainer oConfigTrainer) {				
 		mContext=context;
 				
 		mShareItem     = new ActionItem(1, mContext.getString(R.string.share_long), mContext.getResources().getDrawable(R.drawable.share));
@@ -37,7 +38,9 @@ public class QuickBar{
         quickAction.addActionItem(mGPXItem);
         quickAction.addActionItem(mTCXItem);
         quickAction.addActionItem(mEditItem);
-        quickAction.addActionItem(mFacebookItem);
+        if(oConfigTrainer.isShareFB()){
+        	quickAction.addActionItem(mFacebookItem);
+        }
         /*quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {

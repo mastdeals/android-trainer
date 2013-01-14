@@ -3,7 +3,6 @@ package com.glm.app;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.apache.http.client.HttpClient;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.VirtualRace;
@@ -133,13 +132,7 @@ public class StoreActivity extends Activity implements OnClickListener {
         if (!mBillingService.checkBillingSupported()) {
             
         }
-                
-    }
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
+
 		ArrayList<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());		
 		int iIndex=aVirtualRace.size();
 		for(int i=0;i<iIndex;i++){
@@ -147,6 +140,11 @@ public class StoreActivity extends Activity implements OnClickListener {
 			populareRow(oVirtualRace);
 		}
 		
+                
+    }
+	@Override
+	protected void onResume() {
+		super.onResume();
 	}
 	/**inserisco i pulsanti per le gare virtuali*/
     private void populareRow(VirtualRace oVirtualRace) {
