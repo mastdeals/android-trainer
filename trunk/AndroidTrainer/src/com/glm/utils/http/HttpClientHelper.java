@@ -8,9 +8,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -18,6 +20,7 @@ import android.util.Log;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.VirtualRace;
+import com.google.gson.Gson;
 
 public class HttpClientHelper {
 	private HttpClient httpclient = null;
@@ -28,7 +31,7 @@ public class HttpClientHelper {
 	/**URL Per registrare le informazioni durante la Virtual Race*/
 	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRace";
 	/**URL Per registrare le Virtual Race disponibili*/
-	private final String sURI_VirtualRaceStore="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRace";
+	private final String sURI_VirtualRaceStore="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRaceStore";
 	/**salva tutte le richieste post andate in errore*/
 	private ArrayList<HttpPost> aRequestPending = new ArrayList<HttpPost>();
 	/**costruttore*/
@@ -126,28 +129,23 @@ public class HttpClientHelper {
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 	        // Execute HTTP Post Request
+	        ResponseHandler<String> responseHandler=new BasicResponseHandler();
+			String responseBody=httpclient.execute(httppost, responseHandler);
 	        HttpResponse response = httpclient.execute(httppost);
+	        
 	        //Devo ritornare l'arrai list di oggetti VirtualRace
 	        //TODO
-	        
-	        
+	        Gson oGson=new Gson();
+	        VirtualRace oVirtualRace = oGson.fromJson(responseBody, VirtualRace.class);
+	        aVirtualRace.add(oVirtualRace);
 	        Log.v(this.getClass().getCanonicalName(),"Send Virtual Race Watch Point to Android Trainer Server");
-	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+response.getStatusLine().getStatusCode());
+	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+responseBody);
 	    } catch (ClientProtocolException e) {
 	    	Log.e(this.getClass().getCanonicalName(),"Error ClientProtocolException Send Virtual Race to Android Trainer Server");
 	    } catch (IOException e) {
 	        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
 	    }
-		VirtualRace oVirtualRace = new VirtualRace();
-		oVirtualRace.setfPrice(1.99f);
-		oVirtualRace.setiDifficult(0);
-		oVirtualRace.setiType(0);
-		oVirtualRace.setiVirtualRaceID(0);
-		oVirtualRace.setsMsKu("virtualrace1_99");
-		oVirtualRace.setsName("First Beta 5Km");
-		oVirtualRace.setsDesc("La prima non si dimentica mai");
-		oVirtualRace.setsDesc1("che aspetti partecipa");
-		aVirtualRace.add(oVirtualRace);
+		
 		return aVirtualRace;
 	}
 	
