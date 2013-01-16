@@ -1,27 +1,25 @@
 package com.glm.web.trainer;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import com.glm.web.utils.ServerUtilsHelper;
 
 /**
- * Servlet implementation class VirtualRace
+ * Servlet implementation class VirtualRaceStore
  */
-@WebServlet("/VirtualRace")
-public class VirtualRace extends HttpServlet {
+@WebServlet(description = "Ritorna le Virtual Race Disponibili in formato JSON", urlPatterns = { "/VirtualRaceStore" })
+public class VirtualRaceStore extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VirtualRace() {
+    public VirtualRaceStore() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,27 +28,30 @@ public class VirtualRace extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getOutputStream().print(request.getParameter("test"));
+		String  sJSonOut = "";
+		String 	sGCMId 			= request.getParameter("gcmid");
+		String 	sLocale			= request.getParameter("locale");
+		
+		ServerUtilsHelper oServer = new ServerUtilsHelper();
+		
+		sJSonOut = oServer.VirtualRaceStore(sGCMId,sLocale);
+		
+		response.getOutputStream().println(sJSonOut);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String  sJSonOut = "";
 		String 	sGCMId 			= request.getParameter("gcmid");
-		int 	sVirtualRace 	= Integer.parseInt(request.getParameter("virtualrace"));
-		double 	dLatidute 		= Double.parseDouble(request.getParameter("latidute"));
-		double 	dLongitude 		= Double.parseDouble(request.getParameter("logitude"));
-		float  	fAlt 			= Float.parseFloat(request.getParameter("alt"));
-		float  	fSpeed 			= Float.parseFloat(request.getParameter("speed"));
-		double 	dDistance 		= Double.parseDouble( request.getParameter("distance"));
-		long 	lTime 			= Long.parseLong(request.getParameter("time"));
 		String 	sLocale			= request.getParameter("locale");
 		
 		ServerUtilsHelper oServer = new ServerUtilsHelper();
 		
-		oServer.newWatchPointForVirtualRace(sGCMId,sVirtualRace,dLatidute,dLongitude,fAlt,fSpeed,dDistance,lTime,sLocale);
+		sJSonOut = oServer.VirtualRaceStore(sGCMId,sLocale);
 		
+		response.getOutputStream().println(sJSonOut);
 	}
 
 }
