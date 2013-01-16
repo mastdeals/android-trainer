@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.glm.web.utils.ServerUtilsHelper;
-import com.glm.web.utils.db.MySQLHelper;
 
 import java.sql.*;
 /**
