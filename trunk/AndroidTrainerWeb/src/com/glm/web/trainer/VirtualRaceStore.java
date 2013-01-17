@@ -30,11 +30,12 @@ public class VirtualRaceStore extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String  sJSonOut = "";
 		String 	sGCMId 			= request.getParameter("gcmid");
+		String 	sNick 			= request.getParameter("nick");
 		String 	sLocale			= request.getParameter("locale");
 		
 		ServerUtilsHelper oServer = new ServerUtilsHelper();
 		
-		sJSonOut = oServer.VirtualRaceStore(sGCMId,sLocale);
+		sJSonOut = oServer.VirtualRaceStore(sGCMId,sNick,sLocale);
 		
 		response.getOutputStream().println(sJSonOut);
 	}
@@ -45,11 +46,12 @@ public class VirtualRaceStore extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String  sJSonOut = "";
 		String 	sGCMId 			= request.getParameter("gcmid");
+		String 	sNick 			= request.getParameter("nick");
 		String 	sLocale			= request.getParameter("locale");
 		
 		ServerUtilsHelper oServer = new ServerUtilsHelper();
 		
-		sJSonOut = oServer.VirtualRaceStore(sGCMId,sLocale);
+		sJSonOut = oServer.VirtualRaceStore(sGCMId,sNick,sLocale);
 		
 		response.getOutputStream().println(sJSonOut);
 	}

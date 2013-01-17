@@ -1,6 +1,7 @@
 package com.glm.web.utils;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.glm.web.bean.VirtualRace;
@@ -49,22 +50,26 @@ public class ServerUtilsHelper {
 	 * Ritorna un JSon con le Virtual Race
 	 * 
 	 * */
-	public String VirtualRaceStore(String sGCMId, String sLocale) {
+	public String VirtualRaceStore(String sGCMId,String sNick, String sLocale) {
 		String sJsonOut="";
-		//if(sGCMId.compareToIgnoreCase("APA91bFsgVvBjhTd6cvFeYMpYdwaHw5Pns84asKfRFCe5zpOOcEqhpVvF8AFZpQAuimLGUvTRR5ulK3l_FugWny3egaO1HtJcDWygCfAfJUXiceIRfLAwKd0PJ_DSf-LQAFWXdhJgwOUAqTB2D3b8OTv5fooYnTp2Q")==0){
+		ArrayList<VirtualRace> aVirtualRace = new ArrayList<VirtualRace>();
+		if(sNick.compareToIgnoreCase("laverdone")==0){
 			Gson gson = new Gson();
-			VirtualRace oVirtualRace = new VirtualRace();
-			oVirtualRace.setdStart(new Date());
-			oVirtualRace.setfPrice(0.0f);
-			oVirtualRace.setiDifficult(0);
-			oVirtualRace.setiType(0);
-			oVirtualRace.setiVirtualRaceID(0);
-			oVirtualRace.setsDesc("First Beta");
-			oVirtualRace.setsDesc1("BETA");
-			oVirtualRace.setsMsKu("BETA");
-			oVirtualRace.setsName("BETA RACE");
-			sJsonOut= gson.toJson(oVirtualRace);
-		//}	
+			for(int i=0;i<2;i++){
+				VirtualRace oVirtualRace = new VirtualRace();
+				oVirtualRace.setdStart(new Date());
+				oVirtualRace.setfPrice(0.0f);
+				oVirtualRace.setiDifficult(0);
+				oVirtualRace.setiType(0);
+				oVirtualRace.setiVirtualRaceID(0);
+				oVirtualRace.setsDesc("First Beta: "+i);
+				oVirtualRace.setsDesc1("BETA: "+i);
+				oVirtualRace.setsMsKu("BETA: "+i);
+				oVirtualRace.setsName("BETA RACE: "+i);
+				aVirtualRace.add(oVirtualRace);
+			}
+			sJsonOut= gson.toJson(aVirtualRace);
+		}	
 		return sJsonOut;
 	}
 }
