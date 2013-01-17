@@ -1,6 +1,8 @@
 package com.glm.app;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 
@@ -16,6 +18,7 @@ import com.glm.utils.vending.Consts.PurchaseState;
 import com.glm.utils.vending.Consts.ResponseCode;
 import com.glm.utils.vending.PurchaseObserver;
 import com.glm.utils.vending.ResponseHandler;
+import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.Context;
@@ -133,21 +136,20 @@ public class StoreActivity extends Activity implements OnClickListener {
             
         }
 
-		ArrayList<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());		
-		int iIndex=aVirtualRace.size();
-		for(int i=0;i<iIndex;i++){
-			VirtualRace oVirtualRace = aVirtualRace.get(i);
-			populareRow(oVirtualRace);
-		}
-		
-                
+        Collection<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());			
+		Iterator<VirtualRace> iterator = aVirtualRace.iterator();     
+	      while (iterator.hasNext()){
+	    	 VirtualRace oVirtualRace = iterator.next();
+	    	 populareRow(oVirtualRace);
+	         Log.v(this.getClass().getCanonicalName(),"Store Virtual Race");  
+	      }         
     }
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
 	/**inserisco i pulsanti per le gare virtuali*/
-    private void populareRow(VirtualRace oVirtualRace) {
+    private void populareRow(final VirtualRace oVirtualRace) {
 		LinearLayout oLinearVirtualRaceStore = new LinearLayout(this);
 		oLinearVirtualRaceStore = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.new_virtual_race, null);
 		
@@ -186,7 +188,14 @@ public class StoreActivity extends Activity implements OnClickListener {
 				@Override
 				public void onClick(View v) {
 					Log.v(this.getClass().getCanonicalName(),"mSku for billing:"+sMsKu);
-					mBillingService.requestPurchase(sMsKu, mPayloadContents);
+					if(oVirtualRace.getfPrice()>0){
+						mBillingService.requestPurchase(sMsKu, mPayloadContents);
+					}else{
+						Toast.makeText(getBaseContext(), 
+			                    "Free Beta", 
+			                    Toast.LENGTH_SHORT).show();
+					}
+					
 				}
 			});
     		

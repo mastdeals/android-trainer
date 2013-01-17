@@ -1,7 +1,9 @@
 package com.glm.utils.http;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -21,6 +23,8 @@ import android.util.Log;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.VirtualRace;
 import com.google.gson.Gson;
+import com.google.gson.internal.StringMap;
+import com.google.gson.reflect.TypeToken;
 
 public class HttpClientHelper {
 	private HttpClient httpclient = null;
@@ -116,28 +120,31 @@ public class HttpClientHelper {
 	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
 	 * 
 	 * */
-	public ArrayList<VirtualRace> getVirtualRace(ConfigTrainer oConfigTrainer,String sLocale) {	   
-	    ArrayList<VirtualRace> aVirtualRace = new ArrayList<VirtualRace>();
+	public Collection<VirtualRace> getVirtualRace(ConfigTrainer oConfigTrainer,String sLocale) {	   
+	    Collection<VirtualRace> aVirtualRace = new ArrayList<VirtualRace>();
 		try {
 	    	httppost = new HttpPost(sURI_VirtualRaceStore);
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 	        nameValuePairs.add(new BasicNameValuePair("gcmid", oConfigTrainer.getsGCMId()));
 	        //Add Others value
+	        nameValuePairs.add(new BasicNameValuePair("nick", oConfigTrainer.getsNick()));        
 	        nameValuePairs.add(new BasicNameValuePair("locale", sLocale));
 	        
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 	        // Execute HTTP Post Request
 	        ResponseHandler<String> responseHandler=new BasicResponseHandler();
-			String responseBody=httpclient.execute(httppost, responseHandler);
-	        HttpResponse response = httpclient.execute(httppost);
-	        
+			String responseBody=httpclient.execute(httppost, responseHandler);      
 	        //Devo ritornare l'arrai list di oggetti VirtualRace
 	        //TODO
 	        Gson oGson=new Gson();
-	        VirtualRace oVirtualRace = oGson.fromJson(responseBody, VirtualRace.class);
-	        aVirtualRace.add(oVirtualRace);
+	        Type collectionType = new TypeToken<Collection<VirtualRace>>(){}.getType();
+	        aVirtualRace = oGson.fromJson(responseBody, collectionType);
+	       
+	        /*for(int i=0;i<aVirtualRaceStore.size();i++){
+	        	aVirtualRace.add(oGson.fromJson(aVirtualRaceStore.get(i).toString(), VirtualRace.class));
+	        }*/
 	        Log.v(this.getClass().getCanonicalName(),"Send Virtual Race Watch Point to Android Trainer Server");
 	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+responseBody);
 	    } catch (ClientProtocolException e) {
