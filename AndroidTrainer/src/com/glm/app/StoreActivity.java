@@ -137,12 +137,14 @@ public class StoreActivity extends Activity implements OnClickListener {
         }
 
         Collection<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());			
-		Iterator<VirtualRace> iterator = aVirtualRace.iterator();     
-	      while (iterator.hasNext()){
-	    	 VirtualRace oVirtualRace = iterator.next();
-	    	 populareRow(oVirtualRace);
-	         Log.v(this.getClass().getCanonicalName(),"Store Virtual Race");  
-	      }         
+        if(aVirtualRace!=null){       
+	        Iterator<VirtualRace> iterator = aVirtualRace.iterator();     
+		    while (iterator.hasNext()){
+			    VirtualRace oVirtualRace = iterator.next();
+			    populareRow(oVirtualRace);
+			    Log.v(this.getClass().getCanonicalName(),"Store Virtual Race");  
+		    }  
+        }       
     }
 	@Override
 	protected void onResume() {
