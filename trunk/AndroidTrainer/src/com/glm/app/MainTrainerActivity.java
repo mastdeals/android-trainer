@@ -211,7 +211,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		}else if(oObj.getId()==R.id.btn_history){
 			Intent intent = ActivityHelper.createActivityIntent(this,SummaryActivity.class);
 			//startActivity(intent);
-			ActivityHelper.startNewActivityAndFinish(this, intent);	
+			ActivityHelper.startNewActivityAndFinish(this, intent);		
 		}else if(oObj.getId()==R.id.btn_trainer_store){
 			Intent intent = ActivityHelper.createActivityIntent(this,StoreActivity.class);
 			//startActivity(intent);
@@ -340,7 +340,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	            Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceok),
 		                Toast.LENGTH_SHORT).show();
 	            ExerciseUtils.setLicenceOK(getApplicationContext());  
-	            //Log.e(this.getClass().getCanonicalName(), "licence Allow code "+reason);
+	            Log.v(this.getClass().getCanonicalName(), "licence Allow code "+reason);
 	            isLicence=true;
 	        // Should allow user access.
 	        //displayResult(getString(R.string.lic_ok));
@@ -369,7 +369,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	         * 
 	         * **/
 	        isLicence=false;
-	        //Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
+	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
 	    }
 		@Override
 		public void applicationError(int errorCode) {
@@ -469,6 +469,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			    				Log.e(this.getClass().getCanonicalName(),"Error Checking Licence");
 			    			}	       
 			    	        /**Check della licenza*/     
+			    		}else{
+			    			isLicence=true;
 			    		}
 			    		
 			    	}
@@ -518,7 +520,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);
 		         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
 		       } else {
-		         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);		         
+		         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);	
+		         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
 		       }
 		       
 			return true;
