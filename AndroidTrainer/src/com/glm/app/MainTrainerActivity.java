@@ -129,6 +129,13 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	}
 	@Override
 	protected void onPause() {
+		if(mHandleMessageReceiver!=null){
+			try{
+				 unregisterReceiver(mHandleMessageReceiver);   
+			}catch (IllegalArgumentException e) {
+				 Log.e(this.getClass().getCanonicalName(), "Receiver not registered error");
+			}
+		} 
 		doUnbindService();
 		super.onPause();
 	}
@@ -139,8 +146,14 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		ActivityHelper.startNewActivityAndFinish(this, intent);	
 	}
 	@Override
-    protected void onDestroy() {       
-        unregisterReceiver(mHandleMessageReceiver);        
+    protected void onDestroy() {
+		if(mHandleMessageReceiver!=null){
+			try{
+				 unregisterReceiver(mHandleMessageReceiver);   
+			}catch (IllegalArgumentException e) {
+				 Log.e(this.getClass().getCanonicalName(), "Receiver not registered error");
+			}
+		}     
         super.onDestroy();
     }
 	@Override

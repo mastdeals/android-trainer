@@ -133,10 +133,14 @@ public class FacebookConnector {
 			
 			List<String> permissions = activeSession.getPermissions();
 	        if (!isSubsetOf(FACEBOOK_PERMISSION, permissions)) {
-	            pendingPublishReauthorization = true;
-	            Session.NewPermissionsRequest newPermissionsRequest = new Session
-	                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
-	            activeSession.requestNewPublishPermissions(newPermissionsRequest);
+	        	try{
+		        	pendingPublishReauthorization = true;
+		            Session.NewPermissionsRequest newPermissionsRequest = new Session
+		                    .NewPermissionsRequest(oActivity, FACEBOOK_PERMISSION);
+		            activeSession.requestNewPublishPermissions(newPermissionsRequest);
+	            }catch (UnsupportedOperationException e) {
+					Log.e(this.getClass().getCanonicalName(), "UnsupportedOperationException during Post to Wall");
+				}
 	            return;
 	        }
 	        sMessage=params.getString("message")+" "+params.getString("name")+" "+params.getString("description"); 
