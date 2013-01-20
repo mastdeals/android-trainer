@@ -184,7 +184,13 @@ public class TwitterAuthActivity extends Activity{
     private class TwitterTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			
+			if (mPrefs.contains(PREF_ACCESS_TOKEN)) {
+	            Log.i(this.getClass().getCanonicalName(), "Repeat User");
+	            loginAuthorisedUser();
+		    } else {
+		        Log.i(this.getClass().getCanonicalName(), "New User");
+		        loginNewUser();
+		    }
 		}
 			
 		@Override
@@ -193,13 +199,7 @@ public class TwitterAuthActivity extends Activity{
 			mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, MODE_PRIVATE);
 		    oTwitter = new TwitterFactory().getInstance();
 			oTwitter.setOAuthConsumer(Const.CONSUMER_KEY, Const.CONSUMER_SECRET);
-			if (mPrefs.contains(PREF_ACCESS_TOKEN)) {
-	            Log.i(this.getClass().getCanonicalName(), "Repeat User");
-	            loginAuthorisedUser();
-		    } else {
-		        Log.i(this.getClass().getCanonicalName(), "New User");
-		        loginNewUser();
-		    }	
+				
 			return true;
 		}
 	}

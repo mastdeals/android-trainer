@@ -392,7 +392,7 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
 	    
-		Log.v(this.getClass().getCanonicalName(),"OnResult User");
+		Log.v(this.getClass().getCanonicalName(),"OnResult User "+oConfigTrainer.isShareTwitter());
 	    
 	    oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),false);
 		oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));

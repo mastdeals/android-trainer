@@ -1762,7 +1762,7 @@ public class ExerciseUtils {
 			
 			String sSQL_DELETE_USER = "DELETE FROM trainer_users";
 			String sSQL_INSERT_USER = "INSERT INTO trainer_users (nick,name,weight,age,height,facebook,twitter,buzz,gender) VALUES ('"+
-				txtNick+"','"+txtName+"',"+txtWeight+","+txtAge+","+txtHeight+","+iFB+","+iTwitter+","+iBuzz+",'"+sGender+"')";
+				txtNick+"','"+txtName+"',"+txtWeight+","+txtAge+","+txtHeight+",'"+iFB+"','"+iTwitter+"','"+iBuzz+"','"+sGender+"')";
 			Log.v(ExerciseUtils.class.getCanonicalName(), sSQL_INSERT_USER);
 			
 			oDB.open();
@@ -2980,7 +2980,7 @@ public class ExerciseUtils {
 				
 			if(FaceBookShare) iFaceBook=1;
 			
-			String sSQL_UPDATE_USER = "UPDATE trainer_users SET twitter="+iFaceBook;
+			String sSQL_UPDATE_USER = "UPDATE trainer_users SET facebook="+iFaceBook;
 			
 			oDB.open();
 			//Svuoto la tabella

@@ -1,6 +1,5 @@
 package com.glm.app;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -18,7 +17,6 @@ import com.glm.utils.vending.Consts.PurchaseState;
 import com.glm.utils.vending.Consts.ResponseCode;
 import com.glm.utils.vending.PurchaseObserver;
 import com.glm.utils.vending.ResponseHandler;
-import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.Context;
