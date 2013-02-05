@@ -65,7 +65,12 @@ public class BarChart extends Chart{
 			
 		for(int i=0;i<11;i++){
 			DistancePerMonth oDistance = (DistancePerMonth) table.get(i);	
-			Number nDistance = Integer.parseInt(oDistance.getsDistance());
+			Number nDistance = 0;
+			try{
+				nDistance = Integer.parseInt(oDistance.getsDistance());
+			}catch(NumberFormatException e){
+				Log.e(this.getClass().getCanonicalName(),"Error Parse Number"+oDistance.getsDistance());
+			}
 			Log.v(this.getClass().getCanonicalName(),"Month: "+oDistance.getiMonth()+" - Distance: "+nDistance);
 			oSerie.add(new Month(oDistance.getiMonth(), 2012),nDistance);
 			oDistance=null;

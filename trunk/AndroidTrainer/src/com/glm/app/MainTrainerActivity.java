@@ -585,8 +585,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    Session.getActiveSession()
-	        .onActivityResult(this, requestCode, resultCode, data);
+	    if(Session.getActiveSession()!=null) Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	}
 	
 	
