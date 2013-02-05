@@ -83,16 +83,18 @@ public class TwitterAuthActivity extends Activity{
             });
           
         } catch (TwitterException e) {
-                Toast.makeText(this, "Twitter Login error, try again later", Toast.LENGTH_LONG).show();
-                try{
-        			ActivityHelper.startOriginalActivityAndFinish(this);			
-        		}catch (NullPointerException e1) {
-        			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
-        			Intent intentMain = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
-        			//startActivity(intent);
-        			ActivityHelper.startNewActivityAndFinish(this, intentMain);	
-        			//Log.e(this.getClass().getCanonicalName(),"Error back");
-        		}
+            try{
+            	Toast.makeText(this, "Twitter Login error, try again later", Toast.LENGTH_LONG).show();
+    			ActivityHelper.startOriginalActivityAndFinish(this);			
+    		}catch (NullPointerException e1) {
+    			//ActivityHelper.startOriginalActivityAndFinish(getParent());		
+    			Intent intentMain = ActivityHelper.createActivityIntent(this,MainTrainerActivity.class);
+    			//startActivity(intent);
+    			ActivityHelper.startNewActivityAndFinish(this, intentMain);	
+    			//Log.e(this.getClass().getCanonicalName(),"Error back");
+    		}catch (RuntimeException e2) {
+				Log.e(this.getClass().getCanonicalName(),"Runtime error twitter");
+			}
         }
 	}
 	  /**

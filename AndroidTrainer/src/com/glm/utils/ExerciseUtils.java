@@ -1774,8 +1774,8 @@ public class ExerciseUtils {
 			oDB.close();
 			
 			oDB=null;			
-		}catch (Exception e) {
-			Log.e(ExerciseUtils.class.getCanonicalName(), e.getMessage());
+		}catch (SQLException e) {
+			//Log.e(ExerciseUtils.class.getCanonicalName(), e.getMessage());
 			if(oDB!=null) {
 				oDB.close();
 				oDB=null;	
@@ -2597,7 +2597,8 @@ public class ExerciseUtils {
 		   		int iMonthExercise = oCursor.getColumnIndex("mese");
 		   		
 		   		NumberFormat oNFormat = NumberFormat.getNumberInstance();
-				oNFormat.setMaximumFractionDigits(2);
+		   		oNFormat.setGroupingUsed(false);
+		   		oNFormat.setMaximumFractionDigits(2);
 				
 		   		while(oCursor.moveToNext()){ 
 		   			int iMonth = Integer.parseInt(oCursor.getString(iMonthExercise));
@@ -2678,7 +2679,7 @@ public class ExerciseUtils {
 		int iDistanceMT=0;
 		int iPreAlt=0;
 		int iAlt=0;
-		String sSQL_Distance ="select (case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+" else sum(distance) end) as meter from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point >  "+ 
+		String sSQL_Distance ="select (case when id_type_exercise < 100 then sum(distance)*"+GPSFIX+"*1000 else sum(distance)*1000 end) as meter from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point >  "+ 
 								" (select max(id_watch_point)-4 from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"')";
 	
 		String sSQL_Distance_Pre_Alt ="select alt from TRAINER_EXERCISE_DETT where id_exercise='"+sIDExercise+"' and id_watch_point =  "+ 

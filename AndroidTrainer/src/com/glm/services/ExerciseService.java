@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -169,6 +170,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     
     /**Timer per le Virtual Race*/
     private Timer VirtualRaceTimer=null;
+    private HttpClientHelper oHttpHelper = null;
     
     /**Timer per la condivisione interattiva*/
     private Timer AutoPauseTimer=null;
@@ -297,7 +299,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * **/
     public int onStartCommand(Intent intent, int flags, int startId) {
     	mContext=getApplicationContext();
-    	
+    	oHttpHelper = new HttpClientHelper();
 
     	Log.i("Start Service ExerciseSevice", "OK");
     	//Carico la configurazione
@@ -941,6 +943,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	}
     	
     	/**Aggiungo il timer per le Virtual race*/
+    	
     	if(oConfigTrainer.isVirtualRaceSupport()){
     		addVirtualRaceTimer();
     	}
@@ -1273,6 +1276,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    if(InteractiveTimer!=null) InteractiveTimer.cancel(); 
 	    if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
 	    if(VirtualRaceTimer!=null) VirtualRaceTimer.cancel();
+	    if(oHttpHelper!=null) oHttpHelper.sendHttpPostPending();
 	    
 	    /**Arresto il listener del Conta Passi*/
 	    if (AccelerometerUtils.isListening()) {
@@ -1435,7 +1439,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					);
 			dialogIntent.putExtra("isFaceBookShareActive", isFaceBookShareActive);
 			dialogIntent.putExtra("isTwitterShareActive", isTwitterShareActive);
-			dialogIntent.putExtra("song", oMediaPlayer.getCurrentSong());
+			if(oMediaPlayer!=null){
+				dialogIntent.putExtra("song", oMediaPlayer.getCurrentSong());
+			}else{
+				dialogIntent.putExtra("song", "");
+			}
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			getApplication().startActivity(dialogIntent);	
 		}catch (ActivityNotFoundException e) {
@@ -1475,14 +1483,19 @@ public class ExerciseService extends Service implements LocationListener, Accele
     			{
     				@Override
     				public void run()
-    				{    					
-    					//Send data to server
-    					HttpClientHelper oHttpHelper = new HttpClientHelper();
-    					oHttpHelper.sendDataForVirtualRace(oConfigTrainer, 0, 
+    				{    	
+    					int iVirtualRace=0;
+    					try{
+    						iVirtualRace = Integer.valueOf(sPid);
+    					}catch (NumberFormatException e) {
+							Log.e(ExerciseService.this.getClass().getCanonicalName(),"Error Generating VirtualRaceId");
+						} 					
+    					//Send data to server 					
+    					oHttpHelper.sendDataForVirtualRace(oConfigTrainer, iVirtualRace, 
     							ExerciseService.dCurrentLatitude, ExerciseService.dCurrentLongitude, 
     							ExerciseService.lCurrentAltidute, ExerciseService.dPace, 
-    							ExerciseService.dCurrentDistance, ExerciseService.lCurrentTime);
-    					oHttpHelper=null;
+    							ExerciseService.dCurrentDistance, new Date().getTime(),Locale.getDefault().getCountry());
+    					 					
     				}					
     			}, 
     			SHORT_START_MOTIVATOR_TIMER_DELAY,
