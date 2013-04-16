@@ -149,9 +149,14 @@ public class HttpClientHelper {
 	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+responseBody);
 	    } catch (ClientProtocolException e) {
 	    	Log.e(this.getClass().getCanonicalName(),"Error ClientProtocolException Send Virtual Race to Android Trainer Server");
+	    	return null;
 	    } catch (IOException e) {
 	        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
-	    }
+	        return null;
+	    } catch (IllegalStateException e) {
+	    	Log.e(this.getClass().getCanonicalName(),"Error IllegalStateException Send Virtual Race to Android Trainer Server");
+	    	return null;
+		}
 		
 		return aVirtualRace;
 	}

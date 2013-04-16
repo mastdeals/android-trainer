@@ -44,8 +44,19 @@ public class TwitterAuthActivity extends Activity{
 	//@Override
 	protected void onResume() {
 		super.onResume();
-		TwitterTask task = new TwitterTask();
-		task.execute(null);
+		//TwitterTask task = new TwitterTask();
+		//task.execute(null);
+		oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),true);
+		mPrefs = getSharedPreferences(Const.PREFERENCE_NAME, MODE_PRIVATE);
+	    oTwitter = new TwitterFactory().getInstance();
+		oTwitter.setOAuthConsumer(Const.CONSUMER_KEY, Const.CONSUMER_SECRET);
+		if (mPrefs.contains(PREF_ACCESS_TOKEN)) {
+            Log.i(this.getClass().getCanonicalName(), "Repeat User");
+            loginAuthorisedUser();
+	    } else {
+	        Log.i(this.getClass().getCanonicalName(), "New User");
+	        loginNewUser();
+	    }	
 	}
 	
 	private void loginNewUser() {

@@ -228,6 +228,9 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 			}
 		
 	}
+	/**
+	 * TODO sbaglia e quando ci sono solo le ore non le dice
+	 * */
 	public void sayTimeToGoal(Context oContext,
 			ConfigTrainer oConfigTrainer, double iGoalHH, double iGoalMM, int timeHH,
 			int timeMM, MediaTrainer oMediaPlayer) {

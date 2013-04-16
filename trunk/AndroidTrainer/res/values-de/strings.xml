@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="app_name_pro">"Android - Trainer PRO"</string>
-    <string name="app_name_buy">"Android - Trainer"</string>
+    <string name="app_name_pro">Just Run</string>
+    <string name="app_name_buy">Just Run PRO</string>
     <string name="app_description">"Rennen Sie einfach!"</string>
     <string name="about">"Über"</string>
     <string name="time">"Zeit"</string>

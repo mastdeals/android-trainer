@@ -1036,22 +1036,24 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	private class NewExerciseTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			oWaitForGPSFix.dismiss();
-			if(result){
-				if(!bInStarting){
-					btnStart.setText(getApplicationContext().getString(R.string.btnstop));
-					btnPause.setEnabled(true);
-				    if(oConfigTrainer.isbTrackExercise()){
-				    	//Traccio il Peso
-				    	trackWeight();
-				    }else{
-				    	//Non Traccio Il Peso
-				    	NotrackWeight();
+			if(oWaitForGPSFix.isShowing()){
+				oWaitForGPSFix.dismiss();
+				if(result){
+					if(!bInStarting){
+						btnStart.setText(getApplicationContext().getString(R.string.btnstop));
+						btnPause.setEnabled(true);
+					    if(oConfigTrainer.isbTrackExercise()){
+					    	//Traccio il Peso
+					    	trackWeight();
+					    }else{
+					    	//Non Traccio Il Peso
+					    	NotrackWeight();
+					    }
+					    bInStarting=true;
 				    }
-				    bInStarting=true;
-			    }
-			}else{
-				ShowAlertNoGPS();
+				}else{
+					ShowAlertNoGPS();
+				}
 			}
 		}
 			

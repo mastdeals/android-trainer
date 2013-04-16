@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="app_name_pro">"Android - Trainer PRO"</string>
-    <string name="app_name_buy">"안드로이드 - 트레이너"</string>
+    <string name="app_name_pro">Just Run</string>
+    <string name="app_name_buy">Just Run PRO</string>
+    
     <string name="app_description">"그냥 나온 거예요!"</string>
     <string name="about">"정보"</string>
     <string name="time">"시간"</string>

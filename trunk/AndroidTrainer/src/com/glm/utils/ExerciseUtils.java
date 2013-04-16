@@ -991,7 +991,11 @@ public class ExerciseUtils {
 		   		}
 		   		oCursor.close();		   			 
 		   		
-		   		ExerciseManipulate.setsCurrentCalories(sKalories.substring(0, sKalories.indexOf(".")));
+		   		try{
+		   			ExerciseManipulate.setsCurrentCalories(sKalories.substring(0, sKalories.indexOf(".")));
+		   		}catch (StringIndexOutOfBoundsException e) {
+		   			ExerciseManipulate.setsCurrentCalories(sKalories);
+				}
 		   		
 		   		ExerciseManipulate.setsTotalTime(sTotalTimeFormatted);		   		
 				try{
@@ -1754,6 +1758,7 @@ public class ExerciseUtils {
 		Database oDB=null;
 		try{
 			oDB = new Database(oContext);
+			if(oDB==null) return false;
 			//Log.v(ExerciseUtils.class.getCanonicalName(), "TwitterShare:"+TwitterShare+" - FBShare:"+FBShare);
 			
 			if(FBShare) 	 iFB=1;
@@ -2931,6 +2936,11 @@ public class ExerciseUtils {
 			if(oCursor!=null) oCursor.close();
 			if(oDB!=null) oDB.close();
 			Log.e(ExerciseUtils.class.getCanonicalName(),"getTotalKalories null error");
+			return null;
+		}catch (RuntimeException e) {
+			if(oCursor!=null) oCursor.close();
+			if(oDB!=null) oDB.close();
+			Log.e(ExerciseUtils.class.getCanonicalName(),"RuntimeException RuntimeException error");
 			return null;
 		}
 	}

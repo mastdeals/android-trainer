@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="app_name_pro">Android - Trainer PRO</string>
-    <string name="app_name_buy">Android - Trainer</string>
+    <string name="app_name_pro">Just Run</string>
+    <string name="app_name_buy">Just Run PRO</string>
     <string name="app_description">acaba de ejecutar!</string>
     <string name="about">Información </string>     
     <string name="time">Tiempo</string>
@@ -45,7 +45,7 @@
 	<string name="no">n </string>
 	<string name="pref_title">Preferencias </string>
 	<string name="titleendapp">Trainer </string>
-    <string name="messageendapp">¿Está seguro que quiere dejar de fumar? </string>
+    <string name="messageendapp">¿Seguro que quieres salir?</string>
     <string name="btnstart">Inicio</string>
     <string name="btnstop">Parar</string>
     <string name="btnpause">Pausa</string>

@@ -415,7 +415,10 @@ public class UserDetailsActivity extends Activity implements OnClickListener{
 		if(oConfigTrainer.isShareTwitter()){
 			oCkTwitter.setChecked(true);				
 		}
-		Session.getActiveSession()
-        .onActivityResult(this, requestCode, resultCode, data);
+		try{
+			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		}catch(NullPointerException e){
+			Log.e(this.getClass().getCanonicalName(),"Session FB null");
+		}
 	} 
 }
