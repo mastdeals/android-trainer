@@ -549,6 +549,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	        									dGoalMM!=0){
 	        								goalTimerStart();
 	        							}
+	        							System.gc();
 	        							
 	        					}    							
 	        				}
@@ -686,7 +687,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
      */
     private Notification showNotification(int iIcon, CharSequence charSequence) {
     	//Controllo la configurazione dal DB
-    	if(!oConfigTrainer.isbDisplayNotification()) return null;
+    	//Con lo startforeground la notidicha è sempre necessaria
+    	//if(!oConfigTrainer.isbDisplayNotification()) return null;
     	// In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(R.string.app_name_pro);
 

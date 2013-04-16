@@ -67,7 +67,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 				//startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.giano-solutions.com")));
 			    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 			    emailIntent .setType("message/rfc822") ;
-			    emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
+			    emailIntent .putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{getString(R.string.email)});
 			    emailIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, "Issue Android - Trainer for Android Version "+manager.versionName);
 			    emailIntent .putExtra(android.content.Intent.EXTRA_TEXT, "");
 			    //startActivityForResult(emailIntent,1);
@@ -75,6 +75,7 @@ public class AboutActivity extends Activity implements OnClickListener {
 			} catch (NameNotFoundException e) {
 				Log.e(this.getClass().getCanonicalName(),"Error getting version");
 			}
+			
 		}
     }
     @Override

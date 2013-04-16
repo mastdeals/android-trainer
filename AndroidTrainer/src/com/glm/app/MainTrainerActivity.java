@@ -447,15 +447,7 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 						//Session.openActiveSession(MainTrainerActivity.this, true, mStatusCallBabk);
 						
 					}
-		       }
-		       
-		       if(sGCMId!=null){
-		    	   if(sGCMId.length()>0){
-		    		   //Send Id to Android Trainer WEB Server via POST METHOD
-				       HttpClientHelper oHttpHelper = new HttpClientHelper();
-				       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
-		    	   }
-		       }
+		       }		      	 
 			       
 				try{
 					   
@@ -521,7 +513,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 				oDB.init();
 				
 			}
-			   
+			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext(),false);
+			
 			   GCMRegistrar.checkDevice(getApplicationContext());
 		       GCMRegistrar.checkManifest(getApplicationContext());
 		       sGCMId = GCMRegistrar.getRegistrationId(getApplicationContext());
@@ -537,6 +530,13 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 		         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
 		       }
 		       
+		       if(sGCMId!=null){
+		    	   if(sGCMId.length()>0){
+		    		   //Send Id to Android Trainer WEB Server via POST METHOD
+				       HttpClientHelper oHttpHelper = new HttpClientHelper();
+				       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
+		    	   }
+		       }
 			return true;
 		}
 	}
