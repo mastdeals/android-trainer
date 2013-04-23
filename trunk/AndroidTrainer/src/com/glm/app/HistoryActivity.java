@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -340,6 +341,15 @@ public class HistoryActivity extends Activity implements OnClickListener {
 	   	    					//PBar
 	   	    					/**MIDDLE LINEAR*/
 	   	    					RelativeLayout oMiddleLinear = ((RelativeLayout) oInternalRelative.getChildAt(j)); 
+	   	    					oMiddleLinear.setClickable(true);
+	   	    					oMiddleLinear.setId(Integer.parseInt(sIDExercise));
+		   	   	    			oMiddleLinear.setOnLongClickListener(new OnLongClickListener() {									
+									@Override
+									public boolean onLongClick(View oRow) {
+										deleteExercise(oRow.getId());
+										return false;
+									}
+								});
 	   	    					int iMiddChild=oMiddleLinear.getChildCount();
 	   	   	    				for(int iMiddleLinear=0;iMiddleLinear<iMiddChild;iMiddleLinear++){
 	   	   	    					//Log.v(this.getClass().getCanonicalName(),"oMiddleLinear "+iMiddleLinear+": "+ oMiddleLinear.getChildAt(iMiddleLinear).getClass().getCanonicalName());

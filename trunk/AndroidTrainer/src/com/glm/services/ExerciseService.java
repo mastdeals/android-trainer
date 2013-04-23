@@ -428,9 +428,15 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				}
 				ExerciseService.fCurrentSpeed=  (float) (ExerciseService.dCurrentDistance/(diffTime*0.001)/60/60);
 				
-				if(oConfigTrainer.isbPlayMusic() && !isInCalling && !isAutoPause){   		
-		    		if(oMediaPlayer!=null && !oMediaPlayer.isPlaying()){
-		    			oMediaPlayer.play(false);        							
+				if(oConfigTrainer.isbPlayMusic() && !isInCalling && !isAutoPause){  
+					//Controllo se sono in pausa prima di riavviare
+		    		if(oMediaPlayer!=null && !oMediaPlayer.isPlaying() && !oMediaPlayer.isInPause()){
+		    			if(!oMediaPlayer.play(false)){
+		    				oMediaPlayer=null;
+		    				System.gc();
+		    				oMediaPlayer = new MediaTrainer(mContext);
+		    				oMediaPlayer.play(false);
+		    			}
 		    		}
 				}											
 					if(oMediaPlayer!=null){
@@ -440,7 +446,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					}else{
 						ExerciseUtils.saveCoordinates(mContext, oConfigTrainer,pre_latitude,pre_longitude,
 								latitude, longitude, altitude, 
-								getLocationName(latitude,longitude), null, location.getSpeed(), (float) ((ExerciseService.dCurrentDistance*1000)/(diffTime*0.001)), location.getTime(),iHeartRate);
+								getLocationName(latitude,longitude), null, (float) ((ExerciseService.dCurrentDistance*1000)/(diffTime*0.001)), location.getAccuracy(), location.getTime(),iHeartRate);
 					}
 						
 					

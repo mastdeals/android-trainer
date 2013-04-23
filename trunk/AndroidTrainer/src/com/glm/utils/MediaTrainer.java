@@ -21,6 +21,7 @@ public class MediaTrainer {
 	private static Vector<Music> 	vListOfMusic;
 	private static int 		iMusicIndex=0;
 	private static String sCurrentSong=""; 
+	private boolean mPause=false;
 	public MediaTrainer(Context context){
 		oMediaPlayer= new MediaPlayer();
 		
@@ -104,9 +105,14 @@ public class MediaTrainer {
 		try{
 			if(!isResume) oMediaPlayer.prepare();
 			oMediaPlayer.start();
+			mPause=false;
 			return true;
-		}catch (Exception e) {
-			Log.e(this.getClass().getCanonicalName(),"Error Playing Media");
+		}catch (IOException e) {
+			Log.e(this.getClass().getCanonicalName(),"IOException Error Playing Media");
+			e.printStackTrace();
+			return false;
+		}catch (IllegalStateException e) {
+			Log.e(this.getClass().getCanonicalName(),"IllegalStateException Error Playing Media");
 			e.printStackTrace();
 			return false;
 		}
@@ -116,9 +122,11 @@ public class MediaTrainer {
 		try{
 			if(this.isPlaying()){
 				oMediaPlayer.pause();
+				mPause=true;
 			}
 			return true;
 		}catch (Exception e) {
+			mPause=false;
 			Log.e(this.getClass().getCanonicalName(),"Error Playing Media");
 			return false;
 		}
@@ -136,6 +144,13 @@ public class MediaTrainer {
 	}
 	public boolean isPlaying(){
 		return oMediaPlayer.isPlaying();
+	}
+	/**
+	 * identifica se il MediaTrainer è in pause
+	 * 
+	 * */
+	public boolean isInPause(){
+		return mPause;
 	}
 	/**
 	 * Ritorna la traccia corrente
