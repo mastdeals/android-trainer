@@ -343,7 +343,7 @@ public class Database {
     				" 	version_desc   VARCHAR( 255 )  NOT NULL, " + 
     				" 	licence        VARCHAR( 1 )    NOT NULL DEFAULT 'N')");
 
-     		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '4.0.2', 'Ver. 4.0.2', 'N')");
+     		oDatabase.execSQL("INSERT INTO trainer_version (id_ver, version_number, version_desc, licence) VALUES (1, '4.1', 'Ver. 4.1', 'N')");
 
 
     		oDatabase.execSQL("CREATE TABLE trainer_users (" +
@@ -601,6 +601,10 @@ public class Database {
     			if(sVersionNumber.compareToIgnoreCase("4.0")==0){
 					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 4.0.2");
 					upgradeDB4_0To4_0_2();
+				}
+    			if(sVersionNumber.compareToIgnoreCase("4.0.2")==0){
+					Log.i(this.getClass().getCanonicalName(),"Upgrade DB Version From "+sVersionNumber+" TO 4.1");
+					upgradeDB4_0_2To4_1();
 				}
     			//manualDB();
     		}
@@ -1267,7 +1271,24 @@ public class Database {
     	oDB.close();   
     	oDB=null;
     }
-    
+    private void upgradeDB4_0_2To4_1(){
+    	SQLiteDatabase oDB=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+    	try{   		    	
+    		oDB.execSQL("UPDATE TRAINER_CONFIG"
+                    + " set cfg_value=1 WHERE "
+                    + " cfg_desc='first_boot'");
+    		
+        	oDB.execSQL("UPDATE TRAINER_VERSION SET version_number='4.1',version_desc='Ver. 4.1'");
+        	
+    	}catch (SQLException e) {
+    		Log.e(this.getClass().getCanonicalName(),"Error upgrade to 4.1");
+    		oDB.close();   
+        	oDB=null;
+        	return;
+		}   	
+    	oDB.close();   
+    	oDB=null;
+    }
     /**
      * Ony for DEVELOPMENT
      * 

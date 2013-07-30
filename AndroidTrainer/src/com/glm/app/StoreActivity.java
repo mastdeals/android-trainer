@@ -5,11 +5,16 @@ import java.util.Iterator;
 import java.util.Locale;
 
 
+import com.glm.app.db.Database;
 import com.glm.bean.ConfigTrainer;
+import com.glm.bean.User;
 import com.glm.bean.VirtualRace;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.Rate;
+import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.http.HttpClientHelper;
+import com.glm.utils.tw.Const;
 import com.glm.utils.vending.BillingService;
 import com.glm.utils.vending.BillingService.RequestPurchase;
 import com.glm.utils.vending.BillingService.RestoreTransactions;
@@ -17,16 +22,23 @@ import com.glm.utils.vending.Consts.PurchaseState;
 import com.glm.utils.vending.Consts.ResponseCode;
 import com.glm.utils.vending.PurchaseObserver;
 import com.glm.utils.vending.ResponseHandler;
+import com.google.android.gcm.GCMRegistrar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -133,16 +145,9 @@ public class StoreActivity extends Activity implements OnClickListener {
         if (!mBillingService.checkBillingSupported()) {
             
         }
-
-        Collection<VirtualRace> aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());			
-        if(aVirtualRace!=null){       
-	        Iterator<VirtualRace> iterator = aVirtualRace.iterator();     
-		    while (iterator.hasNext()){
-			    VirtualRace oVirtualRace = iterator.next();
-			    populareRow(oVirtualRace);
-			    Log.v(this.getClass().getCanonicalName(),"Store Virtual Race");  
-		    }  
-        }       
+        HttpTask oTask = new HttpTask();
+        oTask.execute(null);
+        
     }
 	@Override
 	protected void onResume() {
@@ -232,4 +237,28 @@ public class StoreActivity extends Activity implements OnClickListener {
     public void onBackPressed() {
     	ActivityHelper.startOriginalActivityAndFinish(this);
     }
+    
+	private class HttpTask extends AsyncTask<Void, Void, Void> {
+		Collection<VirtualRace> aVirtualRace=null;
+		@Override
+		protected void onPostExecute(Void mVoid) {
+			 if(aVirtualRace!=null){       
+			        Iterator<VirtualRace> iterator = aVirtualRace.iterator();     
+				    while (iterator.hasNext()){
+					    VirtualRace oVirtualRace = iterator.next();
+					    populareRow(oVirtualRace);
+					    Log.v(this.getClass().getCanonicalName(),"Store Virtual Race");  
+				    }  
+		        }      	
+		}		
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			aVirtualRace = oHttpClient.getVirtualRace(oConfigTrainer, Locale.getDefault().getCountry());			
+	        
+			return null;
+		}
+			
+	}
+    
 }

@@ -125,6 +125,9 @@ public class ExerciseUtils {
 			oDB.open();
 			SQLiteDatabase oDataBase = oDB.getOpenedDatabase();
 			iTypeExercise=iTypeOfTrainer;
+			if(Float.isInfinite(fWeight)){
+				fWeight=0;
+			}
 			oDataBase.execSQL("INSERT INTO trainer_exercise (id_users, id_type_exercise, weight) VALUES ("+oConfigTrainer.getiUserID()+","+iTypeOfTrainer+","+fWeight+")");
 			oDB.close();
 			int iIDExercise=0;

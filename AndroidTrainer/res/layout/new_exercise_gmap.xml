@@ -71,7 +71,7 @@
 		            android:id="@+id/gmap"
 		            android:layout_width="match_parent"
 		            android:layout_height="match_parent"
-		            android:apiKey="0UBi7KMm1jzIpyMkZw9AJz3ydnAujLC8XPw2ahA"
+		            android:apiKey="0UBi7KMm1jzKhmG3jHc-BvhLJQpeJ1VRgOf0Dew"
 		            android:clickable="true"
 		            android:enabled="true" >
 		            <!-- Android Trainer Key   0UBi7KMm1jzIpyMkZw9AJz3ydnAujLC8XPw2ahA -->
