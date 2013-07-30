@@ -23,7 +23,6 @@ import android.util.Log;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.VirtualRace;
 import com.google.gson.Gson;
-import com.google.gson.internal.StringMap;
 import com.google.gson.reflect.TypeToken;
 
 public class HttpClientHelper {

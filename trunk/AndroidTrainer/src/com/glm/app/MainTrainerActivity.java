@@ -18,6 +18,7 @@ import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
 
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.Rate;
 import com.glm.utils.fb.FacebookConnector;
 import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.tw.Const;
@@ -498,6 +499,8 @@ public class MainTrainerActivity  extends Activity implements OnClickListener {
 			    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
 				       ShowAlertNoGPS();
 				    }
+			    	//Mostro la nuova Finestra di Rate ogni 7 avvii
+			    	Rate.app_launched(getApplicationContext());
 				}catch (Exception e) {
 					Log.e(this.getClass().getCanonicalName(), "check user: "+e.getMessage());			
 				}		

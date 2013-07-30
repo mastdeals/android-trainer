@@ -756,7 +756,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					//Start Exercise
 					iStartTrainer=1;
 					//Se non premo plus/minus
-					fWeight=Float.parseFloat(oTxtWeight.getText().toString());
+					try{
+						fWeight=Float.parseFloat(oTxtWeight.getText().toString());
+					}catch(NumberFormatException e){
+						fWeight=oConfigTrainer.getiWeight();
+					}
 					/**
 					 * 
 					 * CREAZIONE DI UN NUOVO ESERCIZIO IN DB

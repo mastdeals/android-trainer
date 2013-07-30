@@ -39,8 +39,14 @@ public class TrackOverlay extends Overlay {
     	sTotalTime=Pace;
         sDistance=Distance;
         oContext=mContext;
-    	numberRoutePoints  = populateTrackPoints(routePoints,aWPList).length;
-
+        try{
+        	numberRoutePoints  = populateTrackPoints(routePoints,aWPList).length;
+        }catch(NegativeArraySizeException e){
+        	numberRoutePoints=0;
+        }
+                    	
+    	if(numberRoutePoints==0) return;
+    	
     	routeIsActive = true;
         // If first time, set initial location to start of route
         locpoint = this.routePoints[0];
@@ -51,23 +57,29 @@ public class TrackOverlay extends Overlay {
     }
     
     private GeoPoint[] populateTrackPoints(GeoPoint[] routePoints, ArrayList<WatchPoint> aWPList) {
-    	if((aWPList.size()-1) <= 0) {
-    		routePoints = new GeoPoint[1];
-    		return routePoints;
-    	}
-    	routePoints = new GeoPoint[aWPList.size()-1];  	 		
-		if(aWPList.size()==0) return null;
-		int iSize=aWPList.size()-2;
-		for(int i=0;i<iSize;i++){
-			int latE6 = (int) (aWPList.get(i).getdLat() * 1e6);
-		    int lonE6 = (int) (aWPList.get(i).getdLong() * 1e6);
-			routePoints[i] = new GeoPoint(latE6,lonE6);										
+    	try{
+	    	if((aWPList.size()-1) <= 0) {
+	    		routePoints = new GeoPoint[1];
+	    		return routePoints;
+	    	}
+	    	routePoints = new GeoPoint[aWPList.size()-1];  	 		
+			if(aWPList.size()==0) return null;
+			int iSize=aWPList.size()-2;
+			for(int i=0;i<iSize;i++){
+				int latE6 = (int) (aWPList.get(i).getdLat() * 1e6);
+			    int lonE6 = (int) (aWPList.get(i).getdLong() * 1e6);
+				routePoints[i] = new GeoPoint(latE6,lonE6);										
+			}
+	    	Log.d(this.getClass().getCanonicalName(),"Track Points size: "+routePoints.length);
+	    	this.routePoints=routePoints;
+	    	startPoint=this.routePoints[0];
+	    	centerPoint = this.routePoints[routePoints.length/2];
+	    	finishPoint=this.routePoints[routePoints.length-1];
+    	}catch (NegativeArraySizeException e) {
+			Log.e(this.getClass().getCanonicalName(), "Error array size is negative");
+			routePoints = new GeoPoint[1];
+			return routePoints;
 		}
-    	Log.d(this.getClass().getCanonicalName(),"Track Points size: "+routePoints.length);
-    	this.routePoints=routePoints;
-    	startPoint=this.routePoints[0];
-    	centerPoint = this.routePoints[routePoints.length/2];
-    	finishPoint=this.routePoints[routePoints.length-1];
     	return routePoints;
 	}
 
