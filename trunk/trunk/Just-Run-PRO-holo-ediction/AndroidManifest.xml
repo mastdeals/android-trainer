@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.glm.trainer"
     android:installLocation="auto"
-    android:versionCode="100"
-    android:versionName="5.0" >
+    android:versionCode="108"
+    android:versionName="5.0.8" >
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
@@ -17,6 +17,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> 
+   
+    
     <!-- GCM -->
     <permission
         android:name="com.glm.trainer.permission.C2D_MESSAGE"
@@ -167,10 +170,11 @@
 		    android:value="AIzaSyCcKSjgrKHjqu-3ATFKmFgceSsnIA8Uu0k"/>
          <!-- PROD AIzaSyCcKSjgrKHjqu-3ATFKmFgceSsnIA8Uu0k -->
          <!-- DEBUG AIzaSyB5hM-vL_YHNyxDNUNvvJd9KZrfq5IxnwA -->
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <activity android:launchMode="singleInstance"
             android:name="com.glm.trainer.NewMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"> 
+            android:theme="@android:style/Theme.Holo"> 
              <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
                 <action android:name="com.android.vending.billing.RESPONSE_CODE" />
@@ -180,17 +184,18 @@
         <activity android:launchMode="singleInstance"
             android:name="com.glm.trainer.HistoryList"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"> 
+            android:theme="@android:style/Theme.Holo"> 
         </activity>
         <activity  android:launchMode="singleInstance"
             android:name="com.glm.trainer.PreferencesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"> 
+            android:theme="@android:style/Theme.Holo"> 
         </activity>
         <activity android:launchMode="singleInstance"
             android:name="com.glm.trainer.WorkoutDetail"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"> 
+            android:theme="@android:style/Theme.Holo"> 
         </activity>
+       
     </application>
 </manifest>
