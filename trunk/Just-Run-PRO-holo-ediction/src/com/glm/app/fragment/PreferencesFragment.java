@@ -34,6 +34,9 @@ public class PreferencesFragment extends Fragment {
 	private Spinner mSpinnerUnit=null;
 	private Spinner mSpinnerAutoPause=null;
 	private Spinner mSpinnerTimeNotification=null;
+	private CheckBox checkMap			= null;
+	private CheckBox checkNotification 	= null;
+	private CheckBox checkMusic			= null;
 	private CheckBox checkWeightTrack	= null;
 	private CheckBox checkTarget		= null;
 	private CheckBox checkCardio		= null;
@@ -67,9 +70,9 @@ public class PreferencesFragment extends Fragment {
 		if(mPreferenceType==0){
 			rootView = inflater.inflate(R.layout.notification_preferences,
 					container, false);
-			CheckBox checkMap			= (CheckBox) rootView.findViewById(R.id.checkMap);
-			CheckBox checkNotification 	= (CheckBox) rootView.findViewById(R.id.checkNotification);
-			CheckBox checkMusic			= (CheckBox) rootView.findViewById(R.id.checkMusic);
+			checkMap			= (CheckBox) rootView.findViewById(R.id.checkMap);
+			checkNotification 	= (CheckBox) rootView.findViewById(R.id.checkNotification);
+			checkMusic			= (CheckBox) rootView.findViewById(R.id.checkMusic);
 			
 			checkMap.setOnClickListener(new OnClickListener() {
 				
@@ -459,6 +462,10 @@ public class PreferencesFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(Object result) {
+			if(checkMap!=null) checkMap.setChecked(oConfigTrainer.isbDisplayMap());
+			if(checkNotification!=null) checkNotification.setChecked(oConfigTrainer.isbDisplayNotification());
+			if(checkMusic!=null) checkMusic.setChecked(oConfigTrainer.isbPlayMusic());
+			
 			if(mSpinnerUnit!=null) mSpinnerUnit.setSelection(oConfigTrainer.getiUnits());
 			if(mSpinnerAutoPause!=null) mSpinnerAutoPause.setSelection(oConfigTrainer.getiAutoPauseTime());
 			if(mSpinnerTimeNotification!=null) mSpinnerTimeNotification.setSelection(oConfigTrainer.getiMotivatorTime());

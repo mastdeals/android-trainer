@@ -3,8 +3,6 @@ package com.glm.app.fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
@@ -40,42 +38,43 @@ import android.widget.Toast;
  * displays dummy text.
  */
 public class WorkoutDetailFragment extends Fragment {
-	private ConfigTrainer oConfigTrainer;
+	public ConfigTrainer oConfigTrainer;
+	
 	private View rootView;
 	private Context mContext;
 	private int mIDWorkout=0;
 
 	/***oggetto condivisione FB*/
 	private FacebookConnector oFB = null; 
-	private TextView txtDate;
+	public TextView txtDate;
 	
-	private TextView oTxt_Time;
+	public TextView oTxt_Time;
 	
-	private TextView oTxt_Distance;
+	public TextView oTxt_Distance;
 	
-	private TextView oTxt_Kalories;
+	public TextView oTxt_Kalories;
 	
-	private TextView oTxt_AVGSpeed;
+	public TextView oTxt_AVGSpeed;
 	
-	private TextView oTxt_AVGPace;
+	public TextView oTxt_AVGPace;
 	
-	private TextView oTxt_MAXSpeed;
+	public TextView oTxt_MAXSpeed;
 	
-	private TextView oTxt_MAXPace;	
+	public TextView oTxt_MAXPace;	
 	
-	private TextView oTxt_Step;
+	public TextView oTxt_Step;
 	
-	private TextView oTxt_MaxBpm;
+	public TextView oTxt_MaxBpm;
 	
-	private TextView oTxt_AvgBpm;
+	public TextView oTxt_AvgBpm;
 	
-	private LinearLayout oLLDectails;
+	public LinearLayout oLLDectails;
 	
-	private RelativeLayout oMaxBpm;
+	public RelativeLayout oMaxBpm;
 	
-	private RelativeLayout oAvgBpm;
+	public RelativeLayout oAvgBpm;
 	
-	private RelativeLayout oInfo;
+	public RelativeLayout oInfo;
 	/**
 	 * 
 	 * The fragment argument representing the section number for this
@@ -116,8 +115,7 @@ public class WorkoutDetailFragment extends Fragment {
 				showOptions(v);
 			}
 		});
-        ExeriseTask oTask = new ExeriseTask();
-        oTask.execute();
+       
 		return rootView;
 	}
 
@@ -229,62 +227,14 @@ public class WorkoutDetailFragment extends Fragment {
 	
 	
 	
-	class ExeriseTask extends AsyncTask<Void, Void, Void> {
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);		
-			//Chiamo il tackAsink
-			ExerciseUtils.populateExerciseDetails(mContext, oConfigTrainer, mIDWorkout);
-		    //Log.v(this.getClass().getCanonicalName(),"IDExercide: " +ExerciseManipulate.getiIDExercise()+" - "+ExerciseManipulate.getsTotalDistance());
-			    
-		    
-	        
-	        return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {			
-			SimpleDateFormat dfm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			
-				txtDate.setText(dfm.format(ExerciseManipulate.getdDateTimeStart()));
-				oTxt_Time.setText(ExerciseManipulate.getsTotalTime());
-			    oTxt_Distance.setText(ExerciseManipulate.getsTotalDistance());
-			    oTxt_AVGSpeed.setText(ExerciseManipulate.getsAVGSpeed());
-			    oTxt_AVGPace.setText(ExerciseManipulate.getsMinutePerDistance());
-			    oTxt_MAXSpeed.setText(ExerciseManipulate.getsMAXSpeed());
-			    oTxt_MAXPace.setText(ExerciseManipulate.getsMAXMinutePerDistance());
-			    oTxt_Step.setText(ExerciseManipulate.getsStepCount());
-			    oTxt_Kalories.setText(ExerciseManipulate.getsCurrentCalories());
-			    if(oConfigTrainer!=null){
-			    	if(oConfigTrainer.isbCardioPolarBuyed()){
-			    		if(ExerciseManipulate.getiMAXBpm()==0){
-			    			oTxt_MaxBpm.setText("n.d.");
-			    		}else{
-			    			Log.i(this.getClass().getCanonicalName(),"MaxBPM"+ExerciseManipulate.getiMAXBpm());
-			    			oTxt_MaxBpm.setText(String.valueOf(ExerciseManipulate.getiMAXBpm()));	
-			    		}
-			    		if(ExerciseManipulate.getiAVGBpm()==0){
-			    			oTxt_AvgBpm.setText("n.d.");
-			    		}else{
-			    			oTxt_AvgBpm.setText(String.valueOf(ExerciseManipulate.getiAVGBpm()));
-			    		}	    	    	    		
-			    	}else{
-			    		oLLDectails.removeView(oMaxBpm);
-			    		oLLDectails.removeView(oAvgBpm); 	    		
-			    	}
-			    }
-		}
-	}
 	/**
 	 * Metodo per la condivisione manuale dell'esercizio
 	 * */
 	public void manualShare(){
 		try{			
 			
-			
-			  
-		    AsyncTask.execute(new Runnable() {
+			new Thread(new Runnable() {
 		    	String sPathImage = Environment.getExternalStorageDirectory().getAbsolutePath()+"/personal_trainer";
 				   
 				@Override
@@ -322,7 +272,7 @@ public class WorkoutDetailFragment extends Fragment {
 				}
 				
 			    
-			});
+			}).start();
 		    
 
 			/*Intent sharingIntent = new Intent(Intent.ACTION_SEND);

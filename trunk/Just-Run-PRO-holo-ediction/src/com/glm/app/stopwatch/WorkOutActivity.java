@@ -2,7 +2,6 @@ package com.glm.app.stopwatch;
 
 
 
-import com.glm.services.IExerciseService;
 import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.R;
 import com.glm.app.OpenStreetMapActivity;
@@ -618,15 +617,17 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			}
 		}if(oObj.getId()==R.id.btnSkipTrack){
 			if(oConfigTrainer.isbPlayMusic()){
-				if(mConnection.mIService!=null){
-					try {
-						if(mConnection.mIService.isRunning()){
-							mConnection.mIService.skipTrack();
+				if(mConnection!=null){
+					if(mConnection.mIService!=null){
+						try {
+							if(mConnection.mIService.isRunning()){
+								mConnection.mIService.skipTrack();
+							}
+						} catch (RemoteException e) {
+							Log.e(this.getClass().getCanonicalName(), "Error get state of Service");
 						}
-					} catch (RemoteException e) {
-						Log.e(this.getClass().getCanonicalName(), "Error get state of Service");
+							
 					}
-						
 				}
 			}
 		}if(oObj.getId()==R.id.btnMaps){			

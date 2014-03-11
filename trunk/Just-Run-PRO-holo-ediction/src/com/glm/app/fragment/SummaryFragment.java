@@ -1,47 +1,33 @@
 package com.glm.app.fragment;
 
-import java.util.Date;
 import java.util.Vector;
 
-import com.glm.app.GoalActivity;
-import com.glm.app.ManualWorkout;
-import com.glm.bean.ConfigTrainer;
 import com.glm.bean.DistancePerExercise;
-import com.glm.bean.User;
+
 import com.glm.chart.BarChart;
 import com.glm.trainer.HistoryList;
 import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.R;
-import com.glm.trainer.NewMainActivity.SectionsPagerAdapter;
-import com.glm.utils.ExerciseUtils;
 import com.glm.utils.quickaction.ActionItem;
 import com.glm.utils.quickaction.GraphSummaryQuickBar;
-import com.glm.utils.quickaction.MainQuickBar;
 import com.glm.utils.quickaction.QuickAction;
 
-import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**

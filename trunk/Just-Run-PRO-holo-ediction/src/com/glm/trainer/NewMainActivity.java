@@ -34,6 +34,7 @@ import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -88,7 +89,8 @@ public class NewMainActivity extends FragmentActivity implements
 	private StoreFragment oStore=null;
 	private AboutFragment oAbout=null;
 	public TrainerServiceConnection mConnection=null;
-
+	private LocationManager LocationManager = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -315,9 +317,17 @@ public class NewMainActivity extends FragmentActivity implements
 			    		   SharedPreferences.Editor editPrefs = oPrefs.edit();
 			    		   editPrefs.putString("GCMId", sGCMId); 
 			    		   editPrefs.commit();
-			    		   //Send Id to Android Trainer WEB Server via POST METHOD
-					       HttpClientHelper oHttpHelper = new HttpClientHelper();
-					       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
+			    		   new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								//Send Id to Android Trainer WEB Server via POST METHOD
+							       HttpClientHelper oHttpHelper = new HttpClientHelper();
+							       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
+							}
+			    		   });
+			    		   
 			    	   }
 			       }
 			     //GCM GOOGLE

@@ -3,12 +3,14 @@ package com.glm.bean;
 
 public class Music {
 	 
-	 private int iID;
-	 private String sARTIST;
-	 private String sTITLE;
-	 private String sFileDATA;
-	 private String sDISPLAY_NAME;
-	 private int iDURATION;
+	private int iID;
+	private String sARTIST;
+	private String sTITLE;
+	private String sFileDATA;
+	private String sDISPLAY_NAME;
+	private int iDURATION;
+	private Float fDistance;
+	 
 	public synchronized int getiID() {
 		return iID;
 	}
@@ -45,4 +47,17 @@ public class Music {
 	public synchronized void setiDURATION(int iDURATION) {
 		this.iDURATION = iDURATION;
 	}
+	/**
+	 * @return the fFrom
+	 */
+	public synchronized Float getfDistance() {
+		return fDistance;
+	}
+	/**
+	 * @param fFrom the fFrom to set
+	 */
+	public synchronized void setfDistance(Float fDistance) {
+		this.fDistance = fDistance;
+	}
+	
 }

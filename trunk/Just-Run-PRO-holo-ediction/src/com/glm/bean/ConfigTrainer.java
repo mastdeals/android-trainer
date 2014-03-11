@@ -31,7 +31,7 @@ public class ConfigTrainer{
 	private boolean isVirtualRaceSupport=false;
 	
 	private int iAge=0;
-	private int iWeight=0;
+	private Float iWeight=0f;
 	private int iHeight=0;
 	private int iUserID;
 	private String sNick;
@@ -114,13 +114,13 @@ public class ConfigTrainer{
 	/**
 	 * @return the iWeight
 	 */
-	public synchronized int getiWeight() {
+	public synchronized Float getiWeight() {
 		return iWeight;
 	}
 	/**
 	 * @param iWeight the iWeight to set
 	 */
-	public synchronized void setiWeight(int iWeight) {
+	public synchronized void setiWeight(Float iWeight) {
 		this.iWeight = iWeight;
 	}
 	/**
