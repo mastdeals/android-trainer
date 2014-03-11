@@ -24,7 +24,7 @@ public class User {
 		
 	public String sGender;
 	public int iAge; 	
-	public int iWeight; 	  
+	public Float iWeight; 	  
 	public int iHeight;
 	public int iFB; 	 
 	public int iBuzz; 	 

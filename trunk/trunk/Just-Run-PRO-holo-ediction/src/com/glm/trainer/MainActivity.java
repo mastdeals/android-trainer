@@ -32,7 +32,7 @@ public class MainActivity  extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	       super.onCreate(savedInstanceState);
-	       setContentView(R.layout.main);	     
+		setContentView(R.layout.main);	     
 	      
 	       
 	       
@@ -72,6 +72,7 @@ public class MainActivity  extends Activity{
 			@Override
 			public void run() {
 				try {
+					if(mConnection==null) return;
 					if(mConnection.mIService.isServiceAlive() && 
 							mConnection.mIService.isRunning()){
 						//Toast.makeText(MainTrainerActivity.this, "First type: "+mIService.getiTypeExercise(),
@@ -204,6 +205,7 @@ public class MainActivity  extends Activity{
 			
 		@Override
 		protected Boolean doInBackground(Database... mDB) {
+			int iRetry=0;
 			mConnection = new TrainerServiceConnection(getApplicationContext());
 			Database oDB=null;
 			for (Database DB : mDB) {
@@ -217,6 +219,8 @@ public class MainActivity  extends Activity{
 			while(mConnection.mIService==null){
 				try {
 					Thread.sleep(1000);
+					iRetry++;
+					if(iRetry>5) break;
 					Log.v(this.getClass().getCanonicalName(),"wait for service...");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

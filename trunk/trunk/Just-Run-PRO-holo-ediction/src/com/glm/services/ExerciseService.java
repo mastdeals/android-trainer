@@ -284,7 +284,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		AccelerometerUtils.setContext(mContext);	
 	
 		//Cardio
-		if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
+		if(oConfigTrainer!=null && oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
 			oBTHelper = new BlueToothHelper();
 		}
 				
@@ -580,10 +580,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     					//Log.v(this.getClass().getCanonicalName(), "GoalHH:"+dGoalHH+" GoalMM"+dGoalMM+" GoalDiance:"+iGoalDistance);
     					//Goal solo distanza
     					if((dGoalHH==0 && dGoalMM==0) && iGoalDistance!=0){
-    						//Esco se ho superato l'obiettivo
-							if(iGoalDistance<ExerciseUtils.getTotalDistanceUnFormattated(mContext, oConfigTrainer, 
-									ExerciseUtils.getsIDCurrentExercise(mContext), null))
-								return;
+    						
 							
 							double iDistanceToGoal;
     						/**imposto la distanza corrente*/
@@ -595,6 +592,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
         					if(iDistanceToGoal<0) iDistanceToGoal=0;
         					final String sDistanceToSpeech=String.valueOf(
         							ExerciseUtils.getTotalDistanceFormattated(iDistanceToGoal,oConfigTrainer,false));
+        					
+        					//Esco se ho superato l'obiettivo
+							if(iDistanceToGoal<=0)
+								return;
         					
         					if(!isInCalling){
         						if(oConfigTrainer.isbPlayMusic()){
@@ -876,6 +877,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	longitude 		= 0.0;
     	pre_latitude 	= 0.0;
     	pre_longitude 	= 0.0;
+    	iStep			=	0;
     	dGoalHH=goalHH;
     	dGoalMM=goalMM;
 
@@ -1042,7 +1044,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	mNM.cancel(NOTIFICATION);	    
 	    isRunning = false;	    
 	    isAutoPause=false;
-	    ExerciseUtils.saveExercise(mContext,oConfigTrainer,iStep);	 
+	    
+	    ExerciseUtils.saveExercise(mContext,oConfigTrainer,iStep);	
+	    ExerciseUtils.addStep(mContext, iStep);
 	    endAllListner();
     }                     
     /**
@@ -1253,28 +1257,34 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	@Override
 	public void onAccelerationChanged(float x, float y, float z) {
 		// TODO Auto-generated method stub
+		//Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 		if(iTypeExercise==0){
-			if(y>10 ||
-					x==6
-					|| z==6){
+			if(y>9 ||
+					x==5
+					|| z==5){
 				////Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 				iStep++;
 				//Log.v(this.getClass().getCanonicalName(),"Step: "+iStep);
 			}
 		}else{
-			if(y>6 ||
-					x==6
-					|| z==6){
+			if(y>5 ||
+					x==5
+					|| z==5){
 				////Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 				iStep++;
 				//Log.v(this.getClass().getCanonicalName(),"Step: "+iStep);
 			}
 		}
 		
-		
 		//ExerciseUtils.addStep(mContext, x);
 	}
 
+	@Override
+	public void onShake(float force) {
+		// TODO Auto-generated method stub
+		//Log.v(this.getClass().getCanonicalName(),"onShake: gForce="+force);		
+	}
+	
 	/**
 	 * Ferma il GPS e tutti i listner
 	 * 
@@ -1306,7 +1316,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    /**Arresto il listener del Conta Passi*/
 	    if (AccelerometerUtils.isListening()) {
     		AccelerometerUtils.stopListening();
-    		iStep=0;
+    		
         }
 	    LocationManager=null;
 	    monitoringTimer=null;
@@ -1388,11 +1398,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 	}
 
-	@Override
-	public void onShake(float force) {
-		// TODO Auto-generated method stub
-		//Log.v(this.getClass().getCanonicalName(),"onShake: gForce="+force);		
-	}
 	/**
 	 * Ferma tutto l'audio durante una chiamata
 	 * */

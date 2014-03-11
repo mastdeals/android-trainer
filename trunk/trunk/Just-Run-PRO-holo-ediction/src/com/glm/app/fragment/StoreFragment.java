@@ -124,7 +124,15 @@ public class StoreFragment extends Fragment {
 		protected Void doInBackground(Void... params) {
 			//oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
 			if(!isAdded()) return null;
-			aVirtualRace = oHttpClient.getVirtualRace(((NewMainActivity)getActivity()).oConfigTrainer, Locale.getDefault().getCountry());			
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					aVirtualRace = oHttpClient.getVirtualRace(((NewMainActivity)getActivity()).oConfigTrainer, Locale.getDefault().getCountry());	
+				}
+			});
+					
+			
 			ArrayList skuList = new ArrayList();
 			skuList.add("donate2.0");
 			skuList.add("polarcardio");
@@ -132,7 +140,7 @@ public class StoreFragment extends Fragment {
 			querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
 			
 			try {
-				if(mServiceConn==null) return null;
+				if(mServiceConn==null || mContext==null || mServiceConn.mService==null) return null;
 				Bundle skuDetails = mServiceConn.mService.getSkuDetails(3, mContext.getPackageName(), "inapp", querySkus);
 				int response = skuDetails.getInt("RESPONSE_CODE");
 				if (response == 0) {

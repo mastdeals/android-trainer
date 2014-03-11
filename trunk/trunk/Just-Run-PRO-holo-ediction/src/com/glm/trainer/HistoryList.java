@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -57,8 +58,11 @@ public class HistoryList extends FragmentActivity implements
 	}
 	@Override
 	protected void onResume() {
-		WotkOutTask oTask = new WotkOutTask();
-		oTask.execute();
+		//WotkOutTask oTask = new WotkOutTask();
+		//oTask.execute();
+		oWaitForLoad = ProgressDialog.show(HistoryList.this, getString(R.string.app_name_buy), getString(R.string.please_wait));
+		new Thread(new WorkOutThread()).start();
+		
 		super.onResume();
 	}
 	@Override
@@ -152,7 +156,74 @@ public class HistoryList extends FragmentActivity implements
 		}
 	}
 	
-	class WotkOutTask extends AsyncTask{
+	class WorkOutThread implements Runnable{
+
+		@Override
+		public void run() {
+			Looper.prepare();
+			
+			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+			mWorkoutAdapterRun = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),0,oConfigTrainer));
+			mWorkoutAdapterWalk = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),100,oConfigTrainer));
+			mWorkoutAdapterBike = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),1,oConfigTrainer));
+			
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// Set up the action bar.
+					final ActionBar actionBar = getActionBar();
+					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+					actionBar.setDisplayShowHomeEnabled(false);
+					actionBar.setDisplayShowTitleEnabled(false);
+			        // Create the adapter that will return a fragment for each of the three
+					// primary sections of the app.
+					mSectionsPagerAdapter = new SectionsPagerAdapter(
+							getSupportFragmentManager());
+
+					// Set up the ViewPager with the sections adapter.
+					mViewPager = (ViewPager) findViewById(R.id.pager);
+					mViewPager.setAdapter(mSectionsPagerAdapter);
+					mViewPager.setOffscreenPageLimit(3);
+					// When swiping between different sections, select the corresponding
+					// tab. We can also use ActionBar.Tab#select() to do this if we have
+					// a reference to the Tab.
+					mViewPager
+							.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+								@Override
+								public void onPageSelected(int position) {
+									actionBar.setSelectedNavigationItem(position);
+								}
+							});
+					
+					actionBar.removeAllTabs();
+					// For each of the sections in the app, add a tab to the action bar.
+					for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+						// Create a tab with text corresponding to the page title defined by
+						// the adapter. Also specify this Activity object, which implements
+						// the TabListener interface, as the callback (listener) for when
+						// this tab is selected.
+						actionBar.addTab(actionBar.newTab()
+								.setText(mSectionsPagerAdapter.getPageTitle(i))
+								.setTabListener(HistoryList.this));
+					}
+					//mListWorkOuts.setAdapter(mWorkoutAdapter);
+					mWorkoutAdapterRun.notifyDataSetInvalidated();
+					mWorkoutAdapterRun.notifyDataSetChanged();
+					mWorkoutAdapterWalk.notifyDataSetInvalidated();
+					mWorkoutAdapterWalk.notifyDataSetChanged();
+					mWorkoutAdapterBike.notifyDataSetInvalidated();
+					mWorkoutAdapterBike.notifyDataSetChanged();
+					if(oWaitForLoad!=null) oWaitForLoad.dismiss();	
+				}
+			});
+						
+					
+		}
+		
+	}
+	
+	/*class WotkOutTask extends AsyncTask{
 
 		@Override
 		protected Object doInBackground(Object... params) {
@@ -216,7 +287,7 @@ public class HistoryList extends FragmentActivity implements
 			if(oWaitForLoad!=null) oWaitForLoad.dismiss();
 			super.onPostExecute(result);
 		}
-	}
+	}*/
 	
 	class DeleteWotkOutTask extends AsyncTask{
 

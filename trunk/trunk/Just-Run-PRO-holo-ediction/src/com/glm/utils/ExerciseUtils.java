@@ -431,6 +431,8 @@ public class ExerciseUtils {
 					"calorie_burn=(select ROUND((case when id_type_exercise = 0 then ("+I_BURN_RUNNING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 1 then ("+I_BURN_BIKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" when id_type_exercise = 100 then ("+I_BURN_WALKING+"*sum(distance))*"+oConfigTrainer.getiWeight()+" end),2) as kalories from trainer_exercise_dett WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise))|| ' Kal', " +					
 					"total_time=(select (strftime(\"%H\",strftime(\"%J\",CURRENT_TIMESTAMP)-strftime(\"%J\",start_date))-12)||strftime(\":%M:%S\",strftime(\"%J\",CURRENT_TIMESTAMP)-strftime(\"%J\",start_date)) from trainer_exercise where id_exercise=(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)) " +				
 					"  WHERE id_exercise =(SELECT MAX(id_exercise) as exercise FROM trainer_exercise)";
+			//Log.v(ExerciseUtils.class.getCanonicalName(), "######## STEP: "+iStep);
+			//Log.v(ExerciseUtils.class.getCanonicalName(), "######## SQL: "+sSQL_SAVE_EXERCISE);
 			
 			oDB.open();
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
@@ -533,7 +535,7 @@ public class ExerciseUtils {
 
 			oConfigTrainer.setsNick(oPrefs.getString("nick", ""));
 
-			oConfigTrainer.setiWeight(oPrefs.getInt("weight", 0));
+			oConfigTrainer.setiWeight(oPrefs.getFloat("weight", 0));
 			
 			oConfigTrainer.setiHeight(oPrefs.getInt("height", 0));
 
@@ -841,7 +843,7 @@ public class ExerciseUtils {
 					oNFormat.setGroupingUsed(true);
 					
 					/**Aggiungo in numero dei passi**/
-			   		ExerciseManipulate.setsStepCount(oNFormat.format(iStepCount));			   					   			   					   					   					   	
+			   		ExerciseManipulate.setsStepCount(String.valueOf(iStepCount));			   					   			   					   					   					   	
 			   					   		
 				}catch (Exception e) {
 		   			ExerciseManipulate.setsAVGSpeed("n.d.");
@@ -1413,7 +1415,7 @@ public class ExerciseUtils {
 			oDB.getOpenedDatabase().execSQL(sSQL_SAVE_EXERCISE);
 			oDB.close();
 			oDB=null;			
-			////Log.v(ExerciseUtils.class.getCanonicalName(), "Save SQL: "+sSQL_SAVE_EXERCISE);
+			//Log.v(ExerciseUtils.class.getCanonicalName(), "Save STEP SQL: "+sSQL_SAVE_EXERCISE);
 		}catch (Exception e) {
 			Log.e(ExerciseUtils.class.getCanonicalName(), e.getMessage()+" - "+sSQL_SAVE_EXERCISE);
 			if(oDB!=null) oDB.close();
@@ -1544,7 +1546,7 @@ public class ExerciseUtils {
 
 				editPrefs.putString("name", txtName);		
 				editPrefs.putString("nick", txtNick);
-				editPrefs.putInt("weight", Integer.parseInt(txtWeight));
+				editPrefs.putFloat("weight", Float.parseFloat(txtWeight));
 				editPrefs.putInt("age", Integer.parseInt(txtAge));
 				editPrefs.putInt("height", Integer.parseInt(txtHeight));
 				editPrefs.putBoolean("sharefb", FBShare); 
@@ -2881,5 +2883,40 @@ public class ExerciseUtils {
 		SharedPreferences.Editor editPrefs = oPrefs.edit();
 		editPrefs.putString("GCMId", sGCMId);
 		editPrefs.commit();
+	}
+
+
+	
+	/**
+	 * risorna la musica ascoltata nell'esercizio
+	 * 
+	 * */
+	public static ArrayList<Music> getMusicWorkout(Context oContext,
+			ConfigTrainer oConfigTrainer, int mIDWorkout) {
+		ArrayList<Music> mMusic = new ArrayList<Music>();
+		Database oDB = new Database(oContext);
+		Cursor oCursor=null;
+		int iDistance = 0;
+		int iMusic = 0;
+		int iID=0;
+		String sSQLMusicWorkpout = "select sum(distance) as distance, watch_point_song as song from trainer_exercise_dett where id_exercise="+mIDWorkout+" group by watch_point_song order by id_watch_point";
+		
+		oDB.open();
+		
+		oCursor = oDB.rawQuery(sSQLMusicWorkpout,null);
+		if(oCursor!=null){
+			iDistance = oCursor.getColumnIndex("distance");
+			iMusic = oCursor.getColumnIndex("song");
+		}
+		while(oCursor!=null && oCursor.moveToNext()){ 
+			iID++;
+			Music tmpMusic = new Music();
+			tmpMusic.setiID(iID);
+			tmpMusic.setfDistance(oCursor.getFloat(iDistance));
+			tmpMusic.setsTITLE(oCursor.getString(iMusic));
+			
+			mMusic.add(tmpMusic);
+		}
+		return mMusic;
 	}
 }

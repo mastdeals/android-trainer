@@ -1,5 +1,7 @@
 package com.glm.trainer;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import com.glm.app.fragment.WorkoutDetailFragment;
@@ -8,12 +10,17 @@ import com.glm.app.fragment.WorkoutMapFragment;
 
 
 
+import com.glm.app.fragment.WorkoutMusicFragment;
 import com.glm.app.fragment.WorkoutNoteFragment;
+import com.glm.bean.ConfigTrainer;
+import com.glm.bean.ExerciseManipulate;
+import com.glm.bean.Music;
+import com.glm.utils.ExerciseUtils;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,10 +29,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 
 public class WorkoutDetail extends FragmentActivity implements
 		ActionBar.TabListener {
-
+	private ConfigTrainer oConfigTrainer;
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -44,9 +53,11 @@ public class WorkoutDetail extends FragmentActivity implements
 	private WorkoutDetailFragment oWorkoutDetail=null;
 	private WorkoutGraphFragment  oWorkoutGraph=null;
 	private WorkoutMapFragment    oWorkoutMap=null;
+	private WorkoutMusicFragment  oWorkoutMusic=null;
 	private WorkoutNoteFragment   oWorkoutNote=null;
 	private int mIDWorkout=0;
-
+	private ArrayList<Music> mMusic;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,6 +71,7 @@ public class WorkoutDetail extends FragmentActivity implements
 		oWorkoutDetail= new WorkoutDetailFragment();
 		oWorkoutGraph= new WorkoutGraphFragment();
 		oWorkoutMap= new WorkoutMapFragment();
+		oWorkoutMusic = new WorkoutMusicFragment();
 		oWorkoutNote= new WorkoutNoteFragment();
 		
 		// Set up the action bar.
@@ -115,6 +127,10 @@ public class WorkoutDetail extends FragmentActivity implements
 		} 
 		if(oWorkoutDetail!=null) oWorkoutDetail.setContext(WorkoutDetail.this,mIDWorkout);
 		if(oWorkoutGraph!=null) oWorkoutGraph.setContext(WorkoutDetail.this,mIDWorkout);
+		if(oWorkoutMusic!=null) oWorkoutMusic.setContext(WorkoutDetail.this,mIDWorkout);
+		ExeriseTask oTask = new ExeriseTask();
+	    oTask.execute();
+	    
 		super.onResume();
 	}
 	@Override
@@ -175,6 +191,12 @@ public class WorkoutDetail extends FragmentActivity implements
 				oWorkoutMap.setContext(WorkoutDetail.this,mIDWorkout);
 				return oWorkoutMap;
 			case 3:
+				//Music
+				
+				oWorkoutMusic.setContext(WorkoutDetail.this,mIDWorkout);
+				return oWorkoutMusic;
+				
+			case 4:
 				//Note
 				
 				oWorkoutNote.setContext(WorkoutDetail.this,mIDWorkout);
@@ -186,8 +208,7 @@ public class WorkoutDetail extends FragmentActivity implements
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 4;
+			return 5;
 		}
 
 		@Override
@@ -201,9 +222,67 @@ public class WorkoutDetail extends FragmentActivity implements
 			case 2:
 				return getString(R.string.maps).toUpperCase(l);
 			case 3:
+				return getString(R.string.listening_song).toUpperCase(l);
+			case 4:
 				return getString(R.string.note).toUpperCase(l);
 			}
 			return null;
+		}
+	}
+	
+	class ExeriseTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext());		
+			//Chiamo il tackAsink
+			ExerciseUtils.populateExerciseDetails(getApplicationContext(), oConfigTrainer, mIDWorkout);
+		    //Log.v(this.getClass().getCanonicalName(),"IDExercide: " +ExerciseManipulate.getiIDExercise()+" - "+ExerciseManipulate.getsTotalDistance());
+			mMusic=ExerciseUtils.getMusicWorkout(getApplicationContext(), oConfigTrainer,  mIDWorkout);
+			oWorkoutDetail.oConfigTrainer=oConfigTrainer;
+		    
+	        
+	        return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {			
+			SimpleDateFormat dfm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			
+			oWorkoutDetail.txtDate.setText(dfm.format(ExerciseManipulate.getdDateTimeStart()));
+			oWorkoutDetail.oTxt_Time.setText(ExerciseManipulate.getsTotalTime());
+			oWorkoutDetail.oTxt_Distance.setText(ExerciseManipulate.getsTotalDistance());
+			oWorkoutDetail.oTxt_AVGSpeed.setText(ExerciseManipulate.getsAVGSpeed());
+			oWorkoutDetail.oTxt_AVGPace.setText(ExerciseManipulate.getsMinutePerDistance());
+			oWorkoutDetail.oTxt_MAXSpeed.setText(ExerciseManipulate.getsMAXSpeed());
+			oWorkoutDetail.oTxt_MAXPace.setText(ExerciseManipulate.getsMAXMinutePerDistance());
+			oWorkoutDetail.oTxt_Step.setText(ExerciseManipulate.getsStepCount());
+			
+			if(ExerciseManipulate.getsStepCount().compareToIgnoreCase("0")==0){
+				oWorkoutDetail.oTxt_Step.setVisibility(View.GONE);
+			}
+			
+			
+			oWorkoutDetail.oTxt_Kalories.setText(ExerciseManipulate.getsCurrentCalories());
+			    if(oConfigTrainer!=null){
+			    	if(oConfigTrainer.isbCardioPolarBuyed()){
+			    		if(ExerciseManipulate.getiMAXBpm()==0){
+			    			oWorkoutDetail.oTxt_MaxBpm.setText("n.d.");
+			    		}else{
+			    			Log.i(this.getClass().getCanonicalName(),"MaxBPM"+ExerciseManipulate.getiMAXBpm());
+			    			oWorkoutDetail.oTxt_MaxBpm.setText(String.valueOf(ExerciseManipulate.getiMAXBpm()));	
+			    		}
+			    		if(ExerciseManipulate.getiAVGBpm()==0){
+			    			oWorkoutDetail.oTxt_AvgBpm.setText("n.d.");
+			    		}else{
+			    			oWorkoutDetail.oTxt_AvgBpm.setText(String.valueOf(ExerciseManipulate.getiAVGBpm()));
+			    		}	    	    	    		
+			    	}else{
+			    		oWorkoutDetail.oLLDectails.removeView(oWorkoutDetail.oMaxBpm);
+			    		oWorkoutDetail.oLLDectails.removeView(oWorkoutDetail.oAvgBpm); 	    		
+			    	}
+			    }
+			oWorkoutMusic.addMusic(mMusic);
 		}
 	}
 }
