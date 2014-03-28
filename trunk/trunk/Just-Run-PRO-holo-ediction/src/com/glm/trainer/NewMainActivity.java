@@ -125,8 +125,10 @@ public class NewMainActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		WorkTaskAsync oTask = new WorkTaskAsync();
-		oTask.execute();
+		//WorkTaskAsync oTask = new WorkTaskAsync();
+		//oTask.execute();
+		oWaitForLoad = ProgressDialog.show(NewMainActivity.this, getString(R.string.app_name_buy), getString(R.string.please_wait));
+		new Thread(new WorkTaskThread()).start();
 	}
 	@Override
     public void onBackPressed() {
@@ -278,6 +280,240 @@ public class NewMainActivity extends FragmentActivity implements
 		super.onPause();
 	}
 	
+	private final BroadcastReceiver mHandleMessageReceiver =
+	         new BroadcastReceiver() {
+		     @Override
+		     public void onReceive(Context context, Intent intent) {
+		         Log.v(this.getClass().getCanonicalName(),"onReceive");
+		     }
+	};
+	
+	/**Classe per il controllo della licenza*/
+	private class TrainerLicenseCheckerCallback implements LicenseCheckerCallback {
+		
+		@Override    
+		public void allow(int reason) {
+	        if (isFinishing()) {
+	                // Don't update UI if Activity is finishing.	            	
+	            return;
+	        }
+	            Toast.makeText(NewMainActivity.this, getString(R.string.licenceok),
+		                Toast.LENGTH_SHORT).show();
+	            ExerciseUtils.setLicenceOK(getApplicationContext());  
+	            Log.v(this.getClass().getCanonicalName(), "licence Allow code "+reason);
+	            isLicence=true;
+	        // Should allow user access.
+	        //displayResult(getString(R.string.lic_ok));
+	    }
+		
+		@Override
+	    public void dontAllow(int reason) {
+	        if (isFinishing()) {
+	            // Don't update UI if Activity is finishing.
+	        	mConnection.destroy();
+	            return;
+	        }
+	        //Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceko),
+	        //        Toast.LENGTH_SHORT).show();
+	        ExerciseUtils.setLicenceKO(getApplicationContext());  
+	        //displayResult(getString(R.string.lic_error));	       
+	        // Should not allow access. An app can handle as needed,
+	        // typically by informing the user that the app is not licensed
+	        // and then shutting down the app or limiting the user to a
+	        // restricted set of features.
+	        // In this example, we show a dialog that takes the user to Market.
+	        showDialog(0);
+	        
+	        /**
+	         * DA MODIFICARE A FALSE IN PRODUZIONE
+	         * 
+	         * **/
+	        isLicence=false;
+	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
+	    }
+		@Override
+		public void applicationError(int errorCode) {
+			//Log.e(this.getClass().getCanonicalName(), "applicationError on check licence error code "+errorCode);
+			/**
+	         * DA MODIFICARE A FALSE IN PRODUZIONE
+	         * 
+	         * **/
+	        isLicence=false;
+		}
+	}
+	/**
+	 * Visualizza una alert per il GPS non abilitato
+	 *
+	 * @author Gianluca Masci aka (GLM)
+	 * */
+	public void ShowAlertNoGPS() {
+		try{
+			AlertDialog alertDialog;
+	    	alertDialog = new AlertDialog.Builder(this).create();
+	    	alertDialog.setTitle(this.getString(R.string.titlegps));
+	    	alertDialog.setMessage(this.getString(R.string.messagegpsnoenabled));
+	    	alertDialog.setButton(this.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
+				    startActivity(myIntent);
+				}        				
+	    		});
+	    	
+	    	alertDialog.setButton2(this.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {					
+					
+				}        		
+				
+	    		});
+	    	alertDialog.show();
+		}catch (Exception e) {
+			Toast.makeText(this, "ERROR DIALOG:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+			Log.e("MEEERR: ",e.getMessage());
+		}
+	}
+	
+	
+	class WorkTaskThread implements Runnable{
+
+		@Override
+		public void run() {
+			Looper.prepare();
+		
+			Database oDB=new Database(getApplicationContext());
+		
+			if(oDB!=null)  {
+				oDB.init();
+			}
+			
+			Log.v(this.getClass().getCanonicalName(),"doInBackground WorkTaskAsync...");
+			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
+			mUser = ExerciseUtils.loadUserDectails(getApplicationContext());
+			oSummary.oTable=ExerciseUtils.getDistanceForType(oConfigTrainer, getApplicationContext());
+			
+
+			oSummary.oChart = new BarChart(getApplicationContext(),0);			
+			if(oConfigTrainer.getsGCMId().compareToIgnoreCase("")==0){
+				//GCM GOOGLE
+				GCMRegistrar.checkDevice(getApplicationContext());
+			    GCMRegistrar.checkManifest(getApplicationContext());
+			    sGCMId = GCMRegistrar.getRegistrationId(getApplicationContext());
+			    registerReceiver(mHandleMessageReceiver,
+			                new IntentFilter("com.glm.app.DISPLAY_MESSAGE"));	       
+			       
+			       if (sGCMId.equals("")) {
+			         GCMRegistrar.register(getApplicationContext(), SENDER_ID);
+			         Log.v(this.getClass().getCanonicalName(), "Not registered, register now: "+sGCMId);
+			         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
+			       } else {
+			         Log.v(this.getClass().getCanonicalName(), "Already registered: "+sGCMId);	
+			         ExerciseUtils.saveGCMId(getApplicationContext(),sGCMId);
+			       }
+			       
+			       if(sGCMId!=null){
+			    	   if(sGCMId.length()>0){
+			    		   SharedPreferences oPrefs = getApplicationContext().getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+			    		   SharedPreferences.Editor editPrefs = oPrefs.edit();
+			    		   editPrefs.putString("GCMId", sGCMId); 
+			    		   editPrefs.commit();
+			    		   new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								//Send Id to Android Trainer WEB Server via POST METHOD
+							       HttpClientHelper oHttpHelper = new HttpClientHelper();
+							       oHttpHelper.registerToAndroidTrainerServer(sGCMId,oConfigTrainer);   
+							}
+			    		   });
+			    		   
+			    	   }
+			       }
+			     //GCM GOOGLE
+			}
+			
+			if(!oConfigTrainer.isbLicence()){
+    			/**Check della licenza*/
+    			oPhone = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+    						
+    			// Construct the LicenseCheckerCallback. The library calls this when done.
+    	        mLicenseCheckerCallback = new TrainerLicenseCheckerCallback();
+
+    	        // Construct the LicenseChecker with a Policy.
+    	        mChecker = new LicenseChecker(
+    	            getApplicationContext(), new ServerManagedPolicy(getApplicationContext(),
+    	                new AESObfuscator(SALT, getPackageName(), oPhone.getDeviceId())),
+    	            BASE64_PUBLIC_KEY  // Your public licensing key.
+    	            );
+    	        try{
+    	        	 mChecker.checkAccess(mLicenseCheckerCallback);
+    	        }catch (Exception e) {
+    				Log.e(this.getClass().getCanonicalName(),"Error Checking Licence");
+    			}	       
+    	        /**Check della licenza*/     
+    		}else{
+    			isLicence=true;
+    		}
+			
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					//	
+					// Set up the action bar.
+					final ActionBar actionBar = getActionBar();
+					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+					actionBar.setDisplayShowHomeEnabled(false);
+					actionBar.setDisplayShowTitleEnabled(false);
+			        // Create the adapter that will return a fragment for each of the three
+					// primary sections of the app.
+					mSectionsPagerAdapter = new SectionsPagerAdapter(
+							getSupportFragmentManager());
+					actionBar.removeAllTabs();
+					
+					// Set up the ViewPager with the sections adapter.
+					mViewPager = (ViewPager) findViewById(R.id.pager);
+					mViewPager.setAdapter(mSectionsPagerAdapter);
+					mViewPager.setOffscreenPageLimit(4);
+					// When swiping between different sections, select the corresponding
+					// tab. We can also use ActionBar.Tab#select() to do this if we have
+					// a reference to the Tab.
+					mViewPager
+							.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+								@Override
+								public void onPageSelected(int position) {
+									actionBar.setSelectedNavigationItem(position);
+								}
+							});
+		
+					// For each of the sections in the app, add a tab to the action bar.
+					for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+						// Create a tab with text corresponding to the page title defined by
+						// the adapter. Also specify this Activity object, which implements
+						// the TabListener interface, as the callback (listener) for when
+						// this tab is selected.
+						actionBar.addTab(actionBar.newTab()
+								.setText(mSectionsPagerAdapter.getPageTitle(i))
+								.setTabListener(NewMainActivity.this));
+					}
+					if(oWaitForLoad!=null) oWaitForLoad.dismiss();
+					LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+			    	if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {	        
+				       ShowAlertNoGPS();
+				    }
+				}
+				
+			});
+						
+					
+		}
+		
+	}
+	
+	
 	class WorkTaskAsync extends AsyncTask{
 		@Override
 		protected Object doInBackground(Object... params) {
@@ -417,99 +653,7 @@ public class NewMainActivity extends FragmentActivity implements
 			super.onPreExecute();
 		}
 	}
-	private final BroadcastReceiver mHandleMessageReceiver =
-	         new BroadcastReceiver() {
-		     @Override
-		     public void onReceive(Context context, Intent intent) {
-		         Log.v(this.getClass().getCanonicalName(),"onReceive");
-		     }
-	};
 	
-	/**Classe per il controllo della licenza*/
-	private class TrainerLicenseCheckerCallback implements LicenseCheckerCallback {
-		
-		@Override    
-		public void allow(int reason) {
-	        if (isFinishing()) {
-	                // Don't update UI if Activity is finishing.	            	
-	            return;
-	        }
-	            Toast.makeText(NewMainActivity.this, getString(R.string.licenceok),
-		                Toast.LENGTH_SHORT).show();
-	            ExerciseUtils.setLicenceOK(getApplicationContext());  
-	            Log.v(this.getClass().getCanonicalName(), "licence Allow code "+reason);
-	            isLicence=true;
-	        // Should allow user access.
-	        //displayResult(getString(R.string.lic_ok));
-	    }
-		
-		@Override
-	    public void dontAllow(int reason) {
-	        if (isFinishing()) {
-	            // Don't update UI if Activity is finishing.
-	        	mConnection.destroy();
-	            return;
-	        }
-	        //Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceko),
-	        //        Toast.LENGTH_SHORT).show();
-	        ExerciseUtils.setLicenceKO(getApplicationContext());  
-	        //displayResult(getString(R.string.lic_error));	       
-	        // Should not allow access. An app can handle as needed,
-	        // typically by informing the user that the app is not licensed
-	        // and then shutting down the app or limiting the user to a
-	        // restricted set of features.
-	        // In this example, we show a dialog that takes the user to Market.
-	        showDialog(0);
-	        
-	        /**
-	         * DA MODIFICARE A FALSE IN PRODUZIONE
-	         * 
-	         * **/
-	        isLicence=false;
-	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
-	    }
-		@Override
-		public void applicationError(int errorCode) {
-			//Log.e(this.getClass().getCanonicalName(), "applicationError on check licence error code "+errorCode);
-			/**
-	         * DA MODIFICARE A FALSE IN PRODUZIONE
-	         * 
-	         * **/
-	        isLicence=false;
-		}
-	}
-	/**
-	 * Visualizza una alert per il GPS non abilitato
-	 *
-	 * @author Gianluca Masci aka (GLM)
-	 * */
-	public void ShowAlertNoGPS() {
-		try{
-			AlertDialog alertDialog;
-	    	alertDialog = new AlertDialog.Builder(this).create();
-	    	alertDialog.setTitle(this.getString(R.string.titlegps));
-	    	alertDialog.setMessage(this.getString(R.string.messagegpsnoenabled));
-	    	alertDialog.setButton(this.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
-
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
-				    startActivity(myIntent);
-				}        				
-	    		});
-	    	
-	    	alertDialog.setButton2(this.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
-
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {					
-					
-				}        		
-				
-	    		});
-	    	alertDialog.show();
-		}catch (Exception e) {
-			Toast.makeText(this, "ERROR DIALOG:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-			Log.e("MEEERR: ",e.getMessage());
-		}
-	}
+	
+	
 }

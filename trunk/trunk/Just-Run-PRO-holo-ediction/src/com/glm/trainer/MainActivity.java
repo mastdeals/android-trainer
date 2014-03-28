@@ -52,7 +52,6 @@ public class MainActivity  extends Activity{
 			}
 	       startService(new Intent("com.glm.trainer.STARTSERVICE"));
 	       
-	       
 	       DBTask task = new DBTask();
 		   task.execute(new Database(this));
 	}
