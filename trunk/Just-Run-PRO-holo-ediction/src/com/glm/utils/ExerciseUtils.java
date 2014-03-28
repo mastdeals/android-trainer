@@ -36,6 +36,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -1435,7 +1436,7 @@ public class ExerciseUtils {
 		 ContentResolver resolver = oContext.getContentResolver();
 	     
 		 String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-	        
+		     
 	        String[] projection = {
 	                MediaStore.Audio.Media._ID,
 	                MediaStore.Audio.Media.ARTIST,
@@ -1462,7 +1463,31 @@ public class ExerciseUtils {
 		        	
 		        }
 	        	cursor.close();
-	        }	        	        	        
+	        }	  
+	       /* String[] projectionG = {
+	                MediaStore.Audio.Media._ID,
+	                MediaStore.Audio.Media.ARTIST,
+	                MediaStore.Audio.Media.TITLE
+	        };
+	        //Music From Play Store
+	        Uri gMusicUri = Uri.parse("content://com.google.android.music.MusicContent/audio");
+	        cursor = resolver.query(gMusicUri, projectionG, null, null, null);
+	        if(cursor!=null){
+	        	while(cursor.moveToNext()) {
+		        	Music oMusic = new Music();
+		        	oMusic.setiID(cursor.getInt(0));
+		        	oMusic.setsARTIST(cursor.getString(1));	
+		        	oMusic.setsTITLE(cursor.getString(2));	
+		        	oMusic.setsFileDATA(cursor.getString(3));	
+		        	oMusic.setsDISPLAY_NAME(cursor.getString(4));	
+		        	oMusic.setiDURATION(cursor.getInt(5));
+		        	//Log.v(ExerciseUtils.class.getCanonicalName(), "Add Music: "+ cursor.getString(3));
+		        	vListOfMusic.add(oMusic);
+		        	oMusic=null;
+		        	
+		        }
+	        	cursor.close();
+	        }	  */
 			return vListOfMusic;
 	}
 	
